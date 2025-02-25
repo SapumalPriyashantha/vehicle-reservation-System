@@ -1,0 +1,74 @@
+CREATE DATABASE MegaCityCab;
+USE MegaCityCab;
+
+-- Users table for authentication and role management
+CREATE TABLE Users (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    role ENUM('ADMIN', 'CUSTOMER', 'DRIVER') NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    address TEXT,
+    nic VARCHAR(12) UNIQUE,
+    telephone VARCHAR(15),
+    license_number VARCHAR(20) UNIQUE, -- Only for drivers
+    profile_image BLOB, -- Stores user profile image
+    status ENUM('ACTIVE', 'INACTIVE') DEFAULT 'ACTIVE'
+);
+
+-- Cars table
+CREATE TABLE Cars (
+    car_id INT AUTO_INCREMENT PRIMARY KEY,
+    car_model VARCHAR(100) NOT NULL,
+    license_plate VARCHAR(15) UNIQUE NOT NULL,
+    mileage DECIMAL(10,2) NOT NULL, -- Stores car mileage
+    passenger_capacity INT NOT NULL, -- Number of passengers the car can carry
+    car_image BLOB, -- Stores car image
+    status ENUM('AVAILABLE', 'BOOKED', 'MAINTENANCE') DEFAULT 'AVAILABLE'
+);
+
+-- Bookings table
+CREATE TABLE Bookings (
+    booking_id INT AUTO_INCREMENT PRIMARY KEY,
+    customer_id INT NOT NULL,
+    driver_id INT, -- Allow NULL for cascading delete
+    car_id INT ,
+    pickup_location TEXT NOT NULL,
+    destination TEXT NOT NULL,
+    start_time DATETIME NOT NULL, -- Ride start time
+    end_time DATETIME NOT NULL, -- Ride end time
+    booking_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    status ENUM('PENDING', 'ONGOING', 'COMPLETED', 'CANCELLED') DEFAULT 'PENDING',
+    FOREIGN KEY (customer_id) REFERENCES Users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (driver_id) REFERENCES Users(user_id) ON DELETE SET NULL,
+    FOREIGN KEY (car_id) REFERENCES Cars(car_id) ON DELETE SET NULL
+);
+
+
+-- Payments table
+CREATE TABLE Payments (
+    payment_id INT AUTO_INCREMENT PRIMARY KEY,
+    booking_id INT NOT NULL,
+    amount DECIMAL(10,2) NOT NULL,
+    extra_amount DECIMAL(10,2) DEFAULT 0.00, -- Additional charges (tolls, peak-hour surcharge, etc.)
+    tax DECIMAL(5,2) DEFAULT 0.00,
+    discount DECIMAL(5,2) DEFAULT 0.00,
+    total_amount DECIMAL(10,2) GENERATED ALWAYS AS (amount + extra_amount + tax - discount) STORED,
+    payment_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    payment_status ENUM('PENDING', 'PAID', 'FAILED') DEFAULT 'PENDING',
+    FOREIGN KEY (booking_id) REFERENCES Bookings(booking_id) ON DELETE CASCADE
+);
+
+-- Feedback table
+CREATE TABLE Feedback (
+    feedback_id INT AUTO_INCREMENT PRIMARY KEY,
+    booking_id INT NOT NULL,
+    customer_id INT NOT NULL,
+    driver_id INT NOT NULL,
+    rating INT CHECK (rating BETWEEN 1 AND 5), -- Rating scale from 1 to 5
+    comments TEXT, -- Optional feedback comments
+    feedback_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (booking_id) REFERENCES Bookings(booking_id) ON DELETE CASCADE,
+    FOREIGN KEY (customer_id) REFERENCES Users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (driver_id) REFERENCES Users(user_id) ON DELETE CASCADE
+);
