@@ -12,6 +12,7 @@ com\cabbooking\model\Payment.class
 com\cabbooking\model\Booking.class
 com\cabbooking\controller\UserController.class
 com\cabbooking\model\User$Role.class
+com\cabbooking\repository\UserRepository.class
 com\cabbooking\model\Car.class
 com\cabbooking\model\Booking$Status.class
 com\cabbooking\model\Feedback.class

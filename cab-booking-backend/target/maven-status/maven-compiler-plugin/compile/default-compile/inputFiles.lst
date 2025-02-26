@@ -1,6 +1,7 @@
 D:\Others\TOPUP\ICBT Assignment\vehicle-reservation-System\cab-booking-backend\src\main\java\com\cabbooking\service\UserService.java
 D:\Others\TOPUP\ICBT Assignment\vehicle-reservation-System\cab-booking-backend\src\main\java\com\cabbooking\model\Payment.java
 D:\Others\TOPUP\ICBT Assignment\vehicle-reservation-System\cab-booking-backend\src\main\java\com\cabbooking\model\Booking.java
+D:\Others\TOPUP\ICBT Assignment\vehicle-reservation-System\cab-booking-backend\src\main\java\com\cabbooking\repository\UserRepository.java
 D:\Others\TOPUP\ICBT Assignment\vehicle-reservation-System\cab-booking-backend\src\main\java\com\cabbooking\config\RestApplication.java
 D:\Others\TOPUP\ICBT Assignment\vehicle-reservation-System\cab-booking-backend\src\main\java\com\cabbooking\dto\UserRegistrationDTO.java
 D:\Others\TOPUP\ICBT Assignment\vehicle-reservation-System\cab-booking-backend\src\main\java\com\cabbooking\model\User.java

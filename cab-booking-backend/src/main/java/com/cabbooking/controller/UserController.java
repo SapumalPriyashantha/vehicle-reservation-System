@@ -37,7 +37,7 @@ public class UserController {
             ResponseDTO<String> response = new ResponseDTO<>(
                     Response.Status.BAD_REQUEST.getStatusCode(),
                     "ERROR",
-                    e.getMessage()
+                    e.getLocalizedMessage()
             );
             return Response.status(Response.Status.BAD_REQUEST).entity(response).build();
         } catch (Exception e) {
