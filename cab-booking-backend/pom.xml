@@ -6,10 +6,18 @@
 
   <groupId>com.cabbooking</groupId>
   <artifactId>cab-booking-backend</artifactId>
-  <packaging>jar</packaging>
-  <version>1.0-SNAPSHOT</version>
+  <packaging>war</packaging>
+  <version>1.0</version>
   <name>cab-booking-backend</name>
   <url>http://maven.apache.org</url>
+
+  <!-- Parent POM for WildFly -->
+<!--  <parent>-->
+<!--    <groupId>org.wildfly.plugins</groupId>-->
+<!--    <artifactId>wildfly-maven-plugin</artifactId>-->
+<!--    <version>3.0.0.Final</version>-->
+<!--    <relativePath/> &lt;!&ndash; lookup parent from repository &ndash;&gt;-->
+<!--  </parent>-->
 
   <!-- Set Java Version -->
   <properties>
@@ -35,6 +43,14 @@
       <scope>provided</scope>
     </dependency>
 
+    <!-- Jersey for JAX-RS (REST API) support -->
+    <dependency>
+      <groupId>org.glassfish.jersey.core</groupId>
+      <artifactId>jersey-server</artifactId>
+      <version>2.34</version>
+      <scope>provided</scope>
+    </dependency>
+
     <!-- MySQL Connector -->
     <dependency>
       <groupId>mysql</groupId>
@@ -50,11 +66,17 @@
     </dependency>
 
     <!-- JPA + Hibernate -->
-    <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-core</artifactId>
-      <version>6.2.0.Final</version>
-    </dependency>
+<!--    <dependency>-->
+<!--      <groupId>org.hibernate</groupId>-->
+<!--      <artifactId>hibernate-core</artifactId>-->
+<!--      <version>6.2.0.Final</version>-->
+<!--    </dependency>-->
+
+<!--    <dependency>-->
+<!--      <groupId>org.hibernate</groupId>-->
+<!--      <artifactId>hibernate-entitymanager</artifactId>-->
+<!--      <version>5.6.15.Final</version>-->
+<!--    </dependency>-->
 
     <dependency>
       <groupId>org.projectlombok</groupId>
@@ -75,6 +97,11 @@
           <source>17</source>
           <target>17</target>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>3.3.2</version> <!-- Updated version -->
       </plugin>
     </plugins>
   </build>

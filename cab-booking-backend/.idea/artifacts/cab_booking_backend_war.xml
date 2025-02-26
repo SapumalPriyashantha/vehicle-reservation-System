@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="cab-booking-backend:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>cab-booking-backend</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="cab-booking-backend-1.0.war">
+      <element id="artifact" artifact-name="cab-booking-backend:war exploded" />
+    </root>
+  </artifact>
+</component>
