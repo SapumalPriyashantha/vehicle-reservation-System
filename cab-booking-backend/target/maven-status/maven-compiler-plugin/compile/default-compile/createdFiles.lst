@@ -1,6 +1,5 @@
 com\cabbooking\config\RestApplication.class
 com\cabbooking\dto\LoginDTO.class
-com\cabbooking\App.class
 com\cabbooking\dto\UserRegistrationDTO.class
 com\cabbooking\service\UserService.class
 com\cabbooking\model\User$Status.class

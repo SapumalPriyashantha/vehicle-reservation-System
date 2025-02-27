@@ -30,7 +30,7 @@ public class UserRepository {
     }
 
     public boolean isUsernameExists(String username) {
-        String sql = "SELECT COUNT(*) FROM users WHERE username = ?";
+        String sql = "SELECT COUNT(*) FROM users WHERE username = ? AND status = 'ACTIVE'";
         Number count = (Number) em.createNativeQuery(sql)
                 .setParameter(1, username)
                 .getSingleResult();
@@ -38,7 +38,7 @@ public class UserRepository {
     }
 
     public boolean isNicExists(String nic) {
-        String sql = "SELECT COUNT(*) FROM users WHERE nic = ?";
+        String sql = "SELECT COUNT(*) FROM users WHERE nic = ? AND status = 'ACTIVE'";
         Number count = (Number) em.createNativeQuery(sql)
                 .setParameter(1, nic)
                 .getSingleResult();
@@ -47,7 +47,7 @@ public class UserRepository {
 
     public User findByUsername(String username) {
         try {
-            String sql = "SELECT * FROM users WHERE username = ? LIMIT 1";
+            String sql = "SELECT * FROM users WHERE username = ? LIMIT 1 AND status = 'ACTIVE'";
             return (User) em.createNativeQuery(sql, User.class)
                     .setParameter(1, username)
                     .getSingleResult();
@@ -57,7 +57,7 @@ public class UserRepository {
     }
 
     public boolean isUserExists(Long userId) {
-        String sql = "SELECT COUNT(*) FROM users WHERE user_id = ?";
+        String sql = "SELECT COUNT(*) FROM users WHERE user_id = ? AND status = 'ACTIVE'";
         Number count = (Number) em.createNativeQuery(sql)
                 .setParameter(1, userId)
                 .getSingleResult();
@@ -104,4 +104,23 @@ public class UserRepository {
 
         return query.executeUpdate();
     }
+
+    public User findActiveCustomerById(Long userId) {
+        String sql = "SELECT * FROM users WHERE user_id = ? AND status = 'ACTIVE'";
+        try {
+            return (User) em.createNativeQuery(sql, User.class)
+                    .setParameter(1, userId)
+                    .getSingleResult();
+        } catch (Exception e) {
+            return null; // Customer not found or not active
+        }
+    }
+
+    public int deactivateCustomer(Long userId) {
+        String sql = "UPDATE users SET status = 'INACTIVE' WHERE user_id = ? AND status = 'ACTIVE'";
+        return em.createNativeQuery(sql)
+                .setParameter(1, userId)
+                .executeUpdate();
+    }
+
 }

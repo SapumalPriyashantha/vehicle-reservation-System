@@ -4,7 +4,6 @@ import com.cabbooking.dto.LoginDTO;
 import com.cabbooking.dto.ResponseDTO;
 import com.cabbooking.dto.UpdateCustomerDTO;
 import com.cabbooking.dto.UserRegistrationDTO;
-import com.cabbooking.model.User;
 import com.cabbooking.service.UserService;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
@@ -82,5 +81,36 @@ public class UserController {
                     .entity(new ResponseDTO<>(500, "ERROR", "Unexpected error occurred."))
                     .build();
         }
+    }
+
+    @GET
+    @Path("searchById/{userId}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getActiveCustomerById(@PathParam("userId") Long userId) {
+        try {
+            ResponseDTO<Object> result = userService.getActiveCustomerById(userId);
+            return Response.status(result.getCode()).entity(result).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(new ResponseDTO<>(500, "ERROR", "Unexpected error occurred."))
+                    .build();
+        }
+    }
+
+    @DELETE
+    @Path("/{userId}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteCustomer(@PathParam("userId") Long userId) {
+        try {
+            ResponseDTO<String> result = userService.deleteCustomer(userId);
+            return Response.status(result.getCode()).entity(result).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(new ResponseDTO<>(500, "ERROR", "Unexpected error occurred."))
+                    .build();
+        }
+
     }
 }

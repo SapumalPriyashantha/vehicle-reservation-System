@@ -84,6 +84,22 @@ public class UserService {
         }
     }
 
+    public ResponseDTO<Object> getActiveCustomerById(Long userId) {
+        User user = userRepository.findActiveCustomerById(userId);
+        if (user == null) {
+            return new ResponseDTO<Object>(400, "ERROR", "Active customer not found!");
+        }
+        return new ResponseDTO<Object>(200, "SUCCESS", user);
+    }
+
+    public ResponseDTO<String> deleteCustomer(Long userId) {
+        int updatedRows = userRepository.deactivateCustomer(userId);
+        if (updatedRows == 0) {
+            return new ResponseDTO<>(400, "ERROR", "Customer not found or already inactive!");
+        }
+        return new ResponseDTO<>(200, "SUCCESS", "Customer deleted (status set to INACTIVE).");
+    }
+
     // Simulated password verification (Replace with hashing logic in real app)
     private boolean verifyPassword(String enteredPassword, String storedPassword) {
         return enteredPassword.equals(storedPassword);
