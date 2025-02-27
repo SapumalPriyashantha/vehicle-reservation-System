@@ -5,7 +5,7 @@ import com.cabbooking.dto.ResponseDTO;
 import com.cabbooking.dto.UpdateCustomerDTO;
 import com.cabbooking.model.User;
 import com.cabbooking.dto.UserRegistrationDTO;
-import com.cabbooking.repository.UserRepository;
+import com.cabbooking.repository.CustomerRepository;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
 import jakarta.persistence.*;
@@ -13,26 +13,28 @@ import jakarta.persistence.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import static com.cabbooking.util.Util.hashPassword;
+
 @Stateless
-public class UserService {
+public class CustomerService {
     @Inject
-    private UserRepository userRepository;
+    private CustomerRepository customerRepository;
 
     // Register a new customer
     public boolean registerCustomer(UserRegistrationDTO userRegistrationDTO) throws NoSuchAlgorithmException {
         // Check if username or NIC already exists
-        if (userRepository.isUsernameExists(userRegistrationDTO.getUsername())) {
+        if (customerRepository.isUsernameExists(userRegistrationDTO.getUsername())) {
             throw new RuntimeException("Username already exists");
         }
 
-        if (userRepository.isNicExists(userRegistrationDTO.getNic())) {
+        if (customerRepository.isNicExists(userRegistrationDTO.getNic())) {
             throw new RuntimeException("NIC already exists");
         }
 
         // Encrypt password (use a simple hashing example with SHA-256)
         String encryptedPassword = hashPassword(userRegistrationDTO.getPassword());
 
-        return userRepository.registerCustomer(
+        return customerRepository.registerCustomer(
                 userRegistrationDTO.getUsername(),
                 encryptedPassword,
                 userRegistrationDTO.getName(),
@@ -44,13 +46,13 @@ public class UserService {
 
     public ResponseDTO<String> updateCustomer(Long userId, UpdateCustomerDTO dto) throws NoSuchAlgorithmException {
         // Check if user exists
-        if (!userRepository.isUserExists(userId)) {
+        if (!customerRepository.isUserExists(userId)) {
             return new ResponseDTO<>(400, "ERROR", "Customer not found!");
         }
 
         String passwordHash = dto.getPassword() != null ? hashPassword(dto.getPassword()) : null;
 
-        int rowsUpdated = userRepository.updateCustomer(userId, dto.getName(), dto.getAddress(), dto.getTelephone(), passwordHash);
+        int rowsUpdated = customerRepository.updateCustomer(userId, dto.getName(), dto.getAddress(), dto.getTelephone(), passwordHash);
 
         if (rowsUpdated > 0) {
             return new ResponseDTO<>(200, "SUCCESS", "Customer updated successfully!");
@@ -62,7 +64,7 @@ public class UserService {
     public ResponseDTO<Object> login(LoginDTO loginDTO) {
         try {
 
-            User user = userRepository.findByUsername(loginDTO.getUsername());
+            User user = customerRepository.findByUsername(loginDTO.getUsername());
 
             if (user == null) {
                 return new ResponseDTO<>(400, "ERROR",  "User not found!");
@@ -85,7 +87,7 @@ public class UserService {
     }
 
     public ResponseDTO<Object> getActiveCustomerById(Long userId) {
-        User user = userRepository.findActiveCustomerById(userId);
+        User user = customerRepository.findActiveCustomerById(userId);
         if (user == null) {
             return new ResponseDTO<Object>(400, "ERROR", "Active customer not found!");
         }
@@ -93,7 +95,7 @@ public class UserService {
     }
 
     public ResponseDTO<String> deleteCustomer(Long userId) {
-        int updatedRows = userRepository.deactivateCustomer(userId);
+        int updatedRows = customerRepository.deactivateCustomer(userId);
         if (updatedRows == 0) {
             return new ResponseDTO<>(400, "ERROR", "Customer not found or already inactive!");
         }
@@ -110,14 +112,5 @@ public class UserService {
         return "token_" + username + "_" + System.currentTimeMillis();
     }
 
-    // Hash the password using SHA-256
-    private String hashPassword(String password) throws NoSuchAlgorithmException {
-        MessageDigest digest = MessageDigest.getInstance("SHA-256");
-        byte[] hashBytes = digest.digest(password.getBytes());
-        StringBuilder hexString = new StringBuilder();
-        for (byte b : hashBytes) {
-            hexString.append(String.format("%02x", b));
-        }
-        return hexString.toString();
-    }
+
 }

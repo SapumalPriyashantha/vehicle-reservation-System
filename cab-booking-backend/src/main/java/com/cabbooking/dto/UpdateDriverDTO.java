@@ -1,6 +1,5 @@
 package com.cabbooking.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,17 +8,23 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
-@AllArgsConstructor
-public class ResponseDTO<Object> {
+public class UpdateDriverDTO {
     @NotNull
     @NotEmpty
-    private int code;      // HTTP status code
+    private String name;
 
     @NotNull
     @NotEmpty
-    private String status; // SUCCESS / ERROR
+    private String address;
 
     @NotNull
     @NotEmpty
-    private Object data;        // Any object (string, list, etc.)
+    private String telephone;
+
+    @NotNull
+    @NotEmpty
+    private String licenseNumber;
+
+    private String password;
+    private String profileImage;
 }

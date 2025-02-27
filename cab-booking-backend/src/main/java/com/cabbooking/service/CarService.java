@@ -6,7 +6,6 @@ import com.cabbooking.model.Car;
 import com.cabbooking.repository.CarRepository;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
-import java.math.BigDecimal;
 import java.util.Base64;
 
 @Stateless

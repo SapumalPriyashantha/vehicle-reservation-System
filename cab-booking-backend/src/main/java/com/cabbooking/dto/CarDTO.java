@@ -18,5 +18,5 @@ public class CarDTO {
     private BigDecimal mileage;
     private Integer passengerCapacity;
     private String status;
-    private String carImageBase64; // Base64-encoded image string
+    private String carImageBase64;
 }

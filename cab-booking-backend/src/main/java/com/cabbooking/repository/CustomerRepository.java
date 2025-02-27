@@ -9,11 +9,12 @@ import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
 
 @ApplicationScoped
-public class UserRepository {
+@Transactional
+public class CustomerRepository {
     @PersistenceContext(unitName = "MegaCityCabPU")
     private EntityManager em;
 
-    @Transactional
+
     public boolean registerCustomer(String username, String encryptedPassword, String name,
                                     String address, String nic, String telephone) {
         String sql = "INSERT INTO users (username, password_hash, role, name, address, nic, telephone, status) " +
@@ -30,7 +31,7 @@ public class UserRepository {
     }
 
     public boolean isUsernameExists(String username) {
-        String sql = "SELECT COUNT(*) FROM users WHERE username = ? AND status = 'ACTIVE'";
+        String sql = "SELECT COUNT(*) FROM users WHERE username = ? AND role = 'CUSTOMER' AND status = 'ACTIVE'";
         Number count = (Number) em.createNativeQuery(sql)
                 .setParameter(1, username)
                 .getSingleResult();
@@ -38,7 +39,7 @@ public class UserRepository {
     }
 
     public boolean isNicExists(String nic) {
-        String sql = "SELECT COUNT(*) FROM users WHERE nic = ? AND status = 'ACTIVE'";
+        String sql = "SELECT COUNT(*) FROM users WHERE nic = ? AND role = 'CUSTOMER' AND status = 'ACTIVE'";
         Number count = (Number) em.createNativeQuery(sql)
                 .setParameter(1, nic)
                 .getSingleResult();
@@ -47,7 +48,7 @@ public class UserRepository {
 
     public User findByUsername(String username) {
         try {
-            String sql = "SELECT * FROM users WHERE username = ? LIMIT 1 AND status = 'ACTIVE'";
+            String sql = "SELECT * FROM users WHERE username = ? LIMIT 1 AND role = 'CUSTOMER' AND status = 'ACTIVE'";
             return (User) em.createNativeQuery(sql, User.class)
                     .setParameter(1, username)
                     .getSingleResult();
@@ -57,14 +58,13 @@ public class UserRepository {
     }
 
     public boolean isUserExists(Long userId) {
-        String sql = "SELECT COUNT(*) FROM users WHERE user_id = ? AND status = 'ACTIVE'";
+        String sql = "SELECT COUNT(*) FROM users WHERE user_id = ? AND role = 'CUSTOMER' AND status = 'ACTIVE'";
         Number count = (Number) em.createNativeQuery(sql)
                 .setParameter(1, userId)
                 .getSingleResult();
         return count.intValue() > 0;
     }
 
-    @Transactional
     public int updateCustomer(Long userId, String name, String address, String telephone, String passwordHash) {
         StringBuilder sql = new StringBuilder("UPDATE users SET ");
         boolean hasUpdates = false;
@@ -106,7 +106,7 @@ public class UserRepository {
     }
 
     public User findActiveCustomerById(Long userId) {
-        String sql = "SELECT * FROM users WHERE user_id = ? AND status = 'ACTIVE'";
+        String sql = "SELECT * FROM users WHERE user_id = ? AND role = 'CUSTOMER' AND  status = 'ACTIVE'";
         try {
             return (User) em.createNativeQuery(sql, User.class)
                     .setParameter(1, userId)
@@ -117,7 +117,7 @@ public class UserRepository {
     }
 
     public int deactivateCustomer(Long userId) {
-        String sql = "UPDATE users SET status = 'INACTIVE' WHERE user_id = ? AND status = 'ACTIVE'";
+        String sql = "UPDATE users SET status = 'INACTIVE' WHERE user_id = ? AND role = 'CUSTOMER' AND status = 'ACTIVE'";
         return em.createNativeQuery(sql)
                 .setParameter(1, userId)
                 .executeUpdate();
