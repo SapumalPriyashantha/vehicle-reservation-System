@@ -10,7 +10,6 @@ import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
 import jakarta.persistence.*;
 
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import static com.cabbooking.util.Util.hashPassword;

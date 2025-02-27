@@ -34,7 +34,7 @@ public class Feedback {
     @Column(columnDefinition = "TEXT")
     private String comments; // Optional feedback comments
 
-    @Column(nullable = false)
+    @Column(name = "feedback_date",nullable = false)
     private LocalDateTime feedbackDate = LocalDateTime.now();
 
     @PrePersist

@@ -6,11 +6,8 @@ import com.cabbooking.repository.CustomerRepository;
 import com.cabbooking.repository.DriverRepository;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.sql.Driver;
 import java.util.Base64;
-import java.util.UUID;
 
 import static com.cabbooking.util.Util.*;
 

@@ -8,6 +8,8 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
+import java.time.LocalDateTime;
+
 @Path("/cars")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
@@ -61,6 +63,22 @@ public class CarController {
     public Response deleteCar(@PathParam("carId") Long carId) {
         try {
             ResponseDTO<String> result =   carService.deleteCar(carId);
+            return Response.status(result.getCode()).entity(result).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(new ResponseDTO<>(500, "ERROR", "Unexpected error occurred."))
+                    .build();
+        }
+    }
+
+    @GET
+    @Path("/available")
+    public Response searchAvailableCars(@QueryParam("from") String fromDate, @QueryParam("to") String toDate) {
+        try {
+            LocalDateTime from = LocalDateTime.parse(fromDate);
+            LocalDateTime to = LocalDateTime.parse(toDate);
+
+            ResponseDTO<Object> result = carService.getAvailableCars(from, to);
             return Response.status(result.getCode()).entity(result).build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)

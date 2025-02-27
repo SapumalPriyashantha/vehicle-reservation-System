@@ -14,6 +14,7 @@ public class Booking {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "booking_id")
     private Long bookingId;
 
     @ManyToOne
@@ -28,19 +29,19 @@ public class Booking {
     @JoinColumn(name = "car_id")
     private Car car;
 
-    @Column(nullable = false, columnDefinition = "TEXT")
+    @Column(name = "pickup_location",nullable = false, columnDefinition = "TEXT")
     private String pickupLocation;
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String destination;
 
-    @Column(nullable = false)
+    @Column(name = "start_time",nullable = false)
     private LocalDateTime startTime;
 
-    @Column(nullable = false)
+    @Column(name = "end_time",nullable = false)
     private LocalDateTime endTime;
 
-    @Column(nullable = false)
+    @Column(name = "booking_date",nullable = false)
     private LocalDateTime bookingDate = LocalDateTime.now();
 
     @Enumerated(EnumType.STRING)

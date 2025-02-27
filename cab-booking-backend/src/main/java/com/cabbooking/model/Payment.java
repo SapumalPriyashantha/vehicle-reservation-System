@@ -24,7 +24,7 @@ public class Payment {
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal amount;
 
-    @Column(precision = 10, scale = 2)
+    @Column(name = "extra_amount",precision = 10, scale = 2)
     private BigDecimal extraAmount = BigDecimal.ZERO;  // Additional charges
 
     @Column(precision = 5, scale = 2)
@@ -33,14 +33,14 @@ public class Payment {
     @Column(precision = 5, scale = 2)
     private BigDecimal discount = BigDecimal.ZERO;
 
-    @Column(precision = 10, scale = 2)
+    @Column(name = "total_amount",precision = 10, scale = 2)
     private BigDecimal totalAmount;
 
-    @Column(nullable = false)
+    @Column(name = "payment_date",nullable = false)
     private LocalDateTime paymentDate = LocalDateTime.now();
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(name = "payment_status",nullable = false)
     private Status paymentStatus = Status.PENDING;
 
     public enum Status {

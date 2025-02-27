@@ -24,7 +24,7 @@ CREATE TABLE Cars (
     mileage DECIMAL(10,2) NOT NULL, -- Stores car mileage
     passenger_capacity INT NOT NULL, -- Number of passengers the car can carry
     car_image BLOB, -- Stores car image
-    status ENUM('AVAILABLE', 'BOOKED', 'MAINTENANCE') DEFAULT 'AVAILABLE'
+    status ENUM('AVAILABLE', 'BOOKED', 'MAINTENANCE','INACTIVE') DEFAULT 'AVAILABLE'
 );
 
 -- Bookings table

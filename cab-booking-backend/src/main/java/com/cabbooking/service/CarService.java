@@ -6,7 +6,11 @@ import com.cabbooking.model.Car;
 import com.cabbooking.repository.CarRepository;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
+
+import java.time.LocalDateTime;
 import java.util.Base64;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Stateless
 public class CarService {
@@ -94,6 +98,28 @@ public class CarService {
         } else {
             return new ResponseDTO<>(404, "ERROR", "Car not found or already inactive.");
         }
+    }
+
+    public ResponseDTO<Object> getAvailableCars(LocalDateTime fromDate, LocalDateTime toDate) {
+        List<Car> availableCars = carRepository.findAvailableCars(fromDate, toDate);
+
+        if (availableCars.isEmpty()) {
+            return new ResponseDTO<Object>(400, "ERROR", "No available cars found for the selected period.");
+        }
+
+        List<CarDTO> carDTOList = availableCars.stream()
+                .map(car -> new CarDTO(
+                        car.getCarId(),
+                        car.getCarModel(),
+                        car.getLicensePlate(),
+                        car.getMileage(),
+                        car.getPassengerCapacity(),
+                        car.getStatus().name(), // Convert ENUM to String
+                        (car.getCarImage() != null) ? Base64.getEncoder().encodeToString(car.getCarImage()) : null
+                ))
+                .collect(Collectors.toList());
+
+        return new ResponseDTO<Object>(200, "SUCCESS", carDTOList);
     }
 
 }

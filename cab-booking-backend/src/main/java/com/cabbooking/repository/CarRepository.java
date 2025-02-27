@@ -7,6 +7,8 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @ApplicationScoped
 @Transactional
@@ -90,5 +92,25 @@ public class CarRepository {
         var query = em.createNativeQuery(sql);
         query.setParameter(1, carId);
         return query.executeUpdate() > 0;
+    }
+
+    public List<Car> findAvailableCars(LocalDateTime fromDate, LocalDateTime toDate) {
+        String sql = """
+            SELECT c.* FROM cars c
+            WHERE c.status = 'AVAILABLE' 
+            AND c.car_id NOT IN (
+                SELECT b.car_id FROM bookings b
+                WHERE b.status IN ('PENDING', 'ONGOING')
+                AND (b.start_time BETWEEN ? AND ? OR b.end_time BETWEEN ? AND ? OR ? BETWEEN b.start_time AND b.end_time)
+            )
+        """;
+
+        return em.createNativeQuery(sql, Car.class)
+                .setParameter(1, fromDate)
+                .setParameter(2, toDate)
+                .setParameter(3, fromDate)
+                .setParameter(4, toDate)
+                .setParameter(5, fromDate)
+                .getResultList();
     }
 }
