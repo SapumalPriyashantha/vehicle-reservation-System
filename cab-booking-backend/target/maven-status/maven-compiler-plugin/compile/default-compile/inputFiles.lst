@@ -3,11 +3,15 @@ D:\Others\TOPUP\ICBT Assignment\vehicle-reservation-System\cab-booking-backend\s
 D:\Others\TOPUP\ICBT Assignment\vehicle-reservation-System\cab-booking-backend\src\main\java\com\cabbooking\model\Booking.java
 D:\Others\TOPUP\ICBT Assignment\vehicle-reservation-System\cab-booking-backend\src\main\java\com\cabbooking\repository\UserRepository.java
 D:\Others\TOPUP\ICBT Assignment\vehicle-reservation-System\cab-booking-backend\src\main\java\com\cabbooking\config\RestApplication.java
+D:\Others\TOPUP\ICBT Assignment\vehicle-reservation-System\cab-booking-backend\src\main\java\com\cabbooking\dto\CarDTO.java
 D:\Others\TOPUP\ICBT Assignment\vehicle-reservation-System\cab-booking-backend\src\main\java\com\cabbooking\dto\UserRegistrationDTO.java
 D:\Others\TOPUP\ICBT Assignment\vehicle-reservation-System\cab-booking-backend\src\main\java\com\cabbooking\model\User.java
+D:\Others\TOPUP\ICBT Assignment\vehicle-reservation-System\cab-booking-backend\src\main\java\com\cabbooking\controller\CarController.java
 D:\Others\TOPUP\ICBT Assignment\vehicle-reservation-System\cab-booking-backend\src\main\java\com\cabbooking\dto\UpdateCustomerDTO.java
+D:\Others\TOPUP\ICBT Assignment\vehicle-reservation-System\cab-booking-backend\src\main\java\com\cabbooking\service\CarService.java
 D:\Others\TOPUP\ICBT Assignment\vehicle-reservation-System\cab-booking-backend\src\main\java\com\cabbooking\controller\UserController.java
 D:\Others\TOPUP\ICBT Assignment\vehicle-reservation-System\cab-booking-backend\src\main\java\com\cabbooking\model\Car.java
 D:\Others\TOPUP\ICBT Assignment\vehicle-reservation-System\cab-booking-backend\src\main\java\com\cabbooking\dto\LoginDTO.java
 D:\Others\TOPUP\ICBT Assignment\vehicle-reservation-System\cab-booking-backend\src\main\java\com\cabbooking\model\Feedback.java
 D:\Others\TOPUP\ICBT Assignment\vehicle-reservation-System\cab-booking-backend\src\main\java\com\cabbooking\dto\ResponseDTO.java
+D:\Others\TOPUP\ICBT Assignment\vehicle-reservation-System\cab-booking-backend\src\main\java\com\cabbooking\repository\CarRepository.java

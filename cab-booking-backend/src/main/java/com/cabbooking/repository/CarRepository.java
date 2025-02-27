@@ -1,0 +1,95 @@
+package com.cabbooking.repository;
+
+import com.cabbooking.model.Car;
+import com.cabbooking.model.User;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.PersistenceContext;
+
+import java.math.BigDecimal;
+import java.util.Optional;
+
+@ApplicationScoped
+public class CarRepository {
+
+    @PersistenceContext
+    private EntityManager em;
+
+    public int addCar(String carModel, String licensePlate,
+                      BigDecimal mileage, Integer passengerCapacity, byte[] carImage) {
+        String sql = "INSERT INTO cars (car_model, license_plate, mileage, passenger_capacity, car_image, status) " +
+                "VALUES (?, ?, ?, ?, ?, 'AVAILABLE')";
+        return em.createNativeQuery(sql)
+                .setParameter(1, carModel)
+                .setParameter(2, licensePlate)
+                .setParameter(3, mileage)
+                .setParameter(4, passengerCapacity)
+                .setParameter(5, carImage)
+                .executeUpdate();
+    }
+
+    public int updateCar(Long carId, String carModel, String licensePlate,
+                         BigDecimal mileage, Integer passengerCapacity, byte[] carImage) {
+        StringBuilder sql = new StringBuilder("UPDATE cars SET ");
+        boolean hasUpdates = false;
+
+        if (carModel != null) {
+            sql.append("car_model = ?, ");
+            hasUpdates = true;
+        }
+        if (licensePlate != null) {
+            sql.append("license_plate = ?, ");
+            hasUpdates = true;
+        }
+        if (mileage != null) {
+            sql.append("mileage = ?, ");
+            hasUpdates = true;
+        }
+        if (passengerCapacity != null) {
+            sql.append("passenger_capacity = ?, ");
+            hasUpdates = true;
+        }
+        if (carImage != null) {
+            sql.append("car_image = ?, ");
+            hasUpdates = true;
+        }
+
+        if (!hasUpdates) {
+            return 0; // No fields to update
+        }
+
+        sql.setLength(sql.length() - 2); // Remove trailing comma
+        sql.append(" WHERE car_id = ?");
+
+        var query = em.createNativeQuery(sql.toString());
+
+        int paramIndex = 1;
+        if (carModel != null) query.setParameter(paramIndex++, carModel);
+        if (licensePlate != null) query.setParameter(paramIndex++, licensePlate);
+        if (mileage != null) query.setParameter(paramIndex++, mileage);
+        if (passengerCapacity != null) query.setParameter(paramIndex++, passengerCapacity);
+        if (carImage != null) query.setParameter(paramIndex++, carImage);
+        query.setParameter(paramIndex, carId);
+
+        return query.executeUpdate();
+    }
+
+    public Car findCarById(Long carId) {
+        String sql = "SELECT * FROM cars WHERE car_id = ? AND status != 'INACTIVE';";
+        try {
+            return (Car) em.createNativeQuery(sql, Car.class)
+                    .setParameter(1, carId)
+                    .getSingleResult();
+        } catch (Exception e) {
+            return null; // Customer not found or not active
+        }
+    }
+
+    public boolean updateCarStatusToInactive(Long carId) {
+        String sql = "UPDATE cars SET status = 'INACTIVE' WHERE car_id = ? AND status != 'INACTIVE'";
+        var query = em.createNativeQuery(sql);
+        query.setParameter(1, carId);
+        return query.executeUpdate() > 0;
+    }
+}

@@ -15,21 +15,23 @@ public class Car {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "car_id")
     private Long carId;
 
-    @Column(nullable = false, length = 100)
+    @Column(name = "car_model",nullable = false, length = 100)
     private String carModel;
 
-    @Column(nullable = false, unique = true, length = 15)
+    @Column(name = "license_plate",nullable = false, unique = true, length = 15)
     private String licensePlate;
 
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal mileage;
 
-    @Column(nullable = false)
+    @Column(name = "passenger_capacity",nullable = false)
     private Integer passengerCapacity;
 
     @Lob
+    @Column(name = "car_image")
     private byte[] carImage;  // Car image stored as BLOB
 
     @Enumerated(EnumType.STRING)
@@ -37,6 +39,6 @@ public class Car {
     private Status status = Status.AVAILABLE;
 
     public enum Status {
-        AVAILABLE, BOOKED, MAINTENANCE
+        AVAILABLE, BOOKED, MAINTENANCE, INACTIVE
     }
 }

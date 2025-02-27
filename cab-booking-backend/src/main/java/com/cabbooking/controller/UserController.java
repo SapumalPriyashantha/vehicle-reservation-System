@@ -12,6 +12,8 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 @Path("/users")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 public class UserController {
 
     @Inject
@@ -19,8 +21,6 @@ public class UserController {
 
     @POST
     @Path("/register")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
     public Response registerCustomer(@Valid UserRegistrationDTO userRegistrationDTO) {
         try {
             userService.registerCustomer(userRegistrationDTO);
@@ -51,8 +51,6 @@ public class UserController {
 
     @PUT
     @Path("/{userId}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
     public Response updateCustomer(@PathParam("userId") Long userId, UpdateCustomerDTO dto) {
         try {
             ResponseDTO<String> result = userService.updateCustomer(userId, dto);
@@ -70,8 +68,6 @@ public class UserController {
 
     @POST
     @Path("/login")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
     public Response login(LoginDTO loginDTO) {
         try {
             ResponseDTO<Object> result = userService.login(loginDTO);
@@ -85,8 +81,6 @@ public class UserController {
 
     @GET
     @Path("searchById/{userId}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
     public Response getActiveCustomerById(@PathParam("userId") Long userId) {
         try {
             ResponseDTO<Object> result = userService.getActiveCustomerById(userId);
@@ -100,8 +94,6 @@ public class UserController {
 
     @DELETE
     @Path("/{userId}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
     public Response deleteCustomer(@PathParam("userId") Long userId) {
         try {
             ResponseDTO<String> result = userService.deleteCustomer(userId);
@@ -111,6 +103,5 @@ public class UserController {
                     .entity(new ResponseDTO<>(500, "ERROR", "Unexpected error occurred."))
                     .build();
         }
-
     }
 }
