@@ -6,6 +6,10 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+
 @ApplicationScoped
 @Transactional
 public class DriverRepository {
@@ -106,5 +110,24 @@ public class DriverRepository {
         return em.createNativeQuery(sql)
                 .setParameter(1, userId)
                 .executeUpdate();
+    }
+
+    public Optional<User> findAvailableDriver(LocalDateTime startTime, LocalDateTime endTime) {
+        String sql = "SELECT * FROM users u " +
+                "WHERE u.role = 'DRIVER' AND u.status = 'ACTIVE' " +
+                "AND NOT EXISTS (SELECT 1 FROM bookings b " +
+                "WHERE b.driver_id = u.user_id " +
+                "AND b.status IN ('PENDING', 'ONGOING') " +
+                "AND ((:startTime BETWEEN b.start_time AND b.end_time) " +
+                "OR (:endTime BETWEEN b.start_time AND b.end_time) " +
+                "OR (b.start_time BETWEEN :startTime AND :endTime))) " +
+                "LIMIT 1";
+
+        List<User> result = em.createNativeQuery(sql, User.class)
+                .setParameter("startTime", startTime)
+                .setParameter("endTime", endTime)
+                .getResultList();
+
+        return result.isEmpty() ? Optional.empty() : Optional.of(result.get(0));
     }
 }
