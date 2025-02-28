@@ -25,7 +25,7 @@ public class Payment {
     private BigDecimal amount;
 
     @Column(name = "extra_amount",precision = 10, scale = 2)
-    private BigDecimal extraAmount = BigDecimal.ZERO;  // Additional charges
+        private BigDecimal extraAmount = BigDecimal.ZERO;  // Additional charges
 
     @Column(precision = 5, scale = 2)
     private BigDecimal tax = BigDecimal.ZERO;
@@ -42,6 +42,9 @@ public class Payment {
     @Enumerated(EnumType.STRING)
     @Column(name = "payment_status",nullable = false)
     private Status paymentStatus = Status.PENDING;
+
+    @Column(name = "kilometers", nullable = false, precision = 10, scale = 2)
+    private BigDecimal kilometers;  // New column for tracking traveled kilometers
 
     public enum Status {
         PENDING, PAID, FAILED

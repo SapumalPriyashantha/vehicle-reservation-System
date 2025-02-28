@@ -1,3 +1,5 @@
+com\cabbooking\repository\PaymentRepository.class
+com\cabbooking\service\PaymentService.class
 com\cabbooking\dto\UserRegistrationDTO.class
 com\cabbooking\service\CustomerService.class
 com\cabbooking\dto\DriverRegistrationDTO.class
@@ -12,6 +14,7 @@ com\cabbooking\model\Feedback.class
 com\cabbooking\model\Payment$Status.class
 com\cabbooking\config\RestApplication.class
 com\cabbooking\dto\LoginDTO.class
+com\cabbooking\controller\PaymentController.class
 com\cabbooking\service\BookingService.class
 com\cabbooking\controller\CarController.class
 com\cabbooking\model\User$Status.class
@@ -23,6 +26,7 @@ com\cabbooking\model\User.class
 com\cabbooking\dto\DriverDTO.class
 com\cabbooking\model\Payment.class
 com\cabbooking\controller\CustomerController.class
+com\cabbooking\dto\PaymentRequestDTO.class
 com\cabbooking\model\Booking.class
 com\cabbooking\controller\DriverController.class
 com\cabbooking\repository\DriverRepository.class

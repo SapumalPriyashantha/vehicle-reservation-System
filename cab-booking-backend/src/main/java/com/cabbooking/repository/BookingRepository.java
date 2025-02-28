@@ -1,9 +1,13 @@
 package com.cabbooking.repository;
 
 import com.cabbooking.model.Booking;
+import com.cabbooking.model.User;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
+
+import java.awt.print.Book;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -31,5 +35,16 @@ public class BookingRepository {
                 .getSingleResult();
 
         return count.intValue() > 0;
+    }
+
+    public Booking findBookingById(Long bookingId) {
+        try {
+            String sql = "SELECT * FROM bookings WHERE booking_id = ?";
+            return (Booking) em.createNativeQuery(sql, Booking.class)
+                    .setParameter(1, bookingId)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 }
