@@ -1,15 +1,12 @@
 package com.cabbooking.repository;
 
 import com.cabbooking.model.Booking;
-import com.cabbooking.model.User;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 
-import java.awt.print.Book;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Stateless
 public class BookingRepository {
