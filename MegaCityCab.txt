@@ -56,6 +56,7 @@ CREATE TABLE Payments (
     total_amount DECIMAL(10,2) GENERATED ALWAYS AS (amount + extra_amount + tax - discount) STORED,
     payment_date DATETIME DEFAULT CURRENT_TIMESTAMP,
     payment_status ENUM('PENDING', 'PAID', 'FAILED') DEFAULT 'PENDING',
+    kilometers DECIMAL(10,2) NOT NULL,
     FOREIGN KEY (booking_id) REFERENCES Bookings(booking_id) ON DELETE CASCADE
 );
 
