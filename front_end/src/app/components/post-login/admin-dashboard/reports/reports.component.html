@@ -1,0 +1,76 @@
+<div class="report-page-container">
+    <h2>Reports</h2>
+    <div class="report-controls">
+        <div class="report-buttons">
+            <button mat-raised-button color="primary" (click)="downloadCustomerReport()">Download Customer Report</button>
+            <button mat-raised-button color="primary" (click)="downloadDriverReport()">Download Driver Report</button>
+        </div>
+        <form [formGroup]="form" (ngSubmit)="submit()" class="date-range-form">
+            <mat-form-field appearance="outline" class="date-field">
+                <mat-label>From</mat-label>
+                <input matInput [matDatepicker]="fromDatePicker" placeholder="Choose date" formControlName="fromDate">
+                <mat-datepicker-toggle matSuffix [for]="fromDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #fromDatePicker></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="date-field">
+                <mat-label>To</mat-label>
+                <input matInput [matDatepicker]="toDatePicker" placeholder="Choose date" formControlName="toDate">
+                <mat-datepicker-toggle matSuffix [for]="toDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #toDatePicker></mat-datepicker>
+            </mat-form-field>
+            <button mat-raised-button color="primary" [disabled]="form.invalid" type="submit">Search</button>
+        </form>
+    </div>
+   
+    <div class="report-table-container">
+        <table mat-table [dataSource]="paymentData" class="mat-elevation-z8 report-table">
+            <!-- Columns definitions -->
+            <ng-container matColumnDef="date">
+                <th mat-header-cell *matHeaderCellDef> Date </th>
+                <td mat-cell *matCellDef="let data"> {{ data.date | date:'shortDate' }} </td>
+            </ng-container>
+           
+            <ng-container matColumnDef="driverName">
+                <th mat-header-cell *matHeaderCellDef> Driver Name </th>
+                <td mat-cell *matCellDef="let data"> {{ data.driverName }} </td>
+            </ng-container>
+           
+            <ng-container matColumnDef="paymentStatus">
+                <th mat-header-cell *matHeaderCellDef> Payment Status </th>
+                <td mat-cell *matCellDef="let data">
+                    <span class="status-badge" [ngClass]="{'pending': data.paymentStatus === 'Pending', 'completed': data.paymentStatus === 'Completed', 'failed': data.paymentStatus === 'Failed'}">
+                        {{ data.paymentStatus }}
+                    </span>
+                </td>
+            </ng-container>
+           
+            <ng-container matColumnDef="paymentTime">
+                <th mat-header-cell *matHeaderCellDef> Payment Time </th>
+                <td mat-cell *matCellDef="let data"> {{ data.paymentTime | date:'shortTime' }} </td>
+            </ng-container>
+           
+            <ng-container matColumnDef="amount">
+                <th mat-header-cell *matHeaderCellDef> Amount </th>
+                <td mat-cell *matCellDef="let data"> LKR {{ data.amount | number: '1.2-2' }} </td>
+            </ng-container>
+           
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef> Actions </th>
+                <td mat-cell *matCellDef="let data">
+                    <button mat-icon-button color="primary" (click)="downloadPaymentReport(data)">
+                        <mat-icon>download</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+           
+            <!-- Row definitions -->
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+    </div>
+</div>
+
+
+
+
+

@@ -1,0 +1,66 @@
+<div class="trip-history-container">
+    <h2>Trip History</h2>
+
+    <div *ngIf="!trips.length" class="no-trips-message">
+        <mat-icon>info</mat-icon>
+        <p>No current trip available.</p>
+    </div>
+
+    <div *ngFor="let trip of trips" class="trip-card">
+        <mat-card>
+            <div class="user-badge" [ngClass]="trip.userDto.userStatus===UserRoles.GUEST ? 'guest' : 'registered'">
+                {{ trip.userDto.userStatus===UserRoles.GUEST ? 'Guest User' : 'Registered User' }}
+            </div>
+            <mat-card-header>
+                <mat-card-title>{{ trip.userDto.name }}</mat-card-title>
+                <mat-card-subtitle>Phone: {{ trip.userDto.mobileNumber }}</mat-card-subtitle>
+                <mat-card-subtitle>Date: {{ trip.reveredTime| date:'YYYY MMM dd' }}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+                <div class="trip-details">
+                    <div class="detail-item">
+                        <mat-icon>location_on</mat-icon>
+                        <div>
+                            <span class="detail-label">From:</span>
+                            <span class="detail-value">{{ getPickUpLocation(trip) | async }}</span>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <mat-icon>location_on</mat-icon>
+                        <div>
+                            <span class="detail-label">To:</span>
+                            <span class="detail-value">{{ getDropOffLocation(trip) | async}}</span>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <mat-icon>attach_money</mat-icon>
+                        <div>
+                            <span class="detail-label">Payment:</span>
+                            <span class="detail-value">LKR {{ trip.paymentAmount | money }}</span>
+                        </div>
+                    </div>
+
+                    <div *ngIf="trip.ratingDto" class="review-section">
+                        <div class="rating">
+                            <mat-icon *ngFor="let star of getStars(trip.ratingDto.score)"
+                                      [ngClass]="star === 'filled' ? 'star-filled' : 'star-outline'">
+                                {{ star === 'filled' ? 'star' : 'star_border' }}
+                            </mat-icon>
+                            <span>({{ trip.ratingDto.score }})</span>
+                        </div>
+                        <div class="feedback">
+                            <mat-icon>rate_review</mat-icon>
+                            <span>Review: "{{ trip.ratingDto.review }}"</span>
+                        </div>
+                    </div>
+                </div>
+            </mat-card-content>
+            <mat-card-actions>
+                <button mat-fab extended (click)="getGoogleMapsUrl(trip)">
+                    <mat-icon>directions</mat-icon>
+                    Direction
+                </button>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+</div>

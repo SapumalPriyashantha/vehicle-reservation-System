@@ -1,0 +1,27 @@
+
+<header>
+    <div class="header-content">
+        <div class="logo">City Taxi Reservation</div>
+        <div class="header-icons">
+            <button class="notification-button">
+                <i class="fas fa-bell"></i>
+            </button>
+            <button (click)="logout()" class="logout-button">
+                <i class="fas fa-sign-out-alt"></i>
+            </button>
+        </div>
+    </div>
+</header>
+
+<div class="dashboard-container">
+    <!-- Navigation Bar -->
+    <nav class="dashboard-nav">
+        <button mat-button routerLink="status-toggle" routerLinkActive="active-nav-item">Dashboard</button>
+        <button mat-button routerLink="current-trip" routerLinkActive="active-nav-item">Current Trip</button>
+        <button mat-button routerLink="trip-history" routerLinkActive="active-nav-item">Trip History</button>
+        <button mat-button class="logout-button" routerLink="settings" routerLinkActive="active-nav-item">Settings</button>
+    </nav>
+
+    <router-outlet></router-outlet>
+
+</div>

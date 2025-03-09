@@ -1,0 +1,66 @@
+<div class="customer-settings-container">
+    <h2>Account Settings</h2>
+
+    <div class="profile-picture-container">
+        <img src="assets/images/empty-user.jpg" alt="User Profile Picture" class="profile-picture">
+    </div>
+    <div class="settings-columns">
+        <div class="user-details-column">
+            <h3>Account Details</h3>
+            <form [formGroup]="settingsForm">
+                <mat-form-field>
+                    <mat-label>Name</mat-label>
+                    <input matInput formControlName="name" placeholder="Enter your name" [readonly]="!isEditing">
+                </mat-form-field>
+
+                <mat-form-field>
+                    <mat-label>Email</mat-label>
+                    <input matInput formControlName="email" placeholder="Enter your email" [readonly]="!isEditing">
+                </mat-form-field>
+
+                <mat-form-field>
+                    <mat-label>Phone</mat-label>
+                    <input matInput formControlName="mobileNumber" placeholder="Enter your phone number"
+                        [readonly]="!isEditing">
+                </mat-form-field>
+
+                <div class="action-buttons">
+                    <button mat-raised-button color="primary" *ngIf="!isEditing" (click)="onEditClick()">Edit</button>
+                    <button mat-raised-button color="primary" *ngIf="isEditing" (click)="onSaveClick()">Save</button>
+                    <button mat-raised-button color="warn" *ngIf="isEditing" (click)="isEditing=false">Cancel</button>
+                </div>
+            </form>
+        </div>
+
+
+        <div class="password-change-column">
+            <h3>Change Password</h3>
+            <form [formGroup]="passwordForm">
+                <mat-form-field>
+                    <mat-label>Current Password</mat-label>
+                    <input matInput type="password" formControlName="currentPassword"
+                        placeholder="Enter current password">
+                </mat-form-field>
+
+
+                <mat-form-field>
+                    <mat-label>New Password</mat-label>
+                    <input matInput type="password" formControlName="newPassword" placeholder="Enter new password">
+                </mat-form-field>
+
+                <mat-form-field>
+                    <mat-label>Confirm New Password</mat-label>
+                    <input matInput type="password" formControlName="confirmPassword"
+                        placeholder="Confirm new password">
+                </mat-form-field>
+
+                <div class="action-buttons">
+                    <button mat-raised-button color="primary"  [disabled]="passwordForm.invalid" (click)="onChangePasswordClick()">Change Password</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+

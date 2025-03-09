@@ -1,0 +1,137 @@
+.trip-history-container {
+    width: 100%;
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+    background-color: #f7faff;
+    color: #333;
+}
+
+h2 {
+    text-align: center;
+    color: #007bff;
+    margin-bottom: 20px;
+}
+
+.no-trips-message {
+    text-align: center;
+    font-size: 1.2em;
+    color: #666;
+}
+
+.trip-card {
+    margin-bottom: 20px;
+}
+
+mat-card {
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.trip-details {
+    padding: 10px;
+}
+
+.detail-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+mat-icon {
+    margin-right: 10px;
+    color: #007bff;
+}
+
+.detail-label {
+    font-weight: bold;
+}
+
+.review-section {
+    padding: 10px 0;
+    border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 15px;
+}
+
+.rating {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px; /* Space between rating and feedback */
+}
+
+.rating mat-icon {
+    font-size: 24px;
+    color: #ffd700; /* Gold color for stars */
+}
+
+.star-filled {
+    color: #ffd700; /* Filled star color */
+}
+
+.star-outline {
+    color: #ccc; /* Outline star color */
+}
+
+.feedback {
+    display: flex;
+    align-items: center;
+    color: #555;
+}
+
+.feedback mat-icon {
+    margin-right: 5px;
+    color: #007bff; /* Blue color for the review icon */
+}
+
+span {
+    font-size: 16px;
+    color: #333;
+}
+
+.review-section .feedback span {
+    font-style: italic;
+    color: #555;
+}
+
+mat-card-actions {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+
+    button {
+        background-color: white;
+        color: #007bff;
+    }
+}
+
+button {
+    width: 100%;
+}
+
+.user-badge {
+    position: relative;
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: #fff;
+    font-weight: bold;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.user-badge.guest {
+    background-color: #ff9800; /* Orange for guest users */
+}
+
+.user-badge.registered {
+    background-color: #4caf50; /* Green for registered users */
+}
+
+@media (max-width: 600px) {
+    .trip-history-container {
+        padding: 10px;
+    }
+
+    mat-card-actions {
+        flex-direction: column;
+    }
+}

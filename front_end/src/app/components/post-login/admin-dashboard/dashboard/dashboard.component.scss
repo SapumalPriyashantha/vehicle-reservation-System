@@ -1,0 +1,192 @@
+.admin-dashboard-container {
+  padding: 20px;
+  background-color: #f7faff;
+}
+
+.dashboard-cards {
+  display: flex;
+  justify-content: space-around;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.dashboard-card {
+  flex: 1;
+  min-width: 250px;
+  text-align: center;
+  background-color: #fff;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-card h1 {
+  font-size: 48px;
+  margin: 20px 0;
+}
+
+.reserve-taxi-section {
+  margin: 20px 0;
+  text-align: center;
+
+  button {
+    background-color: #fff;
+    color: #007bff;
+    font-weight: bold;
+  }
+}
+
+.reservation-modal-content {
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+  height: 85vh;
+
+  .modal-title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+}
+
+.reservation-form mat-form-field {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.map-container {
+  height: 300px;
+  width: 100%;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #ccc;
+}
+
+.search-drivers-button {
+  display: block;
+  width: 100%;
+  margin-top: 20px;
+}
+
+/* Modal Content */
+.driver-modal-content {
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: #fff;
+  border-radius: 8px;
+}
+
+/* Modal Title */
+.modal-title {
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+/* Driver List Container */
+.driver-list {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.driver-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #f7faff;
+  margin-bottom: 10px;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+  gap: 10px;
+  flex-direction: column;
+  width: 300px;
+}
+
+.driver-image {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #007bff;
+}
+
+.driver-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.driver-name {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.driver-mobile {
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.driver-item button {
+  align-self: flex-start;
+}
+
+
+.latest-activity-section,
+.recent-payments-section {
+  margin-top: 40px;
+}
+
+.latest-activity-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.latest-activity-section li {
+  margin-bottom: 10px;
+  background: #e9f5ff;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+table {
+  width: 100%;
+  margin-top: 20px;
+  background-color: #fff;
+}
+
+th,
+td {
+  padding: 10px;
+  text-align: left;
+}
+
+.mat-header-cell {
+  background-color: #007bff;
+  color: white;
+}
+
+.mat-elevation-z8 {
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.badge-start {
+  background-color: #ffc107;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 12px;
+  font-weight: bold;
+}
+
+.badge-end {
+  background-color: #28a745;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 12px;
+  font-weight: bold;
+}

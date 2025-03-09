@@ -1,0 +1,86 @@
+<div class="driver-settings-container">
+    <h2>Account Settings</h2>
+
+    <div class="profile-section">
+        <div class="profile-picture-container">
+            <img [src]="imageURL" alt="User Profile Picture" class="profile-picture">
+            <input type="file" id="profilePictureInput" (change)="onProfilePictureChange($event)"
+                class="profile-picture-upload" />
+            <label *ngIf="isEditing" for="profilePictureInput" class="profile-picture-edit">
+                <mat-icon>edit</mat-icon>
+            </label>
+        </div>
+        <div class="status-toggle">
+            <mat-slide-toggle [(ngModel)]="isAvailable" (change)="onStatusChange($event)">
+                {{ isAvailable ? 'Available' : 'Busy' }}
+            </mat-slide-toggle>
+        </div>
+    </div>
+
+    <!-- Two Column Layout -->
+    <div class="settings-columns">
+        <!-- Left Column: User Details -->
+        <div class="user-details-column">
+            <h3>Account Details</h3>
+            <!-- User Details -->
+            <form [formGroup]="settingsForm">
+                <mat-form-field>
+                    <mat-label>Name</mat-label>
+                    <input matInput formControlName="name" placeholder="Enter your name" [readonly]="!isEditing">
+                </mat-form-field>
+
+                <mat-form-field>
+                    <mat-label>Email</mat-label>
+                    <input matInput formControlName="email" placeholder="Enter your email" [readonly]="!isEditing">
+                </mat-form-field>
+
+                <mat-form-field>
+                    <mat-label>Phone</mat-label>
+                    <input matInput formControlName="phone" placeholder="Enter your phone number"
+                        [readonly]="!isEditing">
+                </mat-form-field>
+
+                <mat-form-field>
+                    <mat-label>License Number</mat-label>
+                    <input matInput formControlName="licenseNumber" placeholder="Enter your License number"
+                        [readonly]="!isEditing">
+                </mat-form-field>
+
+                <!-- Edit and Save Buttons -->
+                <div class="action-buttons">
+                    <button mat-raised-button color="primary" *ngIf="!isEditing" (click)="onEditClick()">Edit</button>
+                    <button mat-raised-button color="primary" *ngIf="isEditing" (click)="onSaveClick()">Save</button>
+                    <button mat-raised-button color="warn" *ngIf="isEditing" (click)="onCancelClick()">Cancel</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Right Column: Password Change -->
+        <div class="password-change-column">
+            <h3>Change Password</h3>
+            <form [formGroup]="passwordForm">
+                <mat-form-field>
+                    <mat-label>Current Password</mat-label>
+                    <input matInput type="password" formControlName="currentPassword"
+                        placeholder="Enter current password">
+                </mat-form-field>
+
+                <mat-form-field>
+                    <mat-label>New Password</mat-label>
+                    <input matInput type="password" formControlName="newPassword" placeholder="Enter new password">
+                </mat-form-field>
+
+                <mat-form-field>
+                    <mat-label>Confirm New Password</mat-label>
+                    <input matInput type="password" formControlName="confirmPassword"
+                        placeholder="Confirm new password">
+                </mat-form-field>
+
+                <!-- Change Password Button -->
+                <div class="action-buttons">
+                    <button mat-raised-button color="primary" [disabled]="passwordForm.invalid" (click)="onChangePasswordClick()">Change Password</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

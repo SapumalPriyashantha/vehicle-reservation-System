@@ -1,0 +1,91 @@
+header {
+  background-color: #007bff;
+  color: white;
+  padding: 2px 20px;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Logo styling */
+.logo {
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+.header-icons {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Reduced gap between notification and logout icons */
+
+  button {
+    background-color: transparent;
+    color: white;
+    border: none;
+    padding: 8px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+}
+
+
+.notification-button i {
+  font-size: 1.2rem;
+}
+
+.notification-button:hover {
+  color: #ccc;
+}
+
+.logout-button i {
+  font-size: 1.2rem;
+}
+
+.logout-button:hover {
+  color: #ccc;
+}
+
+button:active {
+  color: #888;
+
+}
+
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+
+  .dashboard-nav {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    background-color: #f5f5f5;
+    padding: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    align-items: center; // Center items vertically
+
+    .logout-button {
+      margin-left: auto; // Push this button to the far right
+    }
+  }
+}
+
+button.active-nav-item {
+  background-color: #e9f1ff; /* Highlight color for the selected nav item */
+  font-weight: bold;
+
+}
+
+button.logout-button {
+  color: red;
+}
+
+.active-nav-item {
+  background-color: #e9f1ff;
+}

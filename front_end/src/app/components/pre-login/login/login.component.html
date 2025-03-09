@@ -1,0 +1,35 @@
+<header>
+  <div class="header-content">
+    <div class="logo">City Taxi Reservation</div>
+  </div>
+</header>
+<div class="login-container">
+    <!-- Back button at the top-left -->
+    <button mat-button color="warn" routerLink="/" class="back-button">
+      <mat-icon>arrow_back</mat-icon>
+      Back
+    </button>
+  
+    <h2>Login</h2>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="outline">
+        <mat-label>Username</mat-label>
+        <input matInput placeholder="Username" formControlName="username" required>
+      </mat-form-field>
+      
+      <mat-form-field appearance="outline">
+        <mat-label>Password</mat-label>
+        <input matInput placeholder="Password" type="password" formControlName="password" required>
+      </mat-form-field>
+  
+      <mat-radio-group formControlName="role">
+        <mat-radio-button value="User">User</mat-radio-button>
+        <mat-radio-button value="driver">Driver</mat-radio-button>
+      </mat-radio-group>
+  
+      <button mat-raised-button color="primary" type="submit">Login</button>
+    </form>
+  
+    <p>Don't have an account? <a routerLink="/pre-login/signup">Sign up here</a></p>
+  </div>
+  

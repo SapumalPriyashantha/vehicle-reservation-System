@@ -1,0 +1,147 @@
+.user-management-container {
+  padding: 20px;
+  background-color: #f7faff;
+}
+
+
+.search-container {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  background-color: white;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+
+
+}
+
+
+.search-form-field {
+  flex: 1;
+  max-width: 600px;
+}
+
+
+.search-button {
+  min-width: 120px;
+}
+
+
+.user-table {
+  width: 100%;
+  margin-top: 20px;
+  background-color: #fff;
+}
+
+
+th,
+td {
+  padding: 15px;
+  text-align: left;
+}
+
+
+.mat-header-cell {
+  background-color: #007bff;
+  color: white;
+}
+
+
+.actions {
+  text-align: center;
+}
+
+
+button.mat-icon-button {
+  margin: 0 5px;
+}
+
+.mat-elevation-z8 {
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.user-details-modal-content {
+  padding: 25px;
+  max-width: 700px;
+  margin: 0 auto;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  height: 80vh;
+}
+
+
+.trip-list {
+  margin-top: 25px;
+}
+
+.trip-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px;
+  background-color: #f8faff;
+  margin-bottom: 15px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+.trip-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.12);
+}
+
+
+.trip-info,
+.driver-info,
+.trip-review {
+  flex: 1;
+  padding: 12px;
+  font-size: 15px;
+  color: #444;
+}
+
+
+.trip-info strong,
+.driver-info strong,
+.trip-review strong {
+  color: #0066cc;
+}
+
+
+.modal-title {
+  text-align: center;
+  font-size: 26px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 25px;
+  letter-spacing: 1.5px;
+}
+
+
+@media (max-width: 768px) {
+  .user-details-modal-content {
+    max-width: 90%;
+  }
+
+
+  .trip-item {
+    flex-direction: column;
+  }
+
+
+  .trip-info,
+  .driver-info,
+  .trip-review {
+    padding: 10px 0;
+  }
+}
+
+
+.mat-mdc-form-field-bottom-align::before {
+  display: none;
+}

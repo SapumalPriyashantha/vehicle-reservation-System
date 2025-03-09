@@ -1,0 +1,184 @@
+<header>
+  <div class="header-content">
+    <div class="logo">City Taxi Reservation</div>
+    <nav class="nav-menu">
+      <a href="#about">About Us</a>
+      <a href="#drivers">Our Drivers</a>
+      <a href="#security">Security</a>
+      <a href="#promo">Promotions</a>
+      <a href="#contact">Contact Us</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-image-container">
+    <img src="assets/images/landing-image.jpg" alt="City Taxi Hero Image" class="hero-image">
+    <div class="overlay"></div>
+  </div>
+  <div class="hero-content">
+    <h1>Welcome to City Taxi</h1>
+    <p>Experience easy, affordable, and reliable taxi services right at your fingertips.</p>
+    <div class="cta-buttons">
+      <button routerLink="/pre-login/login">Login</button>
+      <button routerLink="/pre-login/signup">Sign Up</button>
+    </div>
+  </div>
+</section>
+
+<section id="about" class="about">
+  <div class="about-content">
+    <div class="about-text">
+      <h2>About City Taxi</h2>
+      <p>
+        City Taxi is your go-to solution for fast, reliable, and budget-friendly taxi services. Whether you need a quick
+        ride to work, a pickup from the airport, or transportation for a night out, we've got you covered. Our service
+        is tailored to meet the needs of low to mid-income passengers, offering convenient online booking, transparent
+        pricing, and excellent customer service. Enjoy a hassle-free experience as we take you to your destination
+        safely and on time.
+      </p>
+      <div class="about-stats">
+        <div class="stat">
+          <h3>10,000+</h3>
+          <p>Happy Customers</p>
+        </div>
+        <div class="stat">
+          <h3>200+</h3>
+          <p>Experienced Drivers</p>
+        </div>
+        <div class="stat">
+          <h3>24/7</h3>
+          <p>Available Service</p>
+        </div>
+      </div>
+    </div>
+    <div class="about-image">
+      <img src="assets/images/side-img.jpg" alt="City Taxi Service">
+    </div>
+  </div>
+</section>
+
+<section id="drivers" class="drivers">
+  <h2>Our Drivers</h2>
+  <p>
+    We have a reliable team of experienced drivers ready to get you where you need to go. Meet some of our top-rated
+    drivers below:
+  </p>
+
+  <div class="driver-grid">
+    <div class="driver-card" *ngFor="let driver of drivers">
+      <img [src]="driver.image" alt="{{ driver.name }}" class="driver-image">
+      <h3>{{ driver.name }}</h3>
+      <div class="driver-rating">
+        <p>Rating: {{ driver.rating }} / 5</p>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="security" class="safety-security">
+  <h2>Your Safety is Our Priority</h2>
+  <div class="safety-features">
+    <div class="feature">
+      <img src="assets/images/correct-img.webp" alt="Driver Background Checks">
+      <h3>Thorough Driver Background Checks</h3>
+      <p>All drivers undergo rigorous background checks, ensuring a safe and secure journey for every passenger.</p>
+    </div>
+    <div class="feature">
+      <img src="assets/images/shield-img.png" alt="Vehicle Safety">
+      <h3>Regular Vehicle Safety Inspections</h3>
+      <p>Our vehicles are regularly inspected to meet top safety standards, giving you peace of mind on every ride.</p>
+    </div>
+    <div class="feature">
+      <img src="assets/images/payment-img.png" alt="Contactless Payments">
+      <h3>Contactless Payment Options</h3>
+      <p>Experience hassle-free, secure payments with multiple contactless options available to keep you safe.</p>
+    </div>
+  </div>
+</section>
+
+<section id="promo" class="promo-banner">
+  <div class="promo-content">
+    <h2>Special Offer!</h2>
+    <p>Get <strong>20%</strong> off your first ride</p>
+    <button routerLink="/pre-login/signup">Sign Up Now</button>
+  </div>
+</section>
+
+<!-- New Driver Recruitment Section -->
+<section id="join-driver" class="join-driver">
+  <div class="join-driver-content">
+    <h2>Become a Driver with City Taxi</h2>
+    <p>
+      Are you a skilled driver looking to join a dynamic team? City Taxi is expanding, and we're seeking dedicated
+      drivers to provide top-notch service to our customers. Join us and enjoy flexible hours, competitive earnings, and
+      a supportive community.
+    </p>
+    <button mat-raised-button color="primary" >Join Our Team</button>
+  </div>
+</section>
+
+<!-- New Phone Reservation Section -->
+<section id="phone-reservation" class="phone-reservation">
+  <div class="phone-reservation-content">
+    <h2>No Account Needed! Reserve Over the Phone</h2>
+    <p>
+      Prefer to book a taxi without signing up? No problem! You can easily reserve a ride by giving us a call. Our team
+      is ready to assist you 24/7.
+    </p>
+    <h3>Call Us Anytime: <a href="tel:+1234567890">+123 456 7890</a></h3>
+  </div>
+</section>
+
+
+<section id="contact" class="contact-us">
+  <div class="contact-info">
+    <h2>Contact Us</h2>
+    <p>
+      Got questions or need assistance? We're here to help. Whether you want to book a ride, inquire about services, or
+      provide feedback, feel free to get in touch.
+    </p>
+    <div class="contact-details">
+      <p><strong>Email:</strong> info&#64;gmail.com</p>
+      <p><strong>Phone:</strong> +123 456 7890</p>
+      <p><strong>Operating Hours:</strong> 24/7 Support</p>
+    </div>
+    <div class="social-media">
+      <h3>Follow Us</h3>
+      <a href="https://facebook.com/CityTaxi" target="_blank" class="social-icon facebook">
+        <i class="fab fa-facebook-f"></i>
+      </a>
+      <a href="https://twitter.com/CityTaxi" target="_blank" class="social-icon twitter">
+        <i class="fab fa-twitter"></i>
+      </a>
+      <a href="https://instagram.com/CityTaxi" target="_blank" class="social-icon instagram">
+        <i class="fab fa-instagram"></i>
+      </a>
+    </div>
+    <div class="contact-form">
+      <h3>Send Us a Message</h3>
+      <form>
+        <mat-form-field appearance="outline">
+          <mat-label>Name</mat-label>
+          <input matInput placeholder="Your Name" required>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput placeholder="Your Email" type="email" required>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Message</mat-label>
+          <textarea matInput placeholder="Your Message" rows="4" required></textarea>
+        </mat-form-field>
+        <button mat-raised-button color="primary" type="submit">Send Message</button>
+      </form>
+    </div>
+    <div class="map">
+      <h3>Our Location</h3>
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15822.454081691576!2d79.957413!3d6.927079!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae25a148af0b7ff%3A0x4c31c8b4b6e8c0e8!2sColombo%2C%20Sri%20Lanka!5e0!3m2!1sen!2sus!4v1676357487240!5m2!1sen!2sus"
+        allowfullscreen="" loading="lazy"></iframe>
+    </div>
+  </div>
+</section>

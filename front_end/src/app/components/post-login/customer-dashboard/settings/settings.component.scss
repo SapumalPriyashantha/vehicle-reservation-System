@@ -1,0 +1,72 @@
+.customer-settings-container {
+    width: 100%;
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+    background-color: #f7faff;
+    color: #333;
+  }
+  
+  h2 {
+    color: #007bff; /* Blue headings */
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .settings-columns {
+    display: flex;
+    gap: 20px;
+    /* Space between the two columns */
+    flex-wrap: wrap; /* Allows wrapping on smaller screens */
+  }
+  
+  .user-details-column, .password-change-column {
+    flex: 1;
+    min-width: 300px;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+  }
+  
+  .profile-picture-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .profile-picture {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  mat-form-field {
+    width: 100%;
+    margin-bottom: 16px;
+  }
+  
+  .action-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  button {
+    min-width: 100px;
+    margin: 5px;
+  }
+  
+  @media (max-width: 768px) {
+    .settings-columns {
+      flex-direction: column;
+    }
+  
+    button {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+  }
+  

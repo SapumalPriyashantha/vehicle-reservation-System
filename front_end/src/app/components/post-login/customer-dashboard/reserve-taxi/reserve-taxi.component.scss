@@ -1,0 +1,82 @@
+.reserve-taxi-container {
+  width: 100%;
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+  background-color: #f7faff;
+  color: #333;
+}
+
+h2 {
+  text-align: center;
+  color: #007bff;
+}
+
+.form-fields-container {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+google-map {
+  margin-top: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+mat-form-field {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.buttons-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+button {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+}
+
+button:last-child {
+  margin-right: 0;
+}
+
+mat-icon {
+  margin-right: 8px;
+}
+
+@media (max-width: 600px) {
+  .reserve-taxi-container {
+    padding: 10px;
+  }
+
+  button {
+    margin-top: 10px;
+    width: auto;
+    margin-right: 0;
+  }
+
+  .buttons-container {
+    flex-direction: column;
+  }
+
+  .buttons-container button {
+    margin-bottom: 10px;
+  }
+
+  .buttons-container button:last-child {
+    margin-bottom: 0;
+  }
+}
+
+mat-checkbox {
+  margin-bottom: 16px;
+  display: block;
+}

@@ -1,0 +1,50 @@
+<div class="booking-overview">
+    <h2>Ongoing Trips</h2>
+ 
+    <table mat-table [dataSource]="ongoingTrips" class="mat-elevation-z8 trip-table">
+     
+      <!-- Driver Name Column -->
+      <ng-container matColumnDef="driverName">
+        <th mat-header-cell *matHeaderCellDef> Driver Name </th>
+        <td mat-cell *matCellDef="let trip"> {{ trip.driverDto.name }} </td>
+      </ng-container>
+ 
+      <!-- Driver Mobile Column -->
+      <ng-container matColumnDef="driverMobile">
+        <th mat-header-cell *matHeaderCellDef> Driver Mobile </th>
+        <td mat-cell *matCellDef="let trip"> {{ trip.driverDto.mobileNumber }} </td>
+      </ng-container>
+ 
+      <!-- Client Name Column -->
+      <ng-container matColumnDef="clientName">
+        <th mat-header-cell *matHeaderCellDef> Client Name </th>
+        <td mat-cell *matCellDef="let trip"> {{ trip.userDto.name }} </td>
+      </ng-container>
+ 
+      <!-- Pickup Location Column -->
+      <ng-container matColumnDef="pickupLocation">
+        <th mat-header-cell *matHeaderCellDef> Pickup Location </th>
+        <td mat-cell *matCellDef="let trip"> {{ getPickUpLocation(trip) | async }} </td>
+      </ng-container>
+ 
+      <!-- Dropoff Location Column -->
+      <ng-container matColumnDef="dropoffLocation">
+        <th mat-header-cell *matHeaderCellDef> Drop-off Location </th>
+        <td mat-cell *matCellDef="let trip"> {{ getDropOffLocation(trip) | async }} </td>
+      </ng-container>
+ 
+      <!-- Payment Column -->
+      <ng-container matColumnDef="payment">
+        <th mat-header-cell *matHeaderCellDef> Payment </th>
+        <td mat-cell *matCellDef="let trip"> LKR {{ trip.paymentAmount | money }} </td>
+      </ng-container>
+ 
+      <!-- Row Definitions -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
+ 
+
+
+

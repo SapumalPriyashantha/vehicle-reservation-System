@@ -1,0 +1,56 @@
+<div class="reserve-taxi-container">
+  <h2>Reserve a Taxi</h2>
+
+  <!-- Use Current Location Checkbox -->
+  <mat-checkbox [(ngModel)]="useCurrentLocation" (change)="onCurrentLocationChange()">
+    Use Current Location
+  </mat-checkbox>
+
+  <!-- Form Fields Section with Shadow and Modern UI -->
+  <form [formGroup]="form" class="form-fields-container">
+    <!-- Pickup Location Input -->
+    <mat-form-field>
+      <mat-icon matPrefix>location_on</mat-icon>
+      <mat-label>Pick Up Location</mat-label>
+      <input matInput formControlName="pickUp" [matAutocomplete]="pickupAuto" placeholder="Enter Pickup Location">
+      <mat-autocomplete #pickupAuto="matAutocomplete" (optionSelected)="onPickupSelect($event)">
+        <mat-option *ngFor="let result of filteredPickupResults" [id]="result.place_id" [value]="result.display_name">
+          {{ result.display_name }}
+        </mat-option>
+      </mat-autocomplete>
+      <mat-slide-toggle formControlName="pickupToggle" (change)="onToggleChange('pickup')">Mark on Map</mat-slide-toggle>
+    </mat-form-field>
+
+    <!-- Dropoff Location Input -->
+    <mat-form-field>
+      <mat-icon matPrefix>location_on</mat-icon>
+      <mat-label>Drop Off Location</mat-label>
+      <input matInput formControlName="dropOff" [matAutocomplete]="dropoffAuto" placeholder="Enter Drop-off Location">
+      <mat-autocomplete #dropoffAuto="matAutocomplete" (optionSelected)="onDropoffSelect($event)">
+        <mat-option *ngFor="let result of filteredDropoffResults" [id]="result.place_id" [value]="result.display_name">
+          {{ result.display_name }}
+        </mat-option>
+      </mat-autocomplete>
+      <mat-slide-toggle formControlName="dropoffToggle"  (change)="onToggleChange('dropoff')">Mark on Map</mat-slide-toggle>
+    </mat-form-field>
+  </form>
+
+  <!-- Buttons Container -->
+  <div class="buttons-container">
+    <button [disabled]="form.invalid" mat-raised-button color="primary" (click)="toRoute()">
+      <mat-icon>directions</mat-icon>
+      Get Directions
+    </button>
+
+    <button [disabled]="form.invalid" mat-raised-button color="primary" (click)="searchDrivers()">
+      <mat-icon>search</mat-icon>
+      Search for Drivers
+    </button>
+  </div>
+
+  <!-- Google Map -->
+  <google-map [center]="center" [zoom]="zoom" height="400px" width="100%" (mapClick)="onMapClick($event)">
+    <map-marker *ngFor="let marker of markers" [position]="marker.position" [label]="marker.label"></map-marker>
+    <map-polyline *ngIf="routePath" [path]="routePath" strokeColor="#007bff"></map-polyline>
+  </google-map>
+</div>

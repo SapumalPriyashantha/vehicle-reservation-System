@@ -1,0 +1,54 @@
+<div class="available-drivers-container">
+    <!-- Trip Summary -->
+    <div *ngIf="isSummary" class="trip-summary">
+        <h2>Trip Summary</h2>
+        <div class="trip-info">
+            <div class="trip-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <div class="trip-details">
+                    <span class="label">Pickup Location:</span>
+                    <span class="value">{{ pickupLocation }}</span>
+                </div>
+            </div>
+            <div class="trip-item">
+                <i class="fas fa-arrow-right"></i>
+                <div class="trip-details">
+                    <span class="label">Drop-off Location:</span>
+                    <span class="value">{{ dropoffLocation }}</span>
+                </div>
+            </div>
+            <div class="trip-item">
+                <i class="fas fa-tag"></i>
+                <div class="trip-details">
+                    <span class="label">Total Amount:</span>
+                    <span class="value">LKR {{ tripAmount }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="!isSummary" class="trip-summary">
+        <h2>Available Drivers</h2>
+
+    </div>
+
+    <!-- Drivers List -->
+    <div class="drivers-grid">
+        <div *ngFor="let driver of drivers" class="driver-card">
+            <mat-card class="driver-card-content">
+                <img mat-card-image [src]="driver.profileImage" alt="{{ driver.name }}">
+                <mat-card-title>{{ driver.name }}</mat-card-title>
+                <mat-card-subtitle>Rating:
+                    <mat-icon *ngFor="let star of getStars(driver.averageScore)"
+                        [ngClass]="star === 'filled' ? 'star-filled' : 'star-outline'">
+                        {{ star === 'filled' ? 'star' : 'star_border' }}
+                    </mat-icon>({{driver.averageScore}})
+                </mat-card-subtitle>
+                <button *ngIf="isSummary" mat-raised-button color="primary" (click)="reserveDriver(driver)">Reserve</button>
+            </mat-card>
+        </div>
+    </div>
+    <div *ngIf="!drivers?.length" class="no-trips-message">
+        <mat-icon>info</mat-icon>
+        <p>No any drivers are available.</p>
+    </div>
+</div>

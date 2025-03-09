@@ -1,0 +1,97 @@
+.report-page-container {
+    padding: 20px;
+    background-color: #f7faff;
+}
+
+
+.report-controls {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+
+
+}
+
+
+.report-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+
+.report-buttons button {
+    margin-right: 10px;
+}
+
+
+.date-range-form {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+
+.date-field {
+    flex: 1;
+}
+
+
+.report-table-container {
+    margin-top: 20px;
+}
+
+
+.report-table {
+    width: 100%;
+    background-color: #fff;
+}
+
+
+th, td {
+    padding: 12px;
+    text-align: left;
+}
+
+
+.mat-header-cell {
+    background-color: #007bff;
+    color: white;
+}
+
+
+.status-badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 12px;
+    color: #fff;
+    font-weight: bold;
+}
+
+
+.status-badge.pending {
+    background-color: #ff9800;
+}
+
+
+.status-badge.completed {
+    background-color: #4caf50;
+}
+
+
+.status-badge.failed {
+    background-color: #f44336;
+}
+
+
+.mat-elevation-z8 {
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+
+
+
+
