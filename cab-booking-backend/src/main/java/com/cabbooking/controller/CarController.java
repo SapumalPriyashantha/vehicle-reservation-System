@@ -99,4 +99,17 @@ public class CarController {
                     .build();
         }
     }
+
+    @GET
+    @Path("/search/{searchText}")
+    public Response searchCars(@PathParam("searchText") String searchText) {
+        try {
+            ResponseDTO<Object> result = carService.searchCars(searchText);
+            return Response.status(result.getCode()).entity(result).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(new ResponseDTO<>(500, "ERROR", "Unexpected error occurred."))
+                    .build();
+        }
+    }
 }

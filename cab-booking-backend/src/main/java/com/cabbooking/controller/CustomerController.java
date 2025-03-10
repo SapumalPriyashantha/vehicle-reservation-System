@@ -117,6 +117,19 @@ public class CustomerController {
                     .build();
         }
     }
+
+    @GET
+    @Path("/search/{searchText}")
+    public Response searchCustomers(@PathParam("searchText") String searchText) {
+        try {
+            ResponseDTO<Object> result = customerService.searchCustomers(searchText);
+            return Response.status(result.getCode()).entity(result).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(new ResponseDTO<>(500, "ERROR", "Unexpected error occurred."))
+                    .build();
+        }
+    }
 }
 
 

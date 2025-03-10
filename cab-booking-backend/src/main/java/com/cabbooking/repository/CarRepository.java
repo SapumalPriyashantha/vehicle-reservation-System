@@ -4,6 +4,7 @@ import com.cabbooking.model.Car;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
 
 import java.math.BigDecimal;
@@ -126,5 +127,24 @@ public class CarRepository {
         } catch (Exception e) {
             return new ArrayList<>(); // Return an empty list if an error occurs
         }
+    }
+
+    public List<Object[]> searchCars(String searchText) {
+        String sql = """
+            SELECT car_id, car_model, license_plate, mileage, passenger_capacity, car_image, status 
+            FROM cars 
+            WHERE 
+                CAST(car_id AS CHAR) LIKE :searchText
+                OR car_model LIKE :searchText
+                OR license_plate LIKE :searchText
+                OR CAST(mileage AS CHAR) LIKE :searchText
+                OR CAST(passenger_capacity AS CHAR) LIKE :searchText
+                OR status LIKE :searchText
+        """;
+
+        Query query = em.createNativeQuery(sql);
+        query.setParameter("searchText", "%" + searchText + "%");
+
+        return query.getResultList();
     }
 }

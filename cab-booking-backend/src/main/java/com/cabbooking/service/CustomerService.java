@@ -129,6 +129,34 @@ public class CustomerService {
         return new ResponseDTO<>(200, "SUCCESS", userDTOList);
     }
 
+    public ResponseDTO<Object> searchCustomers(String searchText) {
+        List<Object[]> customers = customerRepository.searchCustomers(searchText);
+
+        if (customers.isEmpty()) {
+            return new ResponseDTO<>(400, "ERROR", "No matching customers found!");
+        }
+
+        List<UserDTO> customerDTOList = customers.stream().map(customer -> {
+            byte[] profileImageBytes = (byte[]) customer[9]; // Profile image BLOB
+            String profileImageBase64 = (profileImageBytes != null) ? Base64.getEncoder().encodeToString(profileImageBytes) : null;
+
+            return new UserDTO(
+                    ((Number) customer[0]).longValue(), // userId
+                    (String) customer[1],  // username
+                    (String) customer[2],  // name
+                    (String) customer[3],  // address
+                    (String) customer[4],  // nic
+                    (String) customer[5],  // telephone
+                    (String) customer[6],  // licenseNumber
+                    (String) customer[7],  // role
+                    (String) customer[8],  // status
+                    profileImageBase64  // Profile image as Base64 string
+            );
+        }).collect(Collectors.toList());
+
+        return new ResponseDTO<>(200, "SUCCESS", customerDTOList);
+    }
+
     // Simulated password verification (Replace with hashing logic in real app)
     private boolean verifyPassword(String enteredPassword, String storedPassword) {
         return enteredPassword.equals(storedPassword);

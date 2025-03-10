@@ -129,7 +129,7 @@ public class CustomerRepository {
     public List<Object[]> getAllUsers() {
         String sql = """
             SELECT user_id, username, name, address, nic, telephone, license_number, role, status, profile_image 
-            FROM users
+            FROM users WHERE status = 'ACTIVE'
         """;
 
         try {
@@ -137,5 +137,25 @@ public class CustomerRepository {
         } catch (Exception e) {
             return new ArrayList<>(); // Return an empty list if an error occurs
         }
+    }
+
+    public List<Object[]> searchCustomers(String searchText) {
+        String sql = """
+            SELECT user_id, username, name, address, nic, telephone, license_number, role, status, profile_image
+            FROM users WHERE status = 'ACTIVE'
+            AND (
+                CAST(user_id AS CHAR) LIKE :searchText
+                OR username LIKE :searchText
+                OR name LIKE :searchText
+                OR address LIKE :searchText
+                OR nic LIKE :searchText
+                OR telephone LIKE :searchText
+            )
+        """;
+
+        Query query = em.createNativeQuery(sql);
+        query.setParameter("searchText", "%" + searchText + "%");
+
+        return query.getResultList();
     }
 }

@@ -148,4 +148,26 @@ public class CarService {
         return new ResponseDTO<>(200, "SUCCESS", carDTOList);
     }
 
+    public ResponseDTO<Object> searchCars(String searchText) {
+        List<Object[]> cars = carRepository.searchCars(searchText);
+
+        if (cars.isEmpty()) {
+            return new ResponseDTO<>(400, "ERROR", "No matching cars found.");
+        }
+
+        List<CarDTO> carDTOList = cars.stream()
+                .map(car -> new CarDTO(
+                        ((Number) car[0]).longValue(),        // car_id
+                        (String) car[1],                      // car_model
+                        (String) car[2],                      // license_plate
+                        (BigDecimal) car[3],                  // mileage
+                        ((Number) car[4]).intValue(),         // passenger_capacity
+                        (car[6] != null) ? car[6].toString() : null,  // status as string
+                        (car[5] != null) ? Base64.getEncoder().encodeToString((byte[]) car[5]) : null // car_image as Base64
+                ))
+                .collect(Collectors.toList());
+
+        return new ResponseDTO<>(200, "SUCCESS", carDTOList);
+    }
+
 }
