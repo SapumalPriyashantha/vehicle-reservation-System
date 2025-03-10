@@ -8,6 +8,7 @@ import jakarta.transaction.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @ApplicationScoped
@@ -112,5 +113,18 @@ public class CarRepository {
                 .setParameter(4, toDate)
                 .setParameter(5, fromDate)
                 .getResultList();
+    }
+
+    public List<Object[]> getAllCars() {
+        String sql = """
+            SELECT car_id, car_model, license_plate, mileage, passenger_capacity, car_image, status 
+            FROM cars
+        """;
+
+        try {
+            return em.createNativeQuery(sql).getResultList();
+        } catch (Exception e) {
+            return new ArrayList<>(); // Return an empty list if an error occurs
+        }
     }
 }

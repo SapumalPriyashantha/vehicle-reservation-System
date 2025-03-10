@@ -10,6 +10,7 @@ com\cabbooking\controller\BookingController.class
 com\cabbooking\dto\ResponseDTO.class
 com\cabbooking\util\Util.class
 com\cabbooking\repository\CustomerRepository.class
+com\cabbooking\dto\UserDTO.class
 com\cabbooking\repository\BookingRepository.class
 com\cabbooking\model\Car.class
 com\cabbooking\model\Booking$Status.class

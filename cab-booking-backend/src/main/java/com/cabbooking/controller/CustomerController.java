@@ -104,4 +104,20 @@ public class CustomerController {
                     .build();
         }
     }
+
+    @GET
+    @Path("/all")
+    public Response getAllUsers() {
+        try {
+            ResponseDTO<Object> result = customerService.getAllUsers();
+            return Response.status(result.getCode()).entity(result).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(new ResponseDTO<>(500, "ERROR", "Unexpected error occurred."))
+                    .build();
+        }
+    }
 }
+
+
+

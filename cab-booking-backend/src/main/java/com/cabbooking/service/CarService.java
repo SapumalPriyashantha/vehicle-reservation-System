@@ -7,6 +7,7 @@ import com.cabbooking.repository.CarRepository;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.List;
@@ -120,6 +121,31 @@ public class CarService {
                 .collect(Collectors.toList());
 
         return new ResponseDTO<Object>(200, "SUCCESS", carDTOList);
+    }
+
+    public ResponseDTO<Object> getAllCars() {
+        List<Object[]> cars = carRepository.getAllCars();
+
+        if (cars.isEmpty()) {
+            return new ResponseDTO<>(400, "ERROR", "No cars found!");
+        }
+
+        List<CarDTO> carDTOList = cars.stream().map(car -> {
+            byte[] carImageBytes = (byte[]) car[5]; // Car image (BLOB)
+            String carImageBase64 = (carImageBytes != null) ? Base64.getEncoder().encodeToString(carImageBytes) : null;
+
+            return new CarDTO(
+                    ((Number) car[0]).longValue(),  // carId
+                    (String) car[1],  // carModel
+                    (String) car[2],  // licensePlate
+                    (BigDecimal) car[3],  // mileage
+                    (Integer) car[4],  // passengerCapacity
+                    (String) car[6],  // status
+                    carImageBase64  // Car image as Base64 string
+            );
+        }).collect(Collectors.toList());
+
+        return new ResponseDTO<>(200, "SUCCESS", carDTOList);
     }
 
 }

@@ -8,6 +8,9 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @ApplicationScoped
 @Transactional
 public class CustomerRepository {
@@ -123,4 +126,16 @@ public class CustomerRepository {
                 .executeUpdate();
     }
 
+    public List<Object[]> getAllUsers() {
+        String sql = """
+            SELECT user_id, username, name, address, nic, telephone, license_number, role, status, profile_image 
+            FROM users
+        """;
+
+        try {
+            return em.createNativeQuery(sql).getResultList();
+        } catch (Exception e) {
+            return new ArrayList<>(); // Return an empty list if an error occurs
+        }
+    }
 }

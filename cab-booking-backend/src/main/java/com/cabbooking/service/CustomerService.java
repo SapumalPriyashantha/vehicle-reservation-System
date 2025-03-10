@@ -1,16 +1,16 @@
 package com.cabbooking.service;
 
-import com.cabbooking.dto.LoginDTO;
-import com.cabbooking.dto.ResponseDTO;
-import com.cabbooking.dto.UpdateCustomerDTO;
+import com.cabbooking.dto.*;
 import com.cabbooking.model.User;
-import com.cabbooking.dto.UserRegistrationDTO;
 import com.cabbooking.repository.CustomerRepository;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
 import jakarta.persistence.*;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.cabbooking.util.Util.hashPassword;
 
@@ -99,6 +99,34 @@ public class CustomerService {
             return new ResponseDTO<>(400, "ERROR", "Customer not found or already inactive!");
         }
         return new ResponseDTO<>(200, "SUCCESS", "Customer deleted (status set to INACTIVE).");
+    }
+
+    public ResponseDTO<Object> getAllUsers() {
+        List<Object[]> users = customerRepository.getAllUsers();
+
+        if (users.isEmpty()) {
+            return new ResponseDTO<>(400, "ERROR", "No users found!");
+        }
+
+        List<UserDTO> userDTOList = users.stream().map(user -> {
+            byte[] profileImageBytes = (byte[]) user[9]; // Profile image (BLOB)
+            String profileImageBase64 = (profileImageBytes != null) ? Base64.getEncoder().encodeToString(profileImageBytes) : null;
+
+            return new UserDTO(
+                    ((Number) user[0]).longValue(),  // userId
+                    (String) user[1],  // username
+                    (String) user[2],  // name
+                    (String) user[3],  // address
+                    (String) user[4],  // nic
+                    (String) user[5],  // telephone
+                    (String) user[6],  // licenseNumber
+                    (String) user[7],  // role
+                    (String) user[8],  // status
+                    profileImageBase64  // Profile image as Base64 string
+            );
+        }).collect(Collectors.toList());
+
+        return new ResponseDTO<>(200, "SUCCESS", userDTOList);
     }
 
     // Simulated password verification (Replace with hashing logic in real app)
