@@ -3,13 +3,19 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import * as moment from 'moment';
 import { debounceTime, map, switchMap } from 'rxjs';
+import { ICar } from 'src/app/interface/ICar';
 import { IDriver } from 'src/app/interface/IDriver';
 import { IResponse } from 'src/app/interface/IResponse';
+import { IUser } from 'src/app/interface/IUser';
+import { IUserReservation } from 'src/app/interface/IUserReservation';
+import { CarService } from 'src/app/services/car/car.service';
 import { DriverService } from 'src/app/services/driver/driver.service';
 import { MapService } from 'src/app/services/map/map.service';
 import { ReservationService } from 'src/app/services/reservation/reservation.service';
-import { showError } from 'src/app/utility/helper';
+import { StorageService } from 'src/app/services/storage.service';
+import { showError, showQuestion, showSuccess } from 'src/app/utility/helper';
 
 @UntilDestroy()
 @Component({
@@ -18,131 +24,41 @@ import { showError } from 'src/app/utility/helper';
   styleUrls: ['./reserve-taxi.component.scss'],
 })
 export class ReserveTaxiComponent implements OnInit {
-  @ViewChild('map', { static: false }) mapElement: any;
-  protected directionsService = new google.maps.DirectionsService();
-  protected directionsRenderer = new google.maps.DirectionsRenderer();
-
-  protected useCurrentLocation = false;
-
-  protected drivers: IDriver[] = [];
-
-  protected filteredPickupResults: any[] = [];
-  protected filteredDropoffResults: any[] = [];
-
-  protected markers: any[] = [];
-  protected routePath: any[] = [];
-
-  protected center = { lat: 6.927079, lng: 79.861244 };
-  protected zoom = 13;
-
   protected form: FormGroup;
+  protected carList: ICar[] = [];
+
   constructor(
     private fb: FormBuilder,
-    private mapService: MapService,
-    protected driverService: DriverService,
-    protected service:ReservationService,
+    protected carService: CarService,
+    protected service: ReservationService,
+    protected storageService: StorageService,
     private router: Router,
-    protected route:ActivatedRoute
+    protected route: ActivatedRoute
   ) {
     this.form = this.fb.group({
-      pickUp: ['', Validators.required],
-      dropOff: ['', Validators.required],
-      pickupToggle: [false, Validators.required],
-      dropoffToggle: [false, Validators.required],
+      fromDate: [moment(), Validators.required],
+      toDate: [moment(), Validators.required],
+      pickupLocation: ['', Validators.required],
+      destination: ['', Validators.required],
     });
   }
 
   ngOnInit() {
-    this.form
-      .get('pickUp')
-      ?.valueChanges.pipe(
-        debounceTime(300),
-        switchMap((value) => this.searchLocations(value))
-      )
-      .subscribe((results) => {
-        console.log(results);
-
-        this.filteredPickupResults = results;
-      });
-
-    this.form
-      .get('dropOff')
-      ?.valueChanges.pipe(
-        debounceTime(300),
-        switchMap((value) => this.searchLocations(value))
-      )
-      .subscribe((results) => {
-        this.filteredDropoffResults = results;
-      });
+    this.searchAvailableCars();
   }
 
-  protected onCurrentLocationChange(): void {
-    if (this.useCurrentLocation) {
-      this.getCurrentLocation();
-    } else {
-      this.form.get('pickUp')?.setValue('');
-    }
-  }
+  protected searchAvailableCars() {
+    const { fromDate, toDate } = this.form.value;
 
-  protected onToggleChange(type: string): void {
-    if (type === 'pickup') {
-      this.form.get('dropoffToggle')?.setValue(false);
-    } else if (type === 'dropoff') {
-      this.form.get('pickupToggle')?.setValue(false);
-    }
-  }
+    const from = moment(fromDate).format('YYYY-MM-DDTHH:mm:ss');
+    const to = moment(toDate).format('YYYY-MM-DDTHH:mm:ss');
 
-  protected setPickupLocation(name: string, lat: number, lng: number): void {
-    this.form.get('pickUp')?.setValue(name);
-    this.addMarker({ lat, lon: lng }, 'Pickup');
-  }
-
-  protected setDropoffLocation(name: string, lat: number, lng: number): void {
-    this.form.get('dropOff')?.setValue(name);
-    this.addMarker({ lat, lon: lng }, 'Dropoff');
-  }
-
-  protected getCurrentLocation(): void {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const lat = position.coords.latitude;
-          const lon = position.coords.longitude;
-          this.form.get('pickUp')?.setValue(`Lat: ${lat}, Lng: ${lon}`);
-          this.addMarker({ lat, lon }, 'Pickup');
-        },
-        (error) => {
-          console.error('Error getting current location', error);
-        }
-      );
-    } else {
-      console.error('Geolocation is not supported by this browser.');
-    }
-  }
-
-  protected onMapClick(event: google.maps.MapMouseEvent) {
-    console.log(event);
-
-    if (event.latLng) {
-      const latLng = event.latLng;
-      const lat = latLng.lat();
-      const lng = latLng.lng();
-      this.getAddress(lat, lng);
-    }
-  }
-
-  protected getAddress(lat: number, lng: number): void {
-    this.mapService
-      .getAddress(lat, lng)
+    this.carService
+      .getAvailableCarsByDate(from, to)
       .pipe(untilDestroyed(this))
       .subscribe({
-        next: (res) => {
-          if (this.form.get('pickupToggle')?.value) {
-            this.setPickupLocation(res.display_name, lat, lng);
-          }
-          if (this.form.get('dropoffToggle')?.value) {
-            this.setDropoffLocation(res.display_name, lat, lng);
-          }
+        next: (res: IResponse) => {
+          this.carList = res.data;
         },
         error: (err: HttpErrorResponse) => {
           showError({
@@ -153,93 +69,49 @@ export class ReserveTaxiComponent implements OnInit {
       });
   }
 
-  protected searchDrivers() {
-    if (this.markers.length >= 2) {
-      this.routePath = [
-        {
-          lat: this.markers[0].position.lat,
-          lng: this.markers[0].position.lng,
-        },
-        {
-          lat: this.markers[1].position.lat,
-          lng: this.markers[1].position.lng,
-        },
-      ];
-    }
+  protected reserveCar(car: ICar) {
+    const { fromDate, toDate, pickupLocation, destination } = this.form.value;
+    const user = this.storageService.get('user-data') as unknown as IUser;
 
-    this.driverService
-      .findDrivers(this.markers[0].position.lng, this.markers[0].position.lat)
-      .pipe(untilDestroyed(this))
-      .subscribe({
-        next: (res: IResponse) => {
-          if (!res.data.length) {
-            showError({
-              title: 'Oops',
-              text: 'Currently,There is no any driver in your area.Please try again later',
+    const from = moment(fromDate).format('YYYY-MM-DDTHH:mm:ss');
+    const to = moment(toDate).format('YYYY-MM-DDTHH:mm:ss');
+
+    const bookingRequest: IUserReservation = {
+      customerId: user.userId,
+      carId: car.carId,
+      pickupLocation: pickupLocation,
+      destination: destination,
+      startTime: from,
+      endTime: to
+    };
+
+    showQuestion(
+      {
+        title: 'Reserve Cab',
+        text: 'Are you really want to reserve this vehicle ?',
+      },
+      (isConfirmed) => {
+        if (isConfirmed) {
+          this.service
+            .makeUserReservation(bookingRequest)
+            .pipe(untilDestroyed(this))
+            .subscribe({
+              next: (res: IResponse) => {
+                showSuccess({
+                  title: 'Success',
+                  text: 'Reservation Successfully',
+                });
+                this.searchAvailableCars();
+              },
+              error: () => {
+                showError({
+                  title: 'System Error',
+                  text: 'Something Went Wrong',
+                });
+              },
             });
-            return;
-          }
-
-          this.driverService.setDriverPayload(res.data);
-          this.service.setMarkers(this.markers);
-          this.router.navigate(['../available-drivers'],{relativeTo:this.route});
-        },
-        error: () => {
-          showError({
-            title: 'System Error',
-            text: 'Something Went Wrong',
-          });
-        },
-      });
-  }
-
-  protected toRoute(): void {
-    const url = `https://www.google.com/maps/dir/?api=1&origin=${this.markers[0].position.lat},${this.markers[0].position.lng}&destination=${this.markers[1].position.lat},${this.markers[1].position.lng}&travelmode=driving`;
-    window.open(url, '_blank');
-  }
-
-  protected searchLocations(query: string) {
-    if (query.length < 3) {
-      return [];
-    }
-
-    return this.mapService.searchLocations(query).pipe(
-      map((results) => results),
-      untilDestroyed(this)
+        }
+      }
     );
-  }
-
-  protected onPickupSelect(result: any) {
-    this.addMarker(
-      this.filteredPickupResults.find(
-        (x: any) => x.place_id === result.option.id
-      ),
-      'Pickup'
-    );
-  }
-
-  protected onDropoffSelect(result: any) {
-    this.addMarker(
-      this.filteredDropoffResults.find(
-        (x: any) => x.place_id === result.option.id
-      ),
-      'Dropoff'
-    );
-  }
-
-  protected addMarker(result: any, type: string) {
-    const lat = parseFloat(result.lat);
-    const lon = parseFloat(result.lon);
-
-    this.markers = this.markers.filter((marker) => marker.label !== type);
-    // Add marker to the map
-    this.markers = [
-      ...this.markers,
-      { position: { lat, lng: lon }, label: type },
-    ];
-
-    // Center the map on the selected location
-    this.center = { lat, lng: lon };
-    this.zoom = 13;
   }
 }

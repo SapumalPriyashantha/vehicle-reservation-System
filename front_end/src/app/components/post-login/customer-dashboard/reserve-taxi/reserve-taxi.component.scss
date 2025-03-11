@@ -1,82 +1,46 @@
-.reserve-taxi-container {
-  width: 100%;
-  max-width: 900px;
-  margin: auto;
+.reservation-container {
+  max-width: 800px;
+  margin: 20px auto;
   padding: 20px;
-  background-color: #f7faff;
-  color: #333;
-}
-
-h2 {
+  background: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
   text-align: center;
-  color: #007bff;
 }
 
-.form-fields-container {
-  background-color: #ffffff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
-}
-
-google-map {
-  margin-top: 20px;
-  border-radius: 10px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-mat-form-field {
-  width: 100%;
-  margin-bottom: 16px;
-}
-
-.buttons-container {
+.date-picker-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  gap: 20px;
   margin-bottom: 20px;
+}
+
+.car-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.car-card {
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  text-align: center;
+}
+
+.car-image {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.car-info {
+  margin-top: 10px;
 }
 
 button {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  margin-right: 10px;
-}
-
-button:last-child {
-  margin-right: 0;
-}
-
-mat-icon {
-  margin-right: 8px;
-}
-
-@media (max-width: 600px) {
-  .reserve-taxi-container {
-    padding: 10px;
-  }
-
-  button {
-    margin-top: 10px;
-    width: auto;
-    margin-right: 0;
-  }
-
-  .buttons-container {
-    flex-direction: column;
-  }
-
-  .buttons-container button {
-    margin-bottom: 10px;
-  }
-
-  .buttons-container button:last-child {
-    margin-bottom: 0;
-  }
-}
-
-mat-checkbox {
-  margin-bottom: 16px;
-  display: block;
+  margin-top: 10px;
 }

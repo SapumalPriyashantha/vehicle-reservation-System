@@ -153,35 +153,35 @@ export class AvailableDriversComponent implements OnInit {
   }
 
   protected reserveDriver(driver: IDriver) {
-    const reservationRequest: IUserReservation = {
-      userId: this.user.id,
-      driverUserName: driver.userName,
-      pickupLatitude: this.markers?.[0].position.lat,
-      pickupLongitude: this.markers?.[0].position.lng,
-      dropLatitude: this.markers?.[1].position.lat,
-      dropLongitude: this.markers?.[1].position.lng,
-    };
+  //   const reservationRequest: IUserReservation = {
+  //     userId: this.user.id,
+  //     driverUserName: driver.userName,
+  //     pickupLatitude: this.markers?.[0].position.lat,
+  //     pickupLongitude: this.markers?.[0].position.lng,
+  //     dropLatitude: this.markers?.[1].position.lat,
+  //     dropLongitude: this.markers?.[1].position.lng,
+  //   };
 
-    this.service
-      .makeUserReservation(reservationRequest)
-      .pipe(untilDestroyed(this))
-      .subscribe({
-        next: (res: IResponse) => {
-          showSuccess({
-            title: 'Success',
-            text: 'Reservation Successfully',
-          });
+  //   this.service
+  //     .makeUserReservation(reservationRequest)
+  //     .pipe(untilDestroyed(this))
+  //     .subscribe({
+  //       next: (res: IResponse) => {
+  //         showSuccess({
+  //           title: 'Success',
+  //           text: 'Reservation Successfully',
+  //         });
 
-          this.driverService.setDriverPayload(null);
-          this.service.setMarkers(null);
-          this.router.navigate(['../booking-history'],{relativeTo:this.route});
-        },
-        error: () => {
-          showError({
-            title: 'System Error',
-            text: 'Something Went Wrong',
-          });
-        },
-      });
+  //         this.driverService.setDriverPayload(null);
+  //         this.service.setMarkers(null);
+  //         this.router.navigate(['../booking-history'],{relativeTo:this.route});
+  //       },
+  //       error: () => {
+  //         showError({
+  //           title: 'System Error',
+  //           text: 'Something Went Wrong',
+  //         });
+  //       },
+  //     });
   }
 }

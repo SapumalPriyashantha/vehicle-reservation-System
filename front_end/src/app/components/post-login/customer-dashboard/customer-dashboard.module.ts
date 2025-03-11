@@ -23,6 +23,9 @@ import { ReservationService } from 'src/app/services/reservation/reservation.ser
 import { MatDialogModule } from '@angular/material/dialog';
 import { MapService } from 'src/app/services/map/map.service';
 import { SharedModule } from '../../shared/shared.module';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material/core';
+import { CarService } from 'src/app/services/car/car.service';
 
 @NgModule({
   declarations: [
@@ -47,8 +50,10 @@ import { SharedModule } from '../../shared/shared.module';
     MatCardModule,
     MatExpansionModule,
     MatDialogModule,
-    SharedModule
+    SharedModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
-  providers: [DriverService, CustomerService, ReservationService, MapService],
+  providers: [DriverService, CustomerService, ReservationService, CarService],
 })
 export class CustomerDashboardModule {}

@@ -27,17 +27,17 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.user = this.storage.get('user-data') as unknown as IUser;
-    this.customerService.getLast5ReservationById(this.user.id).pipe(untilDestroyed(this)).subscribe({
-      next: (res: IResponse) => {
-        this.latestsBookings = res.data;
-      },
-      error: () => {
-        showError({
-          title: 'System Error',
-          text: 'Something Went Wrong',
-        });
-      },
-    })
+    // this.customerService.getLast5ReservationById(this.user.id).pipe(untilDestroyed(this)).subscribe({
+    //   next: (res: IResponse) => {
+    //     this.latestsBookings = res.data;
+    //   },
+    //   error: () => {
+    //     showError({
+    //       title: 'System Error',
+    //       text: 'Something Went Wrong',
+    //     });
+    //   },
+    // })
   }
 
   protected getDriverStars(rating: number): string[] {

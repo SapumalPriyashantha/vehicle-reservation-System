@@ -13,18 +13,21 @@ export class ReservationService {
 
   constructor(private readonly httpClient: HttpClient) {}
 
+  makeUserReservation(data: IUserReservation): Observable<IResponse> {
+    return this.httpClient.post<IResponse>(this.baseUrl + '/bookings/createBooking', {
+      ...data,
+    });
+  }
+
+
+
+
   setMarkers(markers: any[] | null) {
     this.markers = markers;
   }
 
   getMarkers() {
     return this.markers;
-  }
-
-  makeUserReservation(data: IUserReservation): Observable<IResponse> {
-    return this.httpClient.post<IResponse>(this.baseUrl + '/reserve', {
-      ...data,
-    });
   }
 
   makeAdminReservation(data: IAdminReservation): Observable<IResponse> {

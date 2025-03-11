@@ -1,56 +1,48 @@
-<div class="reserve-taxi-container">
-  <h2>Reserve a Taxi</h2>
+<div class="reservation-container">
+  <h2>Reserve a Cab</h2>
 
-  <!-- Use Current Location Checkbox -->
-  <mat-checkbox [(ngModel)]="useCurrentLocation" (change)="onCurrentLocationChange()">
-    Use Current Location
-  </mat-checkbox>
-
-  <!-- Form Fields Section with Shadow and Modern UI -->
-  <form [formGroup]="form" class="form-fields-container">
-    <!-- Pickup Location Input -->
+  <!-- Date Pickers Section -->
+  <form [formGroup]="form" class="date-picker-container">
     <mat-form-field>
-      <mat-icon matPrefix>location_on</mat-icon>
-      <mat-label>Pick Up Location</mat-label>
-      <input matInput formControlName="pickUp" [matAutocomplete]="pickupAuto" placeholder="Enter Pickup Location">
-      <mat-autocomplete #pickupAuto="matAutocomplete" (optionSelected)="onPickupSelect($event)">
-        <mat-option *ngFor="let result of filteredPickupResults" [id]="result.place_id" [value]="result.display_name">
-          {{ result.display_name }}
-        </mat-option>
-      </mat-autocomplete>
-      <mat-slide-toggle formControlName="pickupToggle" (change)="onToggleChange('pickup')">Mark on Map</mat-slide-toggle>
+      <mat-label>From Date</mat-label>
+      <input matInput [matDatepicker]="fromPicker" formControlName="fromDate">
+      <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+      <mat-datepicker #fromPicker></mat-datepicker>
     </mat-form-field>
 
-    <!-- Dropoff Location Input -->
     <mat-form-field>
-      <mat-icon matPrefix>location_on</mat-icon>
-      <mat-label>Drop Off Location</mat-label>
-      <input matInput formControlName="dropOff" [matAutocomplete]="dropoffAuto" placeholder="Enter Drop-off Location">
-      <mat-autocomplete #dropoffAuto="matAutocomplete" (optionSelected)="onDropoffSelect($event)">
-        <mat-option *ngFor="let result of filteredDropoffResults" [id]="result.place_id" [value]="result.display_name">
-          {{ result.display_name }}
-        </mat-option>
-      </mat-autocomplete>
-      <mat-slide-toggle formControlName="dropoffToggle"  (change)="onToggleChange('dropoff')">Mark on Map</mat-slide-toggle>
+      <mat-label>To Date</mat-label>
+      <input matInput [matDatepicker]="toPicker" formControlName="toDate">
+      <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+      <mat-datepicker #toPicker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Pickup Location" formControlName="pickupLocation" required>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Destination" formControlName="destination" required>
     </mat-form-field>
   </form>
 
-  <!-- Buttons Container -->
-  <div class="buttons-container">
-    <button [disabled]="form.invalid" mat-raised-button color="primary" (click)="toRoute()">
-      <mat-icon>directions</mat-icon>
-      Get Directions
-    </button>
+  <!-- Search Button -->
+  <button mat-raised-button color="primary" (click)="searchAvailableCars()">
+    <mat-icon>search</mat-icon>
+    Search Available Cars
+  </button>
 
-    <button [disabled]="form.invalid" mat-raised-button color="primary" (click)="searchDrivers()">
-      <mat-icon>search</mat-icon>
-      Search for Drivers
-    </button>
+  <!-- Car Cards Section -->
+  <div class="car-list" *ngIf="carList?.length">
+    <div class="car-card" *ngFor="let car of carList">
+      <img [src]="'data:image/png;base64,' + car.carImageBase64" alt="Car Image" class="car-image">
+      <div class="car-info">
+        <h3>{{ car.carModel }}</h3>
+        <p>License Plate: {{ car.licensePlate }}</p>
+        <p>Mileage: {{ car.mileage | number:'1.0-2' }} km</p>
+        <p>Passenger Capacity: {{ car.passengerCapacity }}</p>
+        <button mat-button color="accent" (click)="reserveCar(car)">Reserve</button>
+      </div>
+    </div>
   </div>
-
-  <!-- Google Map -->
-  <google-map [center]="center" [zoom]="zoom" height="400px" width="100%" (mapClick)="onMapClick($event)">
-    <map-marker *ngFor="let marker of markers" [position]="marker.position" [label]="marker.label"></map-marker>
-    <map-polyline *ngIf="routePath" [path]="routePath" strokeColor="#007bff"></map-polyline>
-  </google-map>
 </div>
