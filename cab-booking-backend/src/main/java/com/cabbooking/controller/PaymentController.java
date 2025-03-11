@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 @Consumes(MediaType.APPLICATION_JSON)
 public class PaymentController {
 
-
     @Inject
     private PaymentService paymentService;
 

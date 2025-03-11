@@ -8,8 +8,6 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-import java.time.LocalDateTime;
-
 @Path("/bookings")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
@@ -32,7 +30,7 @@ public class BookingController {
     }
 
     @GET
-    @Path("/bookings")
+    @Path("/bookingsByDriver")
     public Response getBookingsByDriverAndStatus(@QueryParam("driverId") Long driverId, @QueryParam("status") String status) {
         try {
             if (driverId == null || status == null || status.isEmpty()) {
@@ -68,4 +66,24 @@ public class BookingController {
                     .build();
         }
     }
+
+    @GET
+    @Path("/bookingsByCustomer")
+    public Response getBookingsByCustomerAndStatus(@QueryParam("customerId") Long customerId, @QueryParam("status") String status) {
+        try {
+            if (customerId == null || status == null || status.isEmpty()) {
+                return Response.status(Response.Status.BAD_REQUEST)
+                        .entity(new ResponseDTO<>(400, "ERROR", "customerId and status are required query parameters."))
+                        .build();
+            }
+
+            ResponseDTO<Object> result = bookingService.getBookingsByCustomerAndStatus(customerId, status.toUpperCase());
+            return Response.status(result.getCode()).entity(result).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(new ResponseDTO<>(500, "ERROR", "Unexpected error occurred."))
+                    .build();
+        }
+    }
+
 }

@@ -86,6 +86,46 @@ public class BookingRepository {
                 .getResultList();
     }
 
+    public List<Object[]> findBookingsByCustomerAndStatus(Long customerId, String status) {
+        String sql = """
+            SELECT 
+                b.booking_id, 
+                b.pickup_location, 
+                b.destination, 
+                b.start_time, 
+                b.end_time, 
+                b.booking_date, 
+                b.status,
+
+                -- Driver Details
+                c.name, 
+                c.username, 
+                c.address, 
+                c.nic, 
+                c.telephone, 
+                c.role, 
+                c.status AS customer_status,
+
+                -- Car Details
+                cr.car_model, 
+                cr.license_plate, 
+                cr.mileage, 
+                cr.passenger_capacity, 
+                cr.status AS car_status, 
+                cr.car_image
+
+            FROM bookings b
+            JOIN users c ON b.driver_id = c.user_id
+            JOIN cars cr ON b.car_id = cr.car_id
+            WHERE b.customer_id = ? AND b.status = ?
+        """;
+
+        return em.createNativeQuery(sql)
+                .setParameter(1, customerId)
+                .setParameter(2, status)
+                .getResultList();
+    }
+
 
     public void updateBookingStatus(Booking booking) {
         String sql = "UPDATE bookings SET status = ? WHERE booking_id = ?";
