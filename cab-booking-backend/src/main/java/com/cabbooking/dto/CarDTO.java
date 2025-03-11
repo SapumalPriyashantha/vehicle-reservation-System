@@ -19,4 +19,14 @@ public class CarDTO {
     private Integer passengerCapacity;
     private String status;
     private String carImageBase64;
+
+    public CarDTO(String carModel, String licensePlate, BigDecimal mileage, int passengerCapacity,
+                  String carImageBase64, String status) {
+        this.carModel = carModel;
+        this.licensePlate = licensePlate;
+        this.mileage = mileage;
+        this.passengerCapacity = passengerCapacity;
+        this.carImageBase64 = carImageBase64;
+        this.status = status;
+    }
 }

@@ -126,6 +126,31 @@ public class BookingRepository {
                 .getResultList();
     }
 
+    public List<Object[]> findAllBookings() {
+        String sql = """
+            SELECT 
+                b.booking_id, b.pickup_location, b.destination, b.start_time, b.end_time, b.status,
+
+                -- Customer details
+                c.name AS customer_name, c.address AS customer_address, 
+                c.telephone AS customer_telephone, c.nic AS customer_nic,
+
+                -- Driver details (can be null)
+                d.name AS driver_name, d.address AS driver_address, 
+                d.telephone AS driver_telephone, d.license_number AS driver_license_number,
+
+                -- Car details
+                car.car_model, car.license_plate, car.mileage, 
+                car.passenger_capacity, car.car_image, car.status AS car_status
+
+            FROM bookings b
+            JOIN users c ON b.customer_id = c.user_id
+            LEFT JOIN users d ON b.driver_id = d.user_id
+            JOIN cars car ON b.car_id = car.car_id
+        """;
+
+        return em.createNativeQuery(sql).getResultList();
+    }
 
     public void updateBookingStatus(Booking booking) {
         String sql = "UPDATE bookings SET status = ? WHERE booking_id = ?";

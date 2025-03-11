@@ -86,4 +86,17 @@ public class BookingController {
         }
     }
 
+
+    @GET
+    @Path("/all")
+    public Response getAllBookings() {
+        try {
+            ResponseDTO<Object> result = bookingService.getAllBookings();
+            return Response.status(result.getCode()).entity(result).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(new ResponseDTO<>(500, "ERROR", "Unexpected error occurred."))
+                    .build();
+        }
+    }
 }

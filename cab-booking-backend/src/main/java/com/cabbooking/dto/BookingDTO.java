@@ -1,5 +1,6 @@
 package com.cabbooking.dto;
 
+import com.cabbooking.model.Booking;
 import lombok.Getter;
 import lombok.Setter;
 import java.time.LocalDateTime;
@@ -49,5 +50,19 @@ public class BookingDTO {
         this.endTime = endTime;
         this.bookingDate = bookingDate;
         this.status = status;
+    }
+
+    public BookingDTO(Long bookingId, String pickupLocation, String destination,
+                      LocalDateTime startTime, LocalDateTime endTime, String status,
+                      UserDTO customer, UserDTO driver, CarDTO car) {
+        this.bookingId = bookingId;
+        this.pickupLocation = pickupLocation;
+        this.destination = destination;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.status = status;
+        this.customer = customer;
+        this.driver = driver;
+        this.car = car;
     }
 }

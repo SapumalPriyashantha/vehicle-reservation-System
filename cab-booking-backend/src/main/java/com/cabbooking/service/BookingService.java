@@ -192,4 +192,49 @@ public class BookingService {
 
         return new ResponseDTO<>(200, "SUCCESS", "Trip started successfully.");
     }
+
+    public ResponseDTO<Object> getAllBookings() {
+        List<Object[]> bookings = bookingRepository.findAllBookings();
+
+        if (bookings.isEmpty()) {
+            return new ResponseDTO<>(400, "ERROR", "No bookings found.");
+        }
+
+        List<BookingDTO> bookingDTOList = bookings.stream().map(booking -> new BookingDTO(
+                ((Number) booking[0]).longValue(),   // booking_id
+                (String) booking[1],                // pickup_location
+                (String) booking[2],                // destination
+                ((java.sql.Timestamp) booking[3]).toLocalDateTime() ,// start_time
+                ((java.sql.Timestamp) booking[4]).toLocalDateTime(), // end_time
+                ((String) booking[5]), // booking status
+
+                // Customer Details
+                new UserDTO(
+                        (String) booking[6],   // customer_name
+                        (String) booking[7],   // customer_address
+                        (String) booking[8],   // customer_telephone
+                        (String) booking[9]    // customer_nic
+                ),
+
+                // Driver Details (can be null)
+                (booking[10] != null) ? new UserDTO(
+                        (String) booking[10],  // driver_name
+                        (String) booking[11],  // driver_address
+                        (String) booking[12],  // driver_telephone
+                        (String) booking[13]   // driver_license_number
+                ) : null,
+
+                // Car Details
+                new CarDTO(
+                        (String) booking[14],  // car_model
+                        (String) booking[15],  // license_plate
+                        ((BigDecimal) booking[16]),  // mileage
+                        ((Number) booking[17]).intValue(),  // passenger_capacity
+                        (booking[18] != null) ? Base64.getEncoder().encodeToString((byte[]) booking[18]) : null, // car_image
+                        (String) booking[19]   // car_status
+                )
+        )).collect(Collectors.toList());
+
+        return new ResponseDTO<>(200, "SUCCESS", bookingDTOList);
+    }
 }

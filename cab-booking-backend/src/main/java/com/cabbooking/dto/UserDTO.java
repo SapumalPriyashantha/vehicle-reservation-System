@@ -20,4 +20,11 @@ public class UserDTO {
     private String role;
     private String status;
     private String profileImageBase64; // Base64-encoded profile image
+
+    public UserDTO(String name, String address, String telephone, String nicOrLicense) {
+        this.name = name;
+        this.address = address;
+        this.telephone = telephone;
+        this.licenseNumber = nicOrLicense;
+    }
 }

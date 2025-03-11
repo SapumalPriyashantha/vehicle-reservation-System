@@ -1,10 +1,7 @@
 package com.cabbooking.controller;
 
-import com.cabbooking.dto.DriverRegistrationDTO;
 import com.cabbooking.dto.FeedbackRequestDTO;
 import com.cabbooking.dto.ResponseDTO;
-import com.cabbooking.dto.UpdateDriverDTO;
-import com.cabbooking.service.DriverService;
 import com.cabbooking.service.FeedbackService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
