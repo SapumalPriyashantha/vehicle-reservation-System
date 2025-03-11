@@ -25,6 +25,7 @@ com\cabbooking\controller\CarController.class
 com\cabbooking\model\User$Status.class
 com\cabbooking\dto\CarDTO.class
 com\cabbooking\dto\UpdateCustomerDTO.class
+com\cabbooking\dto\FeedbackDTO.class
 com\cabbooking\model\Car$Status.class
 com\cabbooking\dto\BookingDTO.class
 com\cabbooking\model\User.class

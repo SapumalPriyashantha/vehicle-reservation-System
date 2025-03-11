@@ -86,7 +86,6 @@ public class BookingController {
         }
     }
 
-
     @GET
     @Path("/all")
     public Response getAllBookings() {
@@ -99,4 +98,5 @@ public class BookingController {
                     .build();
         }
     }
+
 }

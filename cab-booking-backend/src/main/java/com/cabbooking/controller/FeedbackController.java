@@ -28,4 +28,17 @@ public class FeedbackController {
                     .build();
         }
     }
+
+    @GET
+    @Path("/booking/{bookingId}")
+    public Response getFeedbacksByBooking(@PathParam("bookingId") Long bookingId) {
+        try {
+            ResponseDTO<Object> result = feedbackService.getFeedbacksByBooking(bookingId);
+            return Response.status(result.getCode()).entity(result).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(new ResponseDTO<>(500, "ERROR", "Unexpected error occurred."))
+                    .build();
+        }
+    }
 }

@@ -7,6 +7,7 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 
 @ApplicationScoped
@@ -27,5 +28,22 @@ public class FeedbackRepository {
                 .setParameter(5, feedback.getComments())
                 .setParameter(6, java.sql.Timestamp.valueOf(feedback.getFeedbackDate()))
                 .executeUpdate();
+    }
+
+    public List<Object[]> findFeedbacksByBooking(Long bookingId) {
+        String sql = """
+            SELECT 
+                f.feedback_id, f.booking_id, 
+                c.name AS customer_name, d.name AS driver_name,
+                f.rating, f.comments, f.feedback_date
+            FROM feedback f
+            JOIN users c ON f.customer_id = c.user_id
+            JOIN users d ON f.driver_id = d.user_id
+            WHERE f.booking_id = ?
+        """;
+
+        return em.createNativeQuery(sql)
+                .setParameter(1, bookingId)
+                .getResultList();
     }
 }
