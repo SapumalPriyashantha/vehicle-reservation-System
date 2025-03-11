@@ -3,8 +3,10 @@ package com.cabbooking.service;
 import com.cabbooking.dto.PaymentRequestDTO;
 import com.cabbooking.dto.ResponseDTO;
 import com.cabbooking.model.Booking;
+import com.cabbooking.model.Car;
 import com.cabbooking.model.Payment;
 import com.cabbooking.repository.BookingRepository;
+import com.cabbooking.repository.CarRepository;
 import com.cabbooking.repository.PaymentRepository;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
@@ -22,6 +24,9 @@ public class PaymentService {
     @Inject
     private BookingRepository bookingRepository;
 
+    @Inject
+    private CarRepository carRepository;
+
     public ResponseDTO<Object> processPayment(PaymentRequestDTO paymentRequest) {
         Booking booking = bookingRepository.findBookingById(paymentRequest.getBookingId());
 
@@ -29,8 +34,13 @@ public class PaymentService {
             return new ResponseDTO<Object>(400, "ERROR", "Invalid booking ID.");
         }
 
-        if (!booking.getStatus().equals(Booking.Status.PENDING)) {
+        if (!booking.getStatus().equals(Booking.Status.ONGOING)) {
             return new ResponseDTO<>(400, "ERROR", "Payment can only be processed for completed bookings.");
+        }
+
+        Car car = booking.getCar();
+        if (car == null) {
+            return new ResponseDTO<>(400, "ERROR", "Car not assigned to booking.");
         }
 
         // Calculate amount
@@ -47,9 +57,15 @@ public class PaymentService {
         payment.setDiscount(discount);
         payment.setKilometers(paymentRequest.getKilometers());
         payment.setPaymentDate(LocalDateTime.now());
-        payment.setPaymentStatus(Payment.Status.PENDING);
+        payment.setPaymentStatus(Payment.Status.PAID);
 
         paymentRepository.makePayment(payment);
+
+        booking.setStatus(Booking.Status.COMPLETED);
+        car.setStatus(Car.Status.AVAILABLE);
+
+        bookingRepository.updateBookingStatus(booking);
+        carRepository.updateCarStatus(car);
 
         return new ResponseDTO<>(200, "SUCCESS", "Payment processed successfully. Total: " + totalAmount);
     }

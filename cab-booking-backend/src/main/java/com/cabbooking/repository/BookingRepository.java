@@ -85,4 +85,13 @@ public class BookingRepository {
                 .setParameter(2, status)
                 .getResultList();
     }
+
+
+    public void updateBookingStatus(Booking booking) {
+        String sql = "UPDATE bookings SET status = ? WHERE booking_id = ?";
+        em.createNativeQuery(sql)
+                .setParameter(1, booking.getStatus().name())
+                .setParameter(2, booking.getBookingId())
+                .executeUpdate();
+    }
 }

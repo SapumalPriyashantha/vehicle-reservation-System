@@ -50,4 +50,22 @@ public class BookingController {
         }
     }
 
+    @PUT
+    @Path("/start/{bookingId}")
+    public Response startTrip(@PathParam("bookingId") Long bookingId) {
+        try {
+            if (bookingId == null) {
+                return Response.status(Response.Status.BAD_REQUEST)
+                        .entity(new ResponseDTO<>(400, "ERROR", "Booking ID is required."))
+                        .build();
+            }
+
+            ResponseDTO<Object> result = bookingService.startTrip(bookingId);
+            return Response.status(result.getCode()).entity(result).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(new ResponseDTO<>(500, "ERROR", "Unexpected error occurred."))
+                    .build();
+        }
+    }
 }

@@ -120,4 +120,31 @@ public class BookingService {
 
         return new ResponseDTO<>(200, "SUCCESS", bookingDTOList);
     }
+
+    public ResponseDTO<Object> startTrip(Long bookingId) {
+        Booking booking = bookingRepository.findBookingById(bookingId);
+
+        if (booking == null) {
+            return new ResponseDTO<>(400, "ERROR", "Booking not found.");
+        }
+
+        if (!booking.getStatus().equals(Booking.Status.PENDING)) {
+            return new ResponseDTO<>(400, "ERROR", "Trip cannot be started. Booking is not in PENDING status.");
+        }
+
+        Car car = booking.getCar();
+        if (car == null) {
+            return new ResponseDTO<>(400, "ERROR", "Car not assigned to booking.");
+        }
+
+        // Update statuses
+        booking.setStatus(Booking.Status.ONGOING);
+        car.setStatus(Car.Status.BOOKED);
+
+        // Save updates
+        bookingRepository.updateBookingStatus(booking);
+        carRepository.updateCarStatus(car);
+
+        return new ResponseDTO<>(200, "SUCCESS", "Trip started successfully.");
+    }
 }

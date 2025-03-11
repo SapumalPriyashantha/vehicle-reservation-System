@@ -147,4 +147,12 @@ public class CarRepository {
 
         return query.getResultList();
     }
+
+    public void updateCarStatus(Car car) {
+        String sql = "UPDATE cars SET status = ? WHERE car_id = ?";
+        em.createNativeQuery(sql)
+                .setParameter(1, car.getStatus().name())
+                .setParameter(2, car.getCarId())
+                .executeUpdate();
+    }
 }
