@@ -13,9 +13,9 @@ export class CustomerService {
   constructor(private readonly httpClient: HttpClient) {}
 
   customerRegister(data: IUserRegister): Observable<IResponse> {
-    return this.httpClient.post<IResponse>(this.baseUrl + '/user/register', {
+    return this.httpClient.post<IResponse>(this.baseUrl + '/users/register', {
       ...data,
-      role: 'USER',
+      role: 'CUSTOMER',
     });
   }
 

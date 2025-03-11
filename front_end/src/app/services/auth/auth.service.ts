@@ -16,7 +16,7 @@ export class AuthService {
   constructor(private readonly httpClient: HttpClient) {}
 
   userLogin(data: ILogin): Observable<IResponse> {
-    return this.httpClient.post<IResponse>(this.baseUrl + '/user/login', {
+    return this.httpClient.post<IResponse>(this.baseUrl + '/users/login', {
       ...data,
     });
   }

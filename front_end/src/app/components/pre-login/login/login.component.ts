@@ -17,9 +17,8 @@ import { showError } from 'src/app/utility/helper';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent{
   protected loginForm: FormGroup;
-  protected location: ILocation;
 
   constructor(
     private fb: FormBuilder,
@@ -30,68 +29,44 @@ export class LoginComponent implements OnInit {
     this.loginForm = this.fb.group({
       username: ['', [Validators.required]],
       password: ['', Validators.required],
-      role: ['User', Validators.required],
     });
-  }
-
-  ngOnInit(): void {
-    this.service
-      .getLocation()
-      .pipe(untilDestroyed(this))
-      .subscribe({
-        next: (res) => {
-          this.location = res;
-        },
-      });
   }
 
   protected onSubmit() {
     if (this.loginForm.valid) {
-      const { role, username, password } = this.loginForm.value;
-      const loginRequest: ILogin = {
-        userName: username,
-        password: password,
-        longitude: this.location.lng,
-        latitude: this.location.lat,
-      };
-      if (role === 'User') {
-        this.service
-          .userLogin(loginRequest)
-          .pipe(untilDestroyed(this))
-          .subscribe({
-            next: (res: IResponse) => {
-              if (res.data.userDto.role === UserRoles.USER) {
-                this.storage.set('user-data', res.data.userDto);
+      this.service
+        .userLogin(this.loginForm.value)
+        .pipe(untilDestroyed(this))
+        .subscribe({
+          next: (res: IResponse) => {
+            if (res.status === 'SUCCESS') {
+              if (res.data.role === UserRoles.CUSTOMER) {
+                this.storage.set('user-data', res.data);
                 this.router.navigate(['post-login/customer-dashboard']);
-              } else {
-                this.storage.set('admin-data', res.data.userDto);
+
+              } else if (res.data.role === UserRoles.DRIVER) {
+                this.storage.set('driver-data', res.data);
+                this.router.navigate(['post-login/driver-dashboard']);
+
+              } else if (res.data.role === UserRoles.ADMIN) {
+                this.storage.set('admin-data', res.data);
                 this.router.navigate(['post-login/admin-dashboard']);
+
               }
-            },
-            error: (err: HttpErrorResponse) => {
+            } else {
               showError({
                 title: 'System Error',
-                text: 'Something Went Wrong',
+                text: 'Something went wrong',
               });
-            },
-          });
-      } else {
-        this.service
-          .driverLogin(loginRequest)
-          .pipe(untilDestroyed(this))
-          .subscribe({
-            next: (res: IResponse) => {
-              this.storage.set('driver-data', res.data);
-              this.router.navigate(['post-login/driver-dashboard']);
-            },
-            error: (err: HttpErrorResponse) => {
-              showError({
-                title: 'System Error',
-                text: 'Something Went Wrong',
-              });
-            },
-          });
-      }
+            }
+          },
+          error: (err: HttpErrorResponse) => {
+            showError({
+              title: 'System Error',
+              text: err.error.data,
+            });
+          },
+        });
     }
   }
 }

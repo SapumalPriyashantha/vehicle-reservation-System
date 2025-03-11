@@ -7,7 +7,7 @@ export const SECURE = true;
 export const NON_SECURE = false;
 
 export const getEndpoint = (isHttps: boolean) => {
-  return `${isHttps ? 'https' : 'http'}://${HOST}:${PORT}/api/v1`;
+  return `${isHttps ? 'https' : 'http'}://${HOST}:${PORT}/cab-booking-backend-1.0/api`;
 };
 
 

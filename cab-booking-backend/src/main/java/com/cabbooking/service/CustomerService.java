@@ -77,7 +77,18 @@ public class CustomerService {
             // Generate a dummy token (Replace with JWT in production)
             String token = generateToken(loginDTO.getUsername());
 
-            return new ResponseDTO<Object>(200, "SUCCESS", user);
+            return new ResponseDTO<Object>(200, "SUCCESS", new UserDTO(
+                    user.getUserId(),
+                    user.getUsername(),
+                    user.getName(),
+                    user.getAddress(),
+                    user.getNic(),
+                    user.getTelephone(),
+                    user.getLicenseNumber(),
+                    user.getRole().name(),
+                    user.getStatus().name(),
+                    (user.getProfileImage() != null) ? Base64.getEncoder().encodeToString(user.getProfileImage()) : null
+            ));
         } catch (NoResultException e) {
             return new ResponseDTO<>(400, "ERROR", "User not found!");
         } catch (Exception e) {

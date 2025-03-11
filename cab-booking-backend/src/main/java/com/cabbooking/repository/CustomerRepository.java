@@ -51,7 +51,7 @@ public class CustomerRepository {
 
     public User findByUsername(String username) {
         try {
-            String sql = "SELECT * FROM users WHERE username = ? LIMIT 1 AND role = 'CUSTOMER' AND status = 'ACTIVE'";
+            String sql = "SELECT * FROM users WHERE username = ? AND status = 'ACTIVE' LIMIT 1";
             return (User) em.createNativeQuery(sql, User.class)
                     .setParameter(1, username)
                     .getSingleResult();

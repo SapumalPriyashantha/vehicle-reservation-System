@@ -24,9 +24,10 @@ export class SignupComponent {
   ) {
     this.form = this.fb.group({
       name: ['', Validators.required],
-      userName: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      mobileNumber: ['', Validators.required],
+      address: ['', [Validators.required]],
+      nic: ['', [Validators.required]],
+      telephone: ['', Validators.required],
+      username: ['', Validators.required],
       password: ['', Validators.required],
     });
   }

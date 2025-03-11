@@ -1,8 +1,9 @@
 export interface IUserRegister {
   name: string;
-  email: string;
-  mobileNumber: string;
-  userName: string;
+  address: string;
+  nic: string;
+  telephone: string;
+  username: string;
   password:string;
   role: string;
 }
