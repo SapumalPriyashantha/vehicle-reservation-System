@@ -7,6 +7,7 @@ import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Stateless
 public class BookingRepository {
@@ -43,5 +44,45 @@ public class BookingRepository {
         } catch (NoResultException e) {
             return null;
         }
+    }
+
+    public List<Object[]> findBookingsByDriverAndStatus(Long driverId, String status) {
+        String sql = """
+            SELECT 
+                b.booking_id, 
+                b.pickup_location, 
+                b.destination, 
+                b.start_time, 
+                b.end_time, 
+                b.booking_date, 
+                b.status,
+
+                -- Customer Details
+                c.name, 
+                c.username, 
+                c.address, 
+                c.nic, 
+                c.telephone, 
+                c.role, 
+                c.status AS customer_status,
+
+                -- Car Details
+                cr.car_model, 
+                cr.license_plate, 
+                cr.mileage, 
+                cr.passenger_capacity, 
+                cr.status AS car_status, 
+                cr.car_image
+
+            FROM bookings b
+            JOIN users c ON b.customer_id = c.user_id
+            JOIN cars cr ON b.car_id = cr.car_id
+            WHERE b.driver_id = ? AND b.status = ?
+        """;
+
+        return em.createNativeQuery(sql)
+                .setParameter(1, driverId)
+                .setParameter(2, status)
+                .getResultList();
     }
 }
