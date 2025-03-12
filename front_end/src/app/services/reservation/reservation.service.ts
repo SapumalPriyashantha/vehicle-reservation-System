@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { IAddRate } from 'src/app/interface/IAddRate';
 import { IAdminReservation } from 'src/app/interface/IAdminReservation';
 import { IResponse } from 'src/app/interface/IResponse';
 import { IUserReservation } from 'src/app/interface/IUserReservation';
@@ -19,8 +20,14 @@ export class ReservationService {
     });
   }
 
+  submitFeedback(data: IAddRate): Observable<IResponse> {
+    return this.httpClient.post<IResponse>(this.baseUrl + '/feedback/submit-feedback', {
+      ...data,
+    });
+  }
 
 
+// ---------
 
   setMarkers(markers: any[] | null) {
     this.markers = markers;

@@ -10,6 +10,7 @@ export interface IUser {
   userId: number;
   username: string;
 
+  // ----
   id: number;
   email: string;
   mobileNumber: string;

@@ -2,19 +2,15 @@ import { Component, OnInit, TemplateRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { Observable, map, take } from 'rxjs';
 import { ReservationStatus } from 'src/app/enums/ReservationStatus.enum';
 import { IAddRate } from 'src/app/interface/IAddRate';
 import { IBookingHistory } from 'src/app/interface/IBookingHistory';
 import { IResponse } from 'src/app/interface/IResponse';
 import { IUser } from 'src/app/interface/IUser';
 import { CustomerService } from 'src/app/services/customer/customer.service';
-import { DriverService } from 'src/app/services/driver/driver.service';
-import { MapService } from 'src/app/services/map/map.service';
 import { ReservationService } from 'src/app/services/reservation/reservation.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { showError, showSuccess } from 'src/app/utility/helper';
-import Swal from 'sweetalert2';
 
 @UntilDestroy()
 @Component({
@@ -23,77 +19,43 @@ import Swal from 'sweetalert2';
   styleUrls: ['./booking-history.component.scss'],
 })
 export class BookingHistoryComponent implements OnInit {
-  protected ReservationStatus = ReservationStatus;
   protected user: IUser;
+  protected driver: IUser;
+  protected tripID:number;
+  protected selectedStatus: string;
+
   protected trips: IBookingHistory[] = [];
-
   protected selectedRating: number = 0;
+
   protected reviewText: string;
-
-  protected pickUpLocations: { [tripId: string]: Observable<string> } = {};
-  protected dropOffLocations: { [tripId: string]: Observable<string> } = {};
-
-  protected tripId: number;
-  protected driverId: number;
-  protected driverName: string;
-  protected driverImage: string;
+  protected ReservationStatus = ReservationStatus;
 
   constructor(
     private dialog: MatDialog,
     private service: ReservationService,
     private storage: StorageService,
     private userService: CustomerService,
-    private mapService: MapService,
-    private driverService: DriverService,
     private router: Router,
     private route: ActivatedRoute
-  ) {}
+  ) {
+    this.selectedStatus = ReservationStatus.COMPLETED;
+  }
 
   ngOnInit(): void {
     this.user = this.storage.get('user-data') as unknown as IUser;
-
     this.loadBookingHistory();
   }
 
   protected loadBookingHistory() {
     this.userService
-      .getAllReservationById(this.user.id)
+      .getAllBookingsByCustomerId(this.user.userId, this.selectedStatus)
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: IResponse) => {
-          console.log(res);
           this.trips = res.data;
         },
         error: () => {
-          showError({
-            title: 'System Error',
-            text: 'Something Went Wrong',
-          });
-        },
-      });
-  }
-
-  protected payForTrip(trip: IBookingHistory, dialogRef: TemplateRef<any>) {
-    this.service
-      .makePayment(trip.id)
-      .pipe(untilDestroyed(this))
-      .subscribe({
-        next: (res: IResponse) => {
-          showSuccess({
-            title: 'Success',
-            text: 'Make payment successfully',
-          });
-
-          this.loadBookingHistory();
-
-          this.tripId = trip.id;
-          this.driverId = trip.driverId;
-          this.driverImage = trip.driverImage;
-          this.driverName = trip.driverName;
-
-          this.dialog.open(dialogRef);
-        },
-        error: () => {
+          this.trips = [];
           showError({
             title: 'System Error',
             text: 'Something Went Wrong',
@@ -103,40 +65,9 @@ export class BookingHistoryComponent implements OnInit {
   }
 
   protected addReview(trip: IBookingHistory, dialogRef: TemplateRef<any>) {
-    this.tripId = trip.id;
-    this.driverId = trip.driverId;
-    this.driverImage = trip.driverImage;
-    this.driverName = trip.driverName;
-
+    this.driver = trip.driver;
+    this.tripID = trip.bookingId;
     this.dialog.open(dialogRef);
-  }
-
-  protected getPickUpLocation(trip: IBookingHistory): Observable<string> {
-    if (!this.pickUpLocations[trip.id]) {
-      this.pickUpLocations[trip.id] = this.mapService
-        .getAddress(trip.pickupLatitude, trip.pickupLongitude)
-        .pipe(
-          take(1),
-          map((res) => res.display_name),
-          untilDestroyed(this)
-        );
-    }
-
-    return this.pickUpLocations[trip.id];
-  }
-
-  protected getDropOffLocation(trip: IBookingHistory): Observable<string> {
-    if (!this.dropOffLocations[trip.id]) {
-      this.dropOffLocations[trip.id] = this.mapService
-        .getAddress(trip.dropLatitude, trip.dropLongitude)
-        .pipe(
-          take(1),
-          map((res) => res.display_name),
-          untilDestroyed(this)
-        );
-    }
-
-    return this.dropOffLocations[trip.id];
   }
 
   protected getDriverStars(rating: number): string[] {
@@ -156,20 +87,18 @@ export class BookingHistoryComponent implements OnInit {
 
   protected submitReview() {
     const rateRequest: IAddRate = {
-      userID: this.user.id,
-      driverID: this.driverId,
-      reservationID: this.tripId,
-      score: this.selectedRating,
-      review: this.reviewText,
+      bookingId: this.tripID,
+      rating: this.selectedRating,
+      comments: this.reviewText
     };
 
-    this.driverService
-      .rateDriver(rateRequest)
+    this.service
+      .submitFeedback(rateRequest)
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: IResponse) => {
           showSuccess({
-            title: 'Rate the Driver',
+            title: 'Submit Feedback',
             text: 'Thank you for your feedback',
           });
 

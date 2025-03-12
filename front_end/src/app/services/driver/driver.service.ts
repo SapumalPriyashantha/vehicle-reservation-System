@@ -56,11 +56,7 @@ export class DriverService {
     });
   }
 
-  rateDriver(data: IAddRate): Observable<IResponse> {
-    return this.httpClient.post<IResponse>(this.baseUrl + '/user/rate', {
-      ...data,
-    });
-  }
+
 
   searchDriver(text: string): Observable<IResponse> {
     const params = { name: text };

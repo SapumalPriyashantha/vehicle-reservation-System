@@ -1,7 +1,20 @@
 import { ReservationStatus } from '../enums/ReservationStatus.enum';
+import { ICar } from './ICar';
 import { IRate } from './IRate';
+import { IUser } from './IUser';
 
 export interface IBookingHistory {
+  bookingDate: string;
+  bookingId: number;
+  car: ICar;
+  destination: string;
+  driver: IUser;
+  endTime: string;
+  pickupLocation: string;
+  startTime: string;
+  status: ReservationStatus;
+
+  // ---------
   id: number;
   amount: number;
   distance: number;
@@ -14,5 +27,4 @@ export interface IBookingHistory {
   pickupLongitude: number;
   rating: IRate;
   reveredTime: string;
-  status: ReservationStatus;
 }

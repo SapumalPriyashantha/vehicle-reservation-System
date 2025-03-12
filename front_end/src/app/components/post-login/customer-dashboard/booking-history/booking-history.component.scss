@@ -1,9 +1,15 @@
+
 .booking-history-container {
   max-width: 800px;
   margin: auto;
   padding: 20px;
   background-color: #f7faff;
   color: #333;
+}
+
+.status-filter {
+  width: 100%;
+  margin-bottom: 20px;
 }
 
 .trip-header {
@@ -13,11 +19,19 @@
   font-weight: bold;
 
   .ongoing {
-    color: #156427;
+    color: #d4ff16;
+  }
+
+  .pending {
+    color: #331578;
+  }
+
+  .cancel {
+    color: #ce131c;
   }
 
   .complete {
-    color: #331578;
+    color: #156427;
   }
 }
 

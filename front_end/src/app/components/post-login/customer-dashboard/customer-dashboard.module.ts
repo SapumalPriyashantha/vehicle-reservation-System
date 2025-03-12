@@ -26,7 +26,7 @@ import { SharedModule } from '../../shared/shared.module';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
 import { CarService } from 'src/app/services/car/car.service';
-
+import {MatSelectModule} from '@angular/material/select';
 @NgModule({
   declarations: [
     ReserveTaxiComponent,
@@ -52,7 +52,8 @@ import { CarService } from 'src/app/services/car/car.service';
     MatDialogModule,
     SharedModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatSelectModule
   ],
   providers: [DriverService, CustomerService, ReservationService, CarService],
 })

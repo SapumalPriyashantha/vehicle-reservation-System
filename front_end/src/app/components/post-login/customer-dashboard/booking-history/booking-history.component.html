@@ -1,6 +1,17 @@
 <div class="booking-history-container">
     <h2>Booking History</h2>
 
+    <!-- Booking Status Dropdown -->
+    <mat-form-field class="status-filter">
+        <mat-label>Filter by Status</mat-label>
+        <mat-select [(value)]="selectedStatus" (selectionChange)="loadBookingHistory()">
+            <mat-option [value]="ReservationStatus.PENDING">{{ReservationStatus.PENDING }}</mat-option>
+            <mat-option [value]="ReservationStatus.ONGOING">{{ReservationStatus.ONGOING }}</mat-option>
+            <mat-option [value]="ReservationStatus.COMPLETED">{{ReservationStatus.COMPLETED }}</mat-option>
+            <mat-option [value]="ReservationStatus.CANCELLED">{{ReservationStatus.CANCELLED }}</mat-option>
+        </mat-select>
+    </mat-form-field>
+
     <mat-accordion>
         <!-- Ongoing Trips Section -->
         <mat-expansion-panel *ngFor="let trip of trips"
@@ -8,42 +19,38 @@
             <mat-expansion-panel-header>
                 <mat-panel-title>
                     <div class="trip-header">
-                        <span *ngIf="trip.status===ReservationStatus.START" class="ongoing">Ongoing Trip</span>
-                        <span *ngIf="trip.status===ReservationStatus.END" class="complete">Completed Trip</span>
+                        <span *ngIf="trip.status===ReservationStatus.PENDING" class="pending">Upcoming Trip</span>
+                        <span *ngIf="trip.status===ReservationStatus.ONGOING" class="ongoing">Ongoing Trip</span>
+                        <span *ngIf="trip.status===ReservationStatus.COMPLETED" class="complete">Completed Trip</span>
+                        <span *ngIf="trip.status===ReservationStatus.CANCELLED" class="cancel">Canceled Trip</span>
                     </div>
                 </mat-panel-title>
-                <mat-panel-description> Amount: LKR {{ trip.amount | money}} </mat-panel-description>
             </mat-expansion-panel-header>
 
             <div class="trip-details">
-                <img [src]="trip.driverImage" alt="Driver Image" class="driver-image" />
                 <p *ngIf="trip.rating"><strong>Driver:</strong><mat-icon
                         *ngFor="let star of getDriverStars(trip.rating.score)"
                         [ngClass]="star === 'filled' ? 'star-filled' : 'star-outline'">
                         {{ star === 'filled' ? 'star' : 'star_border' }}
                     </mat-icon>({{trip.rating.review}})</p>
-                <p><strong>Driver Name:</strong> {{ trip.driverName }}</p>
-                <p><strong>Reserved Time:</strong> {{ trip.reveredTime | date:'short' }}</p>
-                <p><strong>Pickup:</strong> {{ getPickUpLocation(trip) | async }}</p>
-                <p><strong>Drop-off:</strong> {{ getDropOffLocation(trip) | async }}</p>
+                <p><strong>Driver Name:</strong> {{ trip.driver.name }}</p>
+                <p><strong>Reserved Time:</strong> {{ trip.bookingDate | date:'short' }}</p>
+                <p><strong>Pickup:</strong> {{trip.pickupLocation}} </p>
+                <p><strong>Drop-off:</strong> {{trip.destination}} </p>
                 <p><strong>Status:</strong> {{ trip.status }}</p>
-                <button *ngIf="trip.status===ReservationStatus.START" mat-raised-button color="accent"
-                    (click)="payForTrip(trip,rateDriverModal)">Pay</button>
-                <button *ngIf="!trip.rating" mat-raised-button color="accent"
+                <button *ngIf="trip.status===ReservationStatus.COMPLETED" mat-raised-button color="accent"
                     (click)="addReview(trip,rateDriverModal)">Add Review</button>
             </div>
         </mat-expansion-panel>
     </mat-accordion>
-
-
 </div>
 
 <!-- Rating Modal -->
 <ng-template #rateDriverModal>
     <div class="rate-driver-modal">
         <h3>Rate Your Driver</h3>
-        <img [src]="driverImage" alt="Driver Image" class="modal-driver-image" />
-        <p><strong>Name:</strong> {{ driverName }}</p>
+        <img src="assets/images/empty-user.jpg" alt="Driver Image" class="modal-driver-image" />
+        <p><strong>Name:</strong> {{ driver.name }}</p>
         <div class="star-rating">
             <mat-icon *ngFor="let star of [1, 2, 3, 4, 5]" (click)="rateDriver(star)"
                 [ngClass]="selectedRating >= star ? 'star-filled' : 'star-outline'">

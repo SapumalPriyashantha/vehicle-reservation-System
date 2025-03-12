@@ -12,6 +12,19 @@ export class CustomerService {
 
   constructor(private readonly httpClient: HttpClient) {}
 
+  getAllBookingsByCustomerId(
+    id: number,
+    status: string
+  ): Observable<IResponse> {
+    const params = { customerId: id, status: status };
+    return this.httpClient.get<IResponse>(
+      this.baseUrl + '/bookings/bookingsByCustomer',
+      { params }
+    );
+  }
+
+  // ---------------
+
   customerRegister(data: IUserRegister): Observable<IResponse> {
     return this.httpClient.post<IResponse>(this.baseUrl + '/users/register', {
       ...data,
@@ -19,23 +32,25 @@ export class CustomerService {
     });
   }
 
-  updateCustomer(id:number,data: IUserRegister): Observable<IResponse> {
+  updateCustomer(id: number, data: IUserRegister): Observable<IResponse> {
     return this.httpClient.post<IResponse>(this.baseUrl + '/user/update', {
       ...data,
-      id:id
+      id: id,
     });
   }
 
   getUserCount(): Observable<IResponse> {
-    return this.httpClient.get<IResponse>(this.baseUrl + '/admin/fullUserCount');
+    return this.httpClient.get<IResponse>(
+      this.baseUrl + '/admin/fullUserCount'
+    );
   }
 
   getAllActiveUsers(): Observable<IResponse> {
     return this.httpClient.get<IResponse>(this.baseUrl + '/user/allUsers');
   }
 
-  searchUser(text:string): Observable<IResponse> {
-    const params = { name:text};
+  searchUser(text: string): Observable<IResponse> {
+    const params = { name: text };
     return this.httpClient.get<IResponse>(this.baseUrl + '/user/search', {
       params,
     });
@@ -50,18 +65,17 @@ export class CustomerService {
 
   getLast5ReservationById(id: number): Observable<IResponse> {
     const params = { userID: id };
-    return this.httpClient.get<IResponse>(this.baseUrl + '/user/reservation', { params });
-  }
-
-  getAllReservationById(id: number): Observable<IResponse> {
-    const params = { userID: id };
-    return this.httpClient.get<IResponse>(this.baseUrl + '/user/allReservation', { params });
-  }
-
-  changePassword(data: IChangePassword): Observable<IResponse> {
-    return this.httpClient.post<IResponse>(this.baseUrl + '/user/changePassword', {
-      ...data,
+    return this.httpClient.get<IResponse>(this.baseUrl + '/user/reservation', {
+      params,
     });
   }
 
+  changePassword(data: IChangePassword): Observable<IResponse> {
+    return this.httpClient.post<IResponse>(
+      this.baseUrl + '/user/changePassword',
+      {
+        ...data,
+      }
+    );
+  }
 }
