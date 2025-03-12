@@ -41,7 +41,7 @@
         <p>License Plate: {{ car.licensePlate }}</p>
         <p>Mileage: {{ car.mileage | number:'1.0-2' }} km</p>
         <p>Passenger Capacity: {{ car.passengerCapacity }}</p>
-        <button mat-raised-button color="accent" (click)="reserveCar(car)">Reserve</button>
+        <button [disabled]="form.invalid" mat-raised-button color="accent" (click)="reserveCar(car)">Reserve</button>
       </div>
     </div>
   </div>

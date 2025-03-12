@@ -45,6 +45,25 @@ export class CustomerService {
     );
   }
 
+  searchUser(text: string): Observable<IResponse> {
+    return this.httpClient.get<IResponse>(
+      this.baseUrl + `/users/search/${text}`,
+      {
+      }
+    );
+  }
+
+  getAllActiveUsers(): Observable<IResponse> {
+    return this.httpClient.get<IResponse>(this.baseUrl + '/users/all');
+  }
+
+  deleteUser(id: number): Observable<IResponse> {
+    const params = { userID: id };
+    return this.httpClient.delete<IResponse>(this.baseUrl + `/users/${id}`, {
+      params,
+    });
+  }
+
   // ---------------
 
   getUserCount(): Observable<IResponse> {
@@ -53,30 +72,10 @@ export class CustomerService {
     );
   }
 
-  getAllActiveUsers(): Observable<IResponse> {
-    return this.httpClient.get<IResponse>(this.baseUrl + '/user/allUsers');
-  }
-
-  searchUser(text: string): Observable<IResponse> {
-    const params = { name: text };
-    return this.httpClient.get<IResponse>(this.baseUrl + '/user/search', {
-      params,
-    });
-  }
-
-  deleteUser(id: number): Observable<IResponse> {
-    const params = { userID: id };
-    return this.httpClient.delete<IResponse>(this.baseUrl + '/user', {
-      params,
-    });
-  }
-
   getLast5ReservationById(id: number): Observable<IResponse> {
     const params = { userID: id };
     return this.httpClient.get<IResponse>(this.baseUrl + '/user/reservation', {
       params,
     });
   }
-
- 
 }

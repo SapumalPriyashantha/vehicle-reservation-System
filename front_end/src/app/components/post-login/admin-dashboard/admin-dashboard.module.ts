@@ -29,9 +29,11 @@ import { CustomerService } from 'src/app/services/customer/customer.service';
 import { ReservationService } from 'src/app/services/reservation/reservation.service';
 import { MapService } from 'src/app/services/map/map.service';
 import { SharedModule } from '../../shared/shared.module';
+import { CarManagementComponent } from './car-management/car-management.component';
 @NgModule({
   declarations: [
     UserManagementComponent,
+    CarManagementComponent,
     BookingOverviewComponent,
     DriverManagementComponent,
     ReportsComponent,

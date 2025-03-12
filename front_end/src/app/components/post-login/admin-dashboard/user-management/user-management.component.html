@@ -16,14 +16,14 @@
         <!-- User ID Column -->
         <ng-container matColumnDef="userId">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> User ID </th>
-            <td mat-cell *matCellDef="let user"> {{ user.id }} </td>
+            <td mat-cell *matCellDef="let user"> {{ user.userId }} </td>
         </ng-container>
 
 
         <!-- Username Column -->
         <ng-container matColumnDef="username">
             <th mat-header-cell *matHeaderCellDef> Username </th>
-            <td mat-cell *matCellDef="let user"> {{ user.userName }} </td>
+            <td mat-cell *matCellDef="let user"> {{ user.username }} </td>
         </ng-container>
 
 
@@ -35,41 +35,33 @@
 
 
         <!-- Mobile Column -->
-        <ng-container matColumnDef="mobile">
+        <ng-container matColumnDef="telephone">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Mobile </th>
-            <td mat-cell *matCellDef="let user"> {{ user.mobileNumber }} </td>
+            <td mat-cell *matCellDef="let user"> {{ user.telephone }} </td>
         </ng-container>
 
 
         <!-- Email Column -->
-        <ng-container matColumnDef="email">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
-            <td mat-cell *matCellDef="let user"> {{ user.email }} </td>
+        <ng-container matColumnDef="address">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Address </th>
+            <td mat-cell *matCellDef="let user"> {{ user.address }} </td>
         </ng-container>
 
 
         <!-- Last Login Date Column -->
-        <ng-container matColumnDef="lastLogin">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Login Date </th>
-            <td mat-cell *matCellDef="let user"> {{ user.lastLogInDate | date: 'short' }} </td>
+        <ng-container matColumnDef="nic">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> NIC </th>
+            <td mat-cell *matCellDef="let user"> {{ user.nic  }} </td>
         </ng-container>
-
-
-        <!-- Last Logout Date Column -->
-        <ng-container matColumnDef="lastLogout">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Logout Date </th>
-            <td mat-cell *matCellDef="let user"> {{ user.lastLogOutDate??'-' | date: 'short' }} </td>
-        </ng-container>
-
 
         <!-- Action Column -->
         <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef> Actions </th>
             <td mat-cell *matCellDef="let user">
-                <button mat-icon-button color="primary" (click)="openUserDetails(user, userDetailsModal)">
+                <button mat-icon-button color="primary" >
                     <mat-icon>visibility</mat-icon>
                 </button>
-                <button mat-icon-button color="warn" (click)="deleteUser(user.id)">
+                <button mat-icon-button color="warn" (click)="deleteUser(user.userId)">
                     <mat-icon>delete</mat-icon>
                 </button>
             </td>
@@ -80,32 +72,6 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
 </div>
-
-
-<!-- User Details Modal -->
-<ng-template #userDetailsModal >
-    <div class="user-details-modal-content">
-        <h2 class="modal-title">Last 5 Trips for {{ selectUser?.name }}</h2>
-
-
-        <div class="trip-list">
-            <div *ngFor="let trip of tripList" class="trip-item">
-                <div class="trip-info">
-                    <p><strong>Pickup:</strong> {{ getPickUpLocation(trip) | async }}</p>
-                    <p><strong>Drop-off:</strong> {{ getDropOffLocation(trip) | async }}</p>
-                </div>
-                <div class="driver-info">
-                    <p><strong>Driver:</strong> {{ trip.driverName }}</p>
-                    <p><strong>Distance:</strong> {{ trip.distance | money }} Km</p>
-                </div>
-                <div class="trip-review">
-                    <p><strong>Review Score:</strong> {{ trip.rating?.score ?? '-' }}/5</p>
-                    <p><strong>Payment:</strong> LKR {{ trip.amount | money }}</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</ng-template>
 
 
 

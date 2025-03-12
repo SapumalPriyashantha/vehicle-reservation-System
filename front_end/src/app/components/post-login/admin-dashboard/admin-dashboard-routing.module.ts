@@ -7,6 +7,7 @@ import { DriverManagementComponent } from './driver-management/driver-management
 import { ReportsComponent } from './reports/reports.component';
 import { SystemSettingsComponent } from './system-settings/system-settings.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { CarManagementComponent } from './car-management/car-management.component';
 
 const routes: Routes = [
   { 
@@ -16,6 +17,7 @@ const routes: Routes = [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' } ,
       { path: 'dashboard', component: DashboardComponent },
       { path: 'user-management', component: UserManagementComponent },
+      { path: 'car-management', component: CarManagementComponent },
       { path: 'booking-overview', component: BookingOverviewComponent },
       { path: 'driver-management', component: DriverManagementComponent },
       { path: 'reports', component: ReportsComponent },

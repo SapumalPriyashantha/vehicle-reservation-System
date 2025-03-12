@@ -1,18 +1,13 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import {
   Component,
-  ElementRef,
   OnInit,
-  TemplateRef,
-  ViewChild,
 } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { Observable, map, take } from 'rxjs';
-import { IBookingHistory } from 'src/app/interface/IBookingHistory';
+import { UserRoles } from 'src/app/enums/UserRoles.enum';
 import { IResponse } from 'src/app/interface/IResponse';
 import { IUser } from 'src/app/interface/IUser';
 import { CustomerService } from 'src/app/services/customer/customer.service';
-import { MapService } from 'src/app/services/map/map.service';
 import { showError, showQuestion, showSuccess } from 'src/app/utility/helper';
 
 @UntilDestroy()
@@ -27,22 +22,18 @@ export class UserManagementComponent implements OnInit {
     'userId',
     'username',
     'name',
-    'mobile',
-    'email',
-    'lastLogin',
-    'lastLogout',
+    'telephone',
+    'address',
+    'nic',
     'actions',
   ];
 
   protected users: IUser[] = [];
   protected selectUser: IUser;
 
-  protected tripList: IBookingHistory[] = [];
-
-  protected pickUpLocations: { [tripId: string]: Observable<string> } = {};
-  protected dropOffLocations: { [tripId: string]: Observable<string> } = {};
-
-  constructor(private dialog: MatDialog, private service: CustomerService,private mapService:MapService) {}
+  constructor(
+    private service: CustomerService,
+  ) {}
 
   ngOnInit(): void {
     this.loadCustomerData();
@@ -54,40 +45,22 @@ export class UserManagementComponent implements OnInit {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: IResponse) => {
-          this.users = res.data;
+          this.users = res.data.filter(
+            (x: IUser) => x.role === UserRoles.CUSTOMER
+          );
         },
-        error: () => {
-          showError({
-            title: 'System Error',
-            text: 'Something Went Wrong',
-          });
-        },
-      });
-  }
-
-  protected openUserDetails(user: IUser, dialogRef: TemplateRef<any>) {
-    this.selectUser = user;
-    this.service
-      .getLast5ReservationById(user.id)
-      .pipe(untilDestroyed(this))
-      .subscribe({
-        next: (res: IResponse) => {
-          console.log(res);
-          if (!res.data.length) {
+        error: (err: HttpErrorResponse) => {
+          if (err.error.code === 400) {
             showError({
-              title: 'Oops',
-              text: 'Currently,There is no any completed reservation for this user',
+              title: 'System Error',
+              text: err.error.data,
             });
-            return;
+          } else {
+            showError({
+              title: 'System Error',
+              text: 'Something Went Wrong',
+            });
           }
-          this.tripList = res.data;
-          this.dialog.open(dialogRef);
-        },
-        error: () => {
-          showError({
-            title: 'System Error',
-            text: 'Something Went Wrong',
-          });
         },
       });
   }
@@ -99,25 +72,32 @@ export class UserManagementComponent implements OnInit {
         text: 'Are you really want to delete this user ?',
       },
       (isConfirmed) => {
-        if(isConfirmed){
+        if (isConfirmed) {
           this.service
-          .deleteUser(userId)
-          .pipe(untilDestroyed(this))
-          .subscribe({
-            next: (res: IResponse) => {
-              showSuccess({
-                title: 'Success',
-                text: 'User Deleted Successfully',
-              });
-              this.loadCustomerData();
-            },
-            error: () => {
-              showError({
-                title: 'System Error',
-                text: 'Something Went Wrong',
-              });
-            },
-          });
+            .deleteUser(userId)
+            .pipe(untilDestroyed(this))
+            .subscribe({
+              next: (res: IResponse) => {
+                showSuccess({
+                  title: 'Success',
+                  text: 'User Deleted Successfully',
+                });
+                this.loadCustomerData();
+              },
+              error: (err: HttpErrorResponse) => {
+                if (err.error.code === 400) {
+                  showError({
+                    title: 'System Error',
+                    text: err.error.data,
+                  });
+                } else {
+                  showError({
+                    title: 'System Error',
+                    text: 'Something Went Wrong',
+                  });
+                }
+              },
+            });
         }
       }
     );
@@ -136,42 +116,23 @@ export class UserManagementComponent implements OnInit {
             });
             return;
           }
-          this.users = res.data;
+          this.users = res.data.filter(
+            (x: IUser) => x.role === UserRoles.CUSTOMER
+          );;
         },
-        error: () => {
-          showError({
-            title: 'System Error',
-            text: 'Something Went Wrong',
-          });
+        error: (err: HttpErrorResponse) => {
+          if (err.error.code === 400) {
+            showError({
+              title: 'System Error',
+              text: err.error.data,
+            });
+          } else {
+            showError({
+              title: 'System Error',
+              text: 'Something Went Wrong',
+            });
+          }
         },
       });
-  }
-
-  protected getPickUpLocation(trip: IBookingHistory): Observable<string> {
-    if (!this.pickUpLocations[trip.id]) {
-      this.pickUpLocations[trip.id] = this.mapService
-        .getAddress(trip.pickupLatitude, trip.pickupLongitude)
-        .pipe(
-          take(1), 
-          map((res) => res.display_name),
-          untilDestroyed(this) 
-        );
-    }
-
-    return this.pickUpLocations[trip.id];
-  }
-
-  protected getDropOffLocation(trip: IBookingHistory): Observable<string> {
-    if (!this.dropOffLocations[trip.id]) {
-      this.dropOffLocations[trip.id] = this.mapService
-        .getAddress(trip.dropLatitude, trip.dropLongitude)
-        .pipe(
-          take(1), 
-          map((res) => res.display_name),
-          untilDestroyed(this) 
-        );
-    }
-
-    return this.dropOffLocations[trip.id];
   }
 }
