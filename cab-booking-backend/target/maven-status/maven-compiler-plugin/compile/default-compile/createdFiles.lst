@@ -34,6 +34,7 @@ com\cabbooking\model\Payment.class
 com\cabbooking\controller\CustomerController.class
 com\cabbooking\dto\PaymentRequestDTO.class
 com\cabbooking\model\Booking.class
+com\cabbooking\dto\ChangePasswordDTO.class
 com\cabbooking\controller\DriverController.class
 com\cabbooking\repository\DriverRepository.class
 com\cabbooking\service\DriverService.class

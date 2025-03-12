@@ -168,6 +168,26 @@ public class CustomerService {
         return new ResponseDTO<>(200, "SUCCESS", customerDTOList);
     }
 
+    public ResponseDTO<Object> changePassword(ChangePasswordDTO changePasswordDTO) throws NoSuchAlgorithmException {
+        // Fetch the user by ID
+        User user = customerRepository.findActiveCustomerById(changePasswordDTO.getId());
+
+        if (user == null) {
+            return new ResponseDTO<>(400, "ERROR", "User not found!");
+        }
+
+        // Verify current password
+        if (!verifyPassword(hashPassword(changePasswordDTO.getCurrentPassword()), user.getPasswordHash())) {
+            return new ResponseDTO<>(400, "ERROR", "Current password is incorrect!");
+        }
+
+        // Update password
+        user.setPasswordHash(hashPassword(changePasswordDTO.getNewPassword()));
+        customerRepository.updatePassword(user);
+
+        return new ResponseDTO<>(200, "SUCCESS", "Password updated successfully!");
+    }
+
     // Simulated password verification (Replace with hashing logic in real app)
     private boolean verifyPassword(String enteredPassword, String storedPassword) {
         return enteredPassword.equals(storedPassword);

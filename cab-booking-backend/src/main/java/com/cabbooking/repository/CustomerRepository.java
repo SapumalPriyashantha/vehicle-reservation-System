@@ -126,6 +126,14 @@ public class CustomerRepository {
                 .executeUpdate();
     }
 
+    public void updatePassword(User user) {
+        String sql = "UPDATE users SET password_hash = ? WHERE user_id = ?";
+        em.createNativeQuery(sql)
+                .setParameter(1, user.getPasswordHash())
+                .setParameter(2, user.getUserId())
+                .executeUpdate();
+    }
+
     public List<Object[]> getAllUsers() {
         String sql = """
             SELECT user_id, username, name, address, nic, telephone, license_number, role, status, profile_image 

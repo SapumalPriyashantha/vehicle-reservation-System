@@ -61,10 +61,17 @@ export class ReserveTaxiComponent implements OnInit {
           this.carList = res.data;
         },
         error: (err: HttpErrorResponse) => {
-          showError({
-            title: 'System Error',
-            text: 'Something Went Wrong',
-          });
+          if (err.error.code === 400) {
+            showError({
+              title: 'System Error',
+              text: err.error.data,
+            });
+          } else {
+            showError({
+              title: 'System Error',
+              text: 'Something Went Wrong',
+            });
+          }
         },
       });
   }
@@ -82,7 +89,7 @@ export class ReserveTaxiComponent implements OnInit {
       pickupLocation: pickupLocation,
       destination: destination,
       startTime: from,
-      endTime: to
+      endTime: to,
     };
 
     showQuestion(
@@ -103,11 +110,18 @@ export class ReserveTaxiComponent implements OnInit {
                 });
                 this.searchAvailableCars();
               },
-              error: () => {
-                showError({
-                  title: 'System Error',
-                  text: 'Something Went Wrong',
-                });
+              error: (err: HttpErrorResponse) => {
+                if (err.error.code === 400) {
+                  showError({
+                    title: 'System Error',
+                    text: err.error.data,
+                  });
+                } else {
+                  showError({
+                    title: 'System Error',
+                    text: 'Something Went Wrong',
+                  });
+                }
               },
             });
         }

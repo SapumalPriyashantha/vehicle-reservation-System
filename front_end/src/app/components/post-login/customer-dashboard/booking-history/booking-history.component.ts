@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -21,7 +22,7 @@ import { showError, showSuccess } from 'src/app/utility/helper';
 export class BookingHistoryComponent implements OnInit {
   protected user: IUser;
   protected driver: IUser;
-  protected tripID:number;
+  protected tripID: number;
   protected selectedStatus: string;
 
   protected trips: IBookingHistory[] = [];
@@ -54,12 +55,19 @@ export class BookingHistoryComponent implements OnInit {
         next: (res: IResponse) => {
           this.trips = res.data;
         },
-        error: () => {
+        error: (err: HttpErrorResponse) => {
           this.trips = [];
-          showError({
-            title: 'System Error',
-            text: 'Something Went Wrong',
-          });
+          if (err.error.code === 400) {
+            showError({
+              title: 'System Error',
+              text: err.error.data,
+            });
+          } else {
+            showError({
+              title: 'System Error',
+              text: 'Something Went Wrong',
+            });
+          }
         },
       });
   }
@@ -89,7 +97,7 @@ export class BookingHistoryComponent implements OnInit {
     const rateRequest: IAddRate = {
       bookingId: this.tripID,
       rating: this.selectedRating,
-      comments: this.reviewText
+      comments: this.reviewText,
     };
 
     this.service
@@ -105,11 +113,18 @@ export class BookingHistoryComponent implements OnInit {
           this.dialog.closeAll();
           this.router.navigate(['../dashboard'], { relativeTo: this.route });
         },
-        error: () => {
-          showError({
-            title: 'System Error',
-            text: 'Something Went Wrong',
-          });
+        error: (err: HttpErrorResponse) => {
+          if (err.error.code === 400) {
+            showError({
+              title: 'System Error',
+              text: err.error.data,
+            });
+          } else {
+            showError({
+              title: 'System Error',
+              text: 'Something Went Wrong',
+            });
+          }
         },
       });
   }

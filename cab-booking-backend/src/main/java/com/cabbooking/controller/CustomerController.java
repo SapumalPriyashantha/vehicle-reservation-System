@@ -1,9 +1,6 @@
 package com.cabbooking.controller;
 
-import com.cabbooking.dto.LoginDTO;
-import com.cabbooking.dto.ResponseDTO;
-import com.cabbooking.dto.UpdateCustomerDTO;
-import com.cabbooking.dto.UserRegistrationDTO;
+import com.cabbooking.dto.*;
 import com.cabbooking.service.CustomerService;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
@@ -123,6 +120,19 @@ public class CustomerController {
     public Response searchCustomers(@PathParam("searchText") String searchText) {
         try {
             ResponseDTO<Object> result = customerService.searchCustomers(searchText);
+            return Response.status(result.getCode()).entity(result).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(new ResponseDTO<>(500, "ERROR", "Unexpected error occurred."))
+                    .build();
+        }
+    }
+
+    @POST
+    @Path("/changePassword")
+    public Response changePassword(ChangePasswordDTO changePasswordDTO) {
+        try {
+            ResponseDTO<Object> result = customerService.changePassword(changePasswordDTO);
             return Response.status(result.getCode()).entity(result).build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)

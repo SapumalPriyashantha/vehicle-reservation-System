@@ -31,8 +31,9 @@ export class SettingsComponent implements OnInit {
   ) {
     this.settingsForm = this.fb.group({
       name: ['', Validators.required],
-      email: ['', Validators.required],
-      phone: ['', Validators.required],
+      telephone: ['', Validators.required],
+      address: ['', Validators.required],
+      nic: ['', Validators.required],
     });
 
     this.passwordForm = this.fb.group({
@@ -47,8 +48,9 @@ export class SettingsComponent implements OnInit {
 
     this.settingsForm.patchValue({
       name: this.user.name,
-      email: this.user.email,
-      phone: this.user.mobileNumber,
+      telephone: this.user.telephone,
+      address: this.user.address,
+      nic: this.user.nic,
     });
   }
 
@@ -59,7 +61,7 @@ export class SettingsComponent implements OnInit {
   onSaveClick() {
     if (this.settingsForm.valid) {
       this.service
-        .updateCustomer(this.user.id, this.settingsForm.value)
+        .updateCustomer(this.user.userId, this.settingsForm.value)
         .pipe(untilDestroyed(this))
         .subscribe({
           next: (res: IResponse) => {
@@ -71,11 +73,18 @@ export class SettingsComponent implements OnInit {
             this.user = { ...this.user, ...this.settingsForm.value };
             this.storage.set('user-data', this.user);
           },
-          error: () => {
-            showError({
-              title: 'System Error',
-              text: 'Something Went Wrong',
-            });
+          error: (err:HttpErrorResponse) => {
+            if (err.error.code === 400) {
+              showError({
+                title: 'System Error',
+                text: err.error.data,
+              });
+            } else {
+              showError({
+                title: 'System Error',
+                text: 'Something Went Wrong',
+              });
+            }
           },
         });
     }
@@ -93,7 +102,7 @@ export class SettingsComponent implements OnInit {
     }
 
     const changePasswordRequest: IChangePassword = {
-      id: this.user.id,
+      id: this.user.userId,
       currentPassword: currentPassword,
       newPassword: newPassword,
     };

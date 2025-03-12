@@ -23,8 +23,6 @@ export class CustomerService {
     );
   }
 
-  // ---------------
-
   customerRegister(data: IUserRegister): Observable<IResponse> {
     return this.httpClient.post<IResponse>(this.baseUrl + '/users/register', {
       ...data,
@@ -33,11 +31,21 @@ export class CustomerService {
   }
 
   updateCustomer(id: number, data: IUserRegister): Observable<IResponse> {
-    return this.httpClient.post<IResponse>(this.baseUrl + '/user/update', {
+    return this.httpClient.put<IResponse>(this.baseUrl + `/users/${id}`, {
       ...data,
-      id: id,
     });
   }
+
+  changePassword(data: IChangePassword): Observable<IResponse> {
+    return this.httpClient.post<IResponse>(
+      this.baseUrl + '/users/changePassword',
+      {
+        ...data,
+      }
+    );
+  }
+
+  // ---------------
 
   getUserCount(): Observable<IResponse> {
     return this.httpClient.get<IResponse>(
@@ -70,12 +78,5 @@ export class CustomerService {
     });
   }
 
-  changePassword(data: IChangePassword): Observable<IResponse> {
-    return this.httpClient.post<IResponse>(
-      this.baseUrl + '/user/changePassword',
-      {
-        ...data,
-      }
-    );
-  }
+ 
 }

@@ -20,14 +20,19 @@
                 </mat-form-field>
 
                 <mat-form-field>
-                    <mat-label>Email</mat-label>
-                    <input matInput formControlName="email" placeholder="Enter your email" [readonly]="!isEditing">
+                    <mat-label>Phone</mat-label>
+                    <input matInput formControlName="telephone" placeholder="Enter your phone number"
+                        [readonly]="!isEditing">
                 </mat-form-field>
 
                 <mat-form-field>
-                    <mat-label>Phone</mat-label>
-                    <input matInput formControlName="phone" placeholder="Enter your phone number"
-                        [readonly]="!isEditing">
+                    <mat-label>Address</mat-label>
+                    <input matInput formControlName="address" placeholder="Enter your address" [readonly]="!isEditing">
+                </mat-form-field>
+
+                <mat-form-field>
+                    <mat-label>NIC</mat-label>
+                    <input matInput formControlName="nic" placeholder="Enter your NIC" [readonly]="!isEditing">
                 </mat-form-field>
 
                 <!-- Edit and Save Buttons -->
