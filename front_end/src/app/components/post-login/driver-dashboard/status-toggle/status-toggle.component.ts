@@ -106,28 +106,28 @@ export class StatusToggleComponent implements OnInit {
       });
   }
 
-  onStatusChange(event: any) {
-    this.currentStatus = this.status
-      ? DriverStatus.AVAILABLE
-      : DriverStatus.BUSY;
-    this.service
-      .changeStatus(this.driver.id, this.currentStatus)
-      .pipe(untilDestroyed(this))
-      .subscribe({
-        next: (res: IResponse) => {
-          showSuccess({
-            title: 'Success',
-            text: 'Your status changed successfully',
-          });
-          this.driver = { ...this.driver, status:this.currentStatus };
-          this.storage.set('driver-data', this.driver);
-        },
-        error: () => {
-          showError({
-            title: 'System Error',
-            text: 'Something Went Wrong',
-          });
-        },
-      });
-  }
+  // onStatusChange(event: any) {
+  //   this.currentStatus = this.status
+  //     ? DriverStatus.AVAILABLE
+  //     : DriverStatus.BUSY;
+  //   this.service
+  //     .changeStatus(this.driver.id, this.currentStatus)
+  //     .pipe(untilDestroyed(this))
+  //     .subscribe({
+  //       next: (res: IResponse) => {
+  //         showSuccess({
+  //           title: 'Success',
+  //           text: 'Your status changed successfully',
+  //         });
+  //         this.driver = { ...this.driver, status:this.currentStatus };
+  //         this.storage.set('driver-data', this.driver);
+  //       },
+  //       error: () => {
+  //         showError({
+  //           title: 'System Error',
+  //           text: 'Something Went Wrong',
+  //         });
+  //       },
+  //     });
+  // }
 }

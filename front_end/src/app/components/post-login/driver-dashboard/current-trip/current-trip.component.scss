@@ -7,10 +7,16 @@
     color: #333;
 }
 
+.status-filter {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
 .booking-card {
     border-radius: 8px;
     box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
     overflow: hidden;
+    margin-bottom: 10px;
 }
 
 h2 {

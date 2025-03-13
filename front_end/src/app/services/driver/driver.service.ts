@@ -15,7 +15,6 @@ export class DriverService {
 
   constructor(private readonly httpClient: HttpClient) {}
 
-
   getAllDrivers(status: DriverStatus): Observable<IResponse> {
     const params = { driverStatus: status };
     return this.httpClient.get<IResponse>(this.baseUrl + '/admin/drivers', {
@@ -23,20 +22,39 @@ export class DriverService {
     });
   }
 
+  getBookingsByDriver(id: number, status: string): Observable<IResponse> {
+    const params = { driverId: id, status: status };
+    return this.httpClient.get<IResponse>(
+      this.baseUrl + '/bookings/bookingsByDriver',
+      {
+        params,
+      }
+    );
+  }
+
+  startTrip(id: number): Observable<IResponse> {
+    return this.httpClient.put<IResponse>(
+      this.baseUrl + `/bookings/start/${id}`,{}
+    );
+  }
+
+  endTrip(id: number, km: number, amount: 200): Observable<IResponse> {
+    return this.httpClient.post<IResponse>(this.baseUrl + '/payment/process', {
+      bookingId: id,
+      kilometers: km,
+      extraAmount: amount,
+    });
+  }
+
   // ----------
 
-  setDriverPayload(drivers:IDriver[] | null){
+  setDriverPayload(drivers: IDriver[] | null) {
     this.driverListPayload = drivers;
   }
 
-  getDriverPayload(){
+  getDriverPayload() {
     return this.driverListPayload;
   }
-
-  
-
-
-
 
   getDriverById(id: number): Observable<IResponse> {
     const params = { id: id };
@@ -49,8 +67,6 @@ export class DriverService {
       params,
     });
   }
-
-
 
   searchDriver(text: string): Observable<IResponse> {
     const params = { name: text };
@@ -69,27 +85,9 @@ export class DriverService {
     );
   }
 
-  getLast5ReservationById(id: number): Observable<IResponse> {
-    const params = { driverID: id };
-    return this.httpClient.get<IResponse>(
-      this.baseUrl + '/driver/reservation',
-      { params }
-    );
-  }
-
   getDriverCount(): Observable<IResponse> {
     return this.httpClient.get<IResponse>(
       this.baseUrl + '/admin/fullDriverCount'
-    );
-  }
-
-  changeStatus(id: number, status: DriverStatus): Observable<IResponse> {
-    const params = { driverID: id, status: status };
-    return this.httpClient.get<IResponse>(
-      this.baseUrl + '/driver/updateStatus',
-      {
-        params,
-      }
     );
   }
 
@@ -123,16 +121,6 @@ export class DriverService {
     );
   }
 
-  ongoingTripWithId(id: number): Observable<IResponse> {
-    const params = { driverID: id };
-    return this.httpClient.get<IResponse>(
-      this.baseUrl + '/driver/ongoingTrip',
-      {
-        params,
-      }
-    );
-  }
-
   getAllReservationById(id: number): Observable<IResponse> {
     const params = { driverID: id };
     return this.httpClient.get<IResponse>(
@@ -144,8 +132,11 @@ export class DriverService {
   }
 
   changePassword(data: IChangePassword): Observable<IResponse> {
-    return this.httpClient.post<IResponse>(this.baseUrl + '/driver/changePassword', {
-      ...data,
-    });
+    return this.httpClient.post<IResponse>(
+      this.baseUrl + '/driver/changePassword',
+      {
+        ...data,
+      }
+    );
   }
 }

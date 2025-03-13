@@ -1,62 +1,72 @@
 <div class="booking-request-container">
-    <h2>Current Trip</h2>
-    <mat-card class="booking-card">
+    <h2>Trip Overview</h2>
+    <!-- Booking Status Dropdown -->
+    <mat-form-field class="status-filter">
+        <mat-label>Filter by Status</mat-label>
+        <mat-select [(value)]="selectedStatus" (selectionChange)="loadBookingHistory()">
+            <mat-option [value]="ReservationStatus.PENDING">{{ReservationStatus.PENDING }}</mat-option>
+            <mat-option [value]="ReservationStatus.ONGOING">{{ReservationStatus.ONGOING }}</mat-option>
+            <mat-option [value]="ReservationStatus.COMPLETED">{{ReservationStatus.COMPLETED }}</mat-option>
+            <mat-option [value]="ReservationStatus.CANCELLED">{{ReservationStatus.CANCELLED }}</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-card *ngFor="let trip of trips" class="booking-card">
         <mat-card-content>
-            <div *ngIf="trip; else noBooking" class="trip-details">
+            <div class="trip-details">
                 <div class="detail-item">
                     <mat-icon>person</mat-icon>
                     <div>
                         <span class="detail-label">Client Name:</span>
-                        <span class="detail-value">{{ trip.userDto.name }}</span>
+                        <span class="detail-value">{{ trip.customer.name }}</span>
                     </div>
                 </div>
                 <div class="detail-item">
                     <mat-icon>phone</mat-icon>
                     <div>
                         <span class="detail-label">Mobile Number:</span>
-                        <span class="detail-value">{{ trip.userDto.mobileNumber }}</span>
+                        <span class="detail-value">{{ trip.customer.telephone }}</span>
                     </div>
                 </div>
                 <div class="detail-item">
                     <mat-icon>location_on</mat-icon>
                     <div>
                         <span class="detail-label">Pickup Location:</span>
-                        <span class="detail-value">{{ pickUpLocation }}</span>
+                        <span class="detail-value">{{ trip.pickupLocation }}</span>
                     </div>
                 </div>
                 <div class="detail-item">
                     <mat-icon>location_on</mat-icon>
                     <div>
                         <span class="detail-label">Dropoff Location:</span>
-                        <span class="detail-value">{{dropOffLocation }}</span>
+                        <span class="detail-value">{{trip.destination }}</span>
                     </div>
                 </div>
-                <div class="detail-item">
+                <!-- <div class="detail-item">
                     <mat-icon>attach_money</mat-icon>
                     <div>
                         <span class="detail-label">Payment:</span>
                         <span class="detail-value">LKR {{ trip.paymentAmount | money}}</span>
                     </div>
-                </div>
-                <div class="detail-item">
-                    <mat-icon>directions</mat-icon>
-                    <div>
-                        <span class="detail-label">Directions:</span>
-                        <a [href]="getGoogleMapsUrl()" target="_blank" class="map-link">View Route on Google Maps</a>
-                    </div>
+                </div> -->
+
+                <div *ngIf="trip.status === ReservationStatus.PENDING" class="button-container">
+                    <button mat-raised-button class="end-trip-button" (click)="startTrip(trip.bookingId)">Start
+                        Trip</button>
                 </div>
 
-                <div *ngIf="trip.userDto.userStatus===UserRoles.GUEST" class="button-container">
-                    <button mat-raised-button class="end-trip-button" (click)="endTrip()">End Trip</button>
+                <div *ngIf="trip.status===ReservationStatus.ONGOING" class="button-container">
+                    <button mat-raised-button class="end-trip-button" (click)="endTrip(trip.bookingId)">End
+                        Trip</button>
                 </div>
             </div>
             <!-- No Booking Message -->
-            <ng-template #noBooking>
-                <div class="empty-booking-message">
-                    <mat-icon>info</mat-icon>
-                    <p>No current trip available.</p>
-                </div>
-            </ng-template>
+
         </mat-card-content>
     </mat-card>
+
+    <div *ngIf="!trips.length" class="empty-booking-message">
+        <mat-icon>info</mat-icon>
+        <p>No current trip available.</p>
+    </div>
 </div>
