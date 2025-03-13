@@ -16,6 +16,16 @@ export class DriverService {
 
   constructor(private readonly httpClient: HttpClient) {}
 
+
+  getAllDrivers(status: DriverStatus): Observable<IResponse> {
+    const params = { driverStatus: status };
+    return this.httpClient.get<IResponse>(this.baseUrl + '/admin/drivers', {
+      params,
+    });
+  }
+
+  // ----------
+
   setDriverPayload(drivers:IDriver[] | null){
     this.driverListPayload = drivers;
   }
@@ -24,25 +34,10 @@ export class DriverService {
     return this.driverListPayload;
   }
 
-  driverRegister(data: IDriverRegister): Observable<IResponse> {
-    return this.httpClient.post<IResponse>(this.baseUrl + '/admin/register', {
-      ...data,
-    });
-  }
+  
 
-  driverUpdate(id: number, data: IDriverRegister): Observable<IResponse> {
-    return this.httpClient.post<IResponse>(this.baseUrl + '/driver/update', {
-      ...data,
-      id: id,
-    });
-  }
 
-  getAllDrivers(status: DriverStatus): Observable<IResponse> {
-    const params = { driverStatus: status };
-    return this.httpClient.get<IResponse>(this.baseUrl + '/admin/drivers', {
-      params,
-    });
-  }
+
 
   getDriverById(id: number): Observable<IResponse> {
     const params = { id: id };

@@ -6,4 +6,5 @@ export interface IUserRegister {
   username: string;
   password:string;
   role: string;
+  profileImage?:string
 }

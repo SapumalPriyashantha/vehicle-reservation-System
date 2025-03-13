@@ -1,37 +1,43 @@
 <div class="driver-management-container">
   <h2>Driver Management</h2>
 
-
   <form [formGroup]="form" (ngSubmit)="submit()" class="driver-form">
-      <mat-form-field appearance="outline" class="form-field">
-        <mat-label>License Number</mat-label>
-        <input formControlName="licenseNumber" matInput placeholder="Enter License Number" />
-      </mat-form-field>
-
-
-      <mat-form-field appearance="outline" class="form-field">
-        <mat-label>Mobile</mat-label>
-        <input formControlName="mobileNumber" matInput placeholder="Enter Mobile Number" />
-      </mat-form-field>
-
-
-      <mat-form-field appearance="outline" class="form-field">
-        <mat-label>Name</mat-label>
-        <input formControlName="name" matInput placeholder="Enter Driver Name" />
-      </mat-form-field>
-
-
-      <mat-form-field appearance="outline" class="form-field">
-        <mat-label>Email</mat-label>
-        <input formControlName="email" matInput placeholder="Enter Email" />
-      </mat-form-field>
-
-
-      <button mat-raised-button color="primary" type="submit">
-        {{ editingDriver ? 'Update Driver' : 'Add Driver' }}
-      </button>
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>License Number</mat-label>
+      <input formControlName="licenseNumber" matInput placeholder="Enter License Number" />
+    </mat-form-field>
+  
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Mobile</mat-label>
+      <input formControlName="telephone" matInput placeholder="Enter Mobile Number" />
+    </mat-form-field>
+  
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Name</mat-label>
+      <input formControlName="name" matInput placeholder="Enter Driver Name" />
+    </mat-form-field>
+  
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Address</mat-label>
+      <input formControlName="address" matInput placeholder="Enter Address" />
+    </mat-form-field>
+  
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>NIC</mat-label>
+      <input formControlName="nic" matInput placeholder="Enter NIC" />
+    </mat-form-field>
+  
+    <!-- Remove mat-form-field wrapper around file input -->
+    <div class="form-field">
+      <label>Profile Image</label>
+      <input type="file" (change)="onFileSelected($event)" />
+    </div>
+  
+    <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+      {{ editingDriver ? 'Update Driver' : 'Add Driver' }}
+    </button>
   </form>
-
+  
 
   <div class="search-container">
     <mat-form-field appearance="outline" class="search-form-field">
@@ -41,65 +47,54 @@
     <button mat-raised-button color="primary" (click)="search()" class="search-button">Search</button>
   </div>
 
-
   <table mat-table [dataSource]="drivers" class="mat-elevation-z8 driver-table">
     <!-- Columns definitions -->
-    <ng-container matColumnDef="DriverId">
+    <ng-container matColumnDef="driverId">
       <th mat-header-cell *matHeaderCellDef> Driver ID </th>
-      <td mat-cell *matCellDef="let driver"> {{ driver.id }} </td>
+      <td mat-cell *matCellDef="let driver"> {{ driver.userId }} </td>
     </ng-container>
 
-
-    <ng-container matColumnDef="LicenseNumber">
+    <ng-container matColumnDef="licenseNumber">
       <th mat-header-cell *matHeaderCellDef> License Number </th>
       <td mat-cell *matCellDef="let driver"> {{ driver.licenseNumber }} </td>
     </ng-container>
 
+    <ng-container matColumnDef="username">
+      <th mat-header-cell *matHeaderCellDef> Name </th>
+      <td mat-cell *matCellDef="let driver"> {{ driver.username }} </td>
+    </ng-container>
 
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef> Name </th>
       <td mat-cell *matCellDef="let driver"> {{ driver.name }} </td>
     </ng-container>
 
-
-    <ng-container matColumnDef="mobile">
+    <ng-container matColumnDef="telephone">
       <th mat-header-cell *matHeaderCellDef> Mobile </th>
-      <td mat-cell *matCellDef="let driver"> {{ driver.mobileNumber }} </td>
+      <td mat-cell *matCellDef="let driver"> {{ driver.telephone }} </td>
     </ng-container>
-
 
     <ng-container matColumnDef="email">
       <th mat-header-cell *matHeaderCellDef> Email </th>
       <td mat-cell *matCellDef="let driver"> {{ driver.email }} </td>
     </ng-container>
 
-
-    <ng-container matColumnDef="lastLoginDate">
-      <th mat-header-cell *matHeaderCellDef> Last Login Date </th>
-      <td mat-cell *matCellDef="let driver"> {{ driver.lastLogInDate | date: 'short' }} </td>
+    <ng-container matColumnDef="address">
+      <th mat-header-cell *matHeaderCellDef> Address </th>
+      <td mat-cell *matCellDef="let driver"> {{ driver.address }} </td>
     </ng-container>
 
-
-    <ng-container matColumnDef="lastLogoutDate">
-      <th mat-header-cell *matHeaderCellDef> Last Logout Date </th>
-      <td mat-cell *matCellDef="let driver"> {{ driver.lastLogOutDate | date: 'short' }} </td>
+    <ng-container matColumnDef="nic">
+      <th mat-header-cell *matHeaderCellDef> NIC </th>
+      <td mat-cell *matCellDef="let driver"> {{ driver.nic }} </td>
     </ng-container>
 
-
-    <!-- Status Column with Badge -->
-    <ng-container matColumnDef="status">
-      <th mat-header-cell *matHeaderCellDef> Status </th>
+    <!-- <ng-container matColumnDef="profileImage">
+      <th mat-header-cell *matHeaderCellDef> Profile Image </th>
       <td mat-cell *matCellDef="let driver">
-        <span [ngClass]="{
-              'badge-pending': driver.status === 'Pending',
-              'badge-available': driver.status === 'Available',
-              'badge-busy': driver.status === 'Busy'
-            }">
-          {{ driver.status }}
-        </span>
+        <img *ngIf="driver.profileImage" [src]="driver.profileImage" alt="Driver Image" class="driver-image" />
       </td>
-    </ng-container>
-
+    </ng-container> -->
 
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef> Actions </th>
@@ -110,22 +105,18 @@
         <button mat-icon-button color="accent" (click)="editDriver(driver)">
           <mat-icon>edit</mat-icon>
         </button>
-        <button mat-icon-button color="warn" (click)="deleteDriver(driver.id)">
+        <button mat-icon-button color="warn" (click)="deleteDriver(driver.userId)">
           <mat-icon>delete</mat-icon>
         </button>
       </td>
     </ng-container>
 
-
     <!-- Row definitions -->
-    <tr mat-header-row
-      *matHeaderRowDef="['DriverId', 'LicenseNumber', 'name', 'mobile', 'email', 'lastLoginDate', 'lastLogoutDate','status' ,'actions']">
-    </tr>
-    <tr mat-row
-      *matRowDef="let row; columns: ['DriverId', 'LicenseNumber', 'name', 'mobile', 'email', 'lastLoginDate', 'lastLogoutDate','status' ,'actions']">
-    </tr>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
 </div>
+
 
 
 <!-- Modal for Last 5 Trips (similar to the user management modal) -->
@@ -133,10 +124,10 @@
   <div class="trip-details-modal-content">
     <h2 class="modal-title">Last 5 Trips for {{ selectedDriver?.name }}</h2>
     <div class="trip-list">
-      <div *ngFor="let trip of tripList" class="trip-item">
+      <!-- <div *ngFor="let trip of tripList" class="trip-item">
         <div class="trip-info">
-          <p><strong>Pickup:</strong> {{ getPickUpLocation(trip) | async }}</p>
-          <p><strong>Drop-off:</strong> {{getDropOffLocation(trip) | async }}</p>
+          <p><strong>Pickup:</strong> </p>
+          <p><strong>Drop-off:</strong> </p>
         </div>
         <div class="driver-info">
           <p><strong>User:</strong> {{ trip.userDto.name }}</p>
@@ -146,7 +137,7 @@
           <p *ngIf="trip.rating"><strong>Review Score:</strong> {{ trip.rating.score }}/5</p>
           <p><strong>Payment:</strong> LKR {{ trip.paymentAmount | money }}</p>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </ng-template>

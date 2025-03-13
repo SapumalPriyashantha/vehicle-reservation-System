@@ -7,6 +7,7 @@ import { DriverStatus } from 'src/app/enums/DriverStatus.enum';
 import { IChangePassword } from 'src/app/interface/IChangePassword';
 import { IDriver } from 'src/app/interface/IDriver';
 import { IResponse } from 'src/app/interface/IResponse';
+import { CustomerService } from 'src/app/services/customer/customer.service';
 import { DriverService } from 'src/app/services/driver/driver.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { showError, showSuccess } from 'src/app/utility/helper';
@@ -30,7 +31,7 @@ export class SettingsComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private storage: StorageService,
-    private service: DriverService,
+    private service: CustomerService,
     private router: Router
   ) {
     this.settingsForm = this.fb.group({
@@ -176,33 +177,33 @@ export class SettingsComponent implements OnInit {
   protected onStatusChange(event: any) {
     this.isAvailable = event.checked;
 
-    this.service
-      .changeStatus(
-        this.driver.id,
-        this.isAvailable ? DriverStatus.AVAILABLE : DriverStatus.BUSY
-      )
-      .pipe(untilDestroyed(this))
-      .subscribe({
-        next: (res: IResponse) => {
-          showSuccess({
-            title: 'Success',
-            text: 'Your status changed successfully',
-          });
-          this.driver = {
-            ...this.driver,
-            status: this.isAvailable
-              ? DriverStatus.AVAILABLE
-              : DriverStatus.BUSY,
-          };
-          this.storage.set('driver-data', this.driver);
-        },
-        error: () => {
-          showError({
-            title: 'System Error',
-            text: 'Something Went Wrong',
-          });
-        },
-      });
+    // this.service
+    //   .changeStatus(
+    //     this.driver.id,
+    //     this.isAvailable ? DriverStatus.AVAILABLE : DriverStatus.BUSY
+    //   )
+    //   .pipe(untilDestroyed(this))
+    //   .subscribe({
+    //     next: (res: IResponse) => {
+    //       showSuccess({
+    //         title: 'Success',
+    //         text: 'Your status changed successfully',
+    //       });
+    //       this.driver = {
+    //         ...this.driver,
+    //         status: this.isAvailable
+    //           ? DriverStatus.AVAILABLE
+    //           : DriverStatus.BUSY,
+    //       };
+    //       this.storage.set('driver-data', this.driver);
+    //     },
+    //     error: () => {
+    //       showError({
+    //         title: 'System Error',
+    //         text: 'Something Went Wrong',
+    //       });
+    //     },
+    //   });
   }
 
   onCancelClick() {

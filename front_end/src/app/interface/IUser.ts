@@ -9,7 +9,9 @@ export interface IUser {
   telephone: string;
   userId: number;
   username: string;
-
+  licenseNumber?:string;
+  profileImageBase64?:string
+  
   // ----
   id: number;
   email: string;

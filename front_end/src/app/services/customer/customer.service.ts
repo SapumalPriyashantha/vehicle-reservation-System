@@ -64,6 +64,26 @@ export class CustomerService {
     });
   }
 
+  deleteDriver(id: number): Observable<IResponse> {
+    const params = { userID: id };
+    return this.httpClient.delete<IResponse>(this.baseUrl + `/drivers/${id}`, {
+      params,
+    });
+  }
+
+  driverRegister(data: IUserRegister): Observable<IResponse> {
+    return this.httpClient.post<IResponse>(this.baseUrl + '/drivers/register', {
+      ...data,
+    });
+  }
+
+  driverUpdate(id: number, data: IUserRegister): Observable<IResponse> {
+    return this.httpClient.put<IResponse>(this.baseUrl + `/drivers/${id}`, {
+      ...data,
+    });
+  }
+
+
   // ---------------
 
   getUserCount(): Observable<IResponse> {
