@@ -90,12 +90,4 @@ export class CustomerService {
       {}
     );
   }
-
-  // ---------------
-
-  getUserCount(): Observable<IResponse> {
-    return this.httpClient.get<IResponse>(
-      this.baseUrl + '/admin/fullUserCount'
-    );
-  }
 }

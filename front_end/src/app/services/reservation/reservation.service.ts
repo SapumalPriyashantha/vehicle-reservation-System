@@ -14,20 +14,28 @@ export class ReservationService {
   constructor(private readonly httpClient: HttpClient) {}
 
   makeUserReservation(data: IUserReservation): Observable<IResponse> {
-    return this.httpClient.post<IResponse>(this.baseUrl + '/bookings/createBooking', {
-      ...data,
-    });
+    return this.httpClient.post<IResponse>(
+      this.baseUrl + '/bookings/createBooking',
+      {
+        ...data,
+      }
+    );
   }
 
   submitFeedback(data: IAddRate): Observable<IResponse> {
-    return this.httpClient.post<IResponse>(this.baseUrl + '/feedback/submit-feedback', {
-      ...data,
-    });
+    return this.httpClient.post<IResponse>(
+      this.baseUrl + '/feedback/submit-feedback',
+      {
+        ...data,
+      }
+    );
   }
 
   getAdminDashboardData(): Observable<IResponse> {
-    return this.httpClient.get<IResponse>(this.baseUrl + '/bookings/AdminDashboard', {
-    });
+    return this.httpClient.get<IResponse>(
+      this.baseUrl + '/bookings/AdminDashboard',
+      {}
+    );
   }
 
   getPaymentDetails(from: string, to: string): Observable<IResponse> {
@@ -35,69 +43,12 @@ export class ReservationService {
       from: from,
       to: to,
     };
-    return this.httpClient.get<IResponse>(
-      this.baseUrl + '/payment/report',
-      {
-        params,
-      }
-    );
-  }
-
-// ---------
-
-  setMarkers(markers: any[] | null) {
-    this.markers = markers;
-  }
-
-  getMarkers() {
-    return this.markers;
-  }
-
-
-
-  makePayment(reservationId: number): Observable<IResponse> {
-    const params = { reservationId: reservationId.toString() };
-    return this.httpClient.get<IResponse>(this.baseUrl + '/user/pay', {
-      params,
-    });
-  }
-
-  getAllOngoingTripCount(): Observable<IResponse> {
-    return this.httpClient.get<IResponse>(this.baseUrl + '/admin/onGoingTrips');
-  }
-
-  getFullTotalIncome(): Observable<IResponse> {
-    return this.httpClient.get<IResponse>(
-      this.baseUrl + '/admin/fullTotalAmount'
-    );
-  }
-
-  getLast5Reservations(): Observable<IResponse> {
-    return this.httpClient.get<IResponse>(this.baseUrl + '/admin/reservations');
-  }
-
-  calculateAmount(
-    fromLat: number,
-    fromLng: number,
-    toLat: number,
-    toLng: number
-  ): Observable<IResponse> {
-    const params = {
-      latitude1: fromLat,
-      longitude1: fromLng,
-      latitude2: toLat,
-      longitude2: toLng,
-    };
-    return this.httpClient.get<IResponse>(this.baseUrl + '/user/getAmount', {
+    return this.httpClient.get<IResponse>(this.baseUrl + '/payment/report', {
       params,
     });
   }
 
   getBookingOverview(): Observable<IResponse> {
-    return this.httpClient.get<IResponse>(
-      this.baseUrl + '/bookings/all'
-    );
+    return this.httpClient.get<IResponse>(this.baseUrl + '/bookings/all');
   }
-
- 
 }

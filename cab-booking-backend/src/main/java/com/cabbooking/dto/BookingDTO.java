@@ -1,6 +1,5 @@
 package com.cabbooking.dto;
 
-import com.cabbooking.model.Booking;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

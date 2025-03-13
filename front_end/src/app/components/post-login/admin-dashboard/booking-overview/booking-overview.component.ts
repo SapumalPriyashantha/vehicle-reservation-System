@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { Observable, map, take } from 'rxjs';
 import { IBookingHistory } from 'src/app/interface/IBookingHistory';
 import { IResponse } from 'src/app/interface/IResponse';
-import { MapService } from 'src/app/services/map/map.service';
 import { ReservationService } from 'src/app/services/reservation/reservation.service';
 import { showError } from 'src/app/utility/helper';
 

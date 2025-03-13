@@ -15,7 +15,6 @@ import { MatInputModule } from '@angular/material/input';
 import { DriverService } from 'src/app/services/driver/driver.service';
 import { CustomerService } from 'src/app/services/customer/customer.service';
 import { ReservationService } from 'src/app/services/reservation/reservation.service';
-import { MapService } from 'src/app/services/map/map.service';
 import { SharedModule } from '../../shared/shared.module';
 import {MatSelectModule} from '@angular/material/select';
 
@@ -42,8 +41,7 @@ import {MatSelectModule} from '@angular/material/select';
   providers:[
     DriverService,
     CustomerService,
-    ReservationService,
-    MapService
+    ReservationService
   ]
 })
 export class DriverDashboardModule { }

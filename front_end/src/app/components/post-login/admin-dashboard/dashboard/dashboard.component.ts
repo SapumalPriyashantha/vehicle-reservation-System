@@ -1,19 +1,10 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Component, TemplateRef } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
+import { Component } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { debounceTime, map, switchMap } from 'rxjs';
 import { ReservationStatus } from 'src/app/enums/ReservationStatus.enum';
 import { ICompleteBooking } from 'src/app/interface/ICompleteBooking';
-import { IBookingHistory } from 'src/app/interface/IBookingHistory';
-import { IDriver } from 'src/app/interface/IDriver';
 import { IResponse } from 'src/app/interface/IResponse';
-import { CustomerService } from 'src/app/services/customer/customer.service';
-import { DriverService } from 'src/app/services/driver/driver.service';
-import { MapService } from 'src/app/services/map/map.service';
 import { ReservationService } from 'src/app/services/reservation/reservation.service';
-import { showError, showSuccess } from 'src/app/utility/helper';
+import { showError } from 'src/app/utility/helper';
 
 @UntilDestroy()
 @Component({

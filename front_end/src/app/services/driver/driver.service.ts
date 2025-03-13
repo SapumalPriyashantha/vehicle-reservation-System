@@ -2,8 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DriverStatus } from 'src/app/enums/DriverStatus.enum';
-import { IAddRate } from 'src/app/interface/IAddRate';
-import { IChangePassword } from 'src/app/interface/IChangePassword';
 import { IDriver } from 'src/app/interface/IDriver';
 import { IResponse } from 'src/app/interface/IResponse';
 import { NON_SECURE, getEndpoint } from 'src/app/utility/constants/end-point';
@@ -51,90 +49,6 @@ export class DriverService {
     return this.httpClient.get<IResponse>(
       this.baseUrl + `/payment/earnings/${id}`,
       {}
-    );
-  }
-
-  // ----------
-
-  setDriverPayload(drivers: IDriver[] | null) {
-    this.driverListPayload = drivers;
-  }
-
-  getDriverPayload() {
-    return this.driverListPayload;
-  }
-
-  getDriverById(id: number): Observable<IResponse> {
-    const params = { id: id };
-    return this.httpClient.get<IResponse>(this.baseUrl + '/driver', { params });
-  }
-
-  deleteDriver(id: number): Observable<IResponse> {
-    const params = { driverID: id };
-    return this.httpClient.delete<IResponse>(this.baseUrl + '/driver', {
-      params,
-    });
-  }
-
-  searchDriver(text: string): Observable<IResponse> {
-    const params = { name: text };
-    return this.httpClient.get<IResponse>(this.baseUrl + '/driver/search', {
-      params,
-    });
-  }
-
-  findDrivers(lng: number, lat: number): Observable<IResponse> {
-    const params = { userLatitude: lat, userLongitude: lng };
-    return this.httpClient.get<IResponse>(
-      this.baseUrl + '/driver/nearestDrivers',
-      {
-        params,
-      }
-    );
-  }
-
-  getDriverCount(): Observable<IResponse> {
-    return this.httpClient.get<IResponse>(
-      this.baseUrl + '/admin/fullDriverCount'
-    );
-  }
-
-  weeklyIncome(id: number): Observable<IResponse> {
-    const params = { driverID: id };
-    return this.httpClient.get<IResponse>(
-      this.baseUrl + '/driver/weeklyIncome',
-      {
-        params,
-      }
-    );
-  }
-
-  monthlyIncome(id: number): Observable<IResponse> {
-    const params = { driverID: id };
-    return this.httpClient.get<IResponse>(
-      this.baseUrl + '/driver/monthlyIncome',
-      {
-        params,
-      }
-    );
-  }
-
-  getAllReservationById(id: number): Observable<IResponse> {
-    const params = { driverID: id };
-    return this.httpClient.get<IResponse>(
-      this.baseUrl + '/driver/allReservation',
-      {
-        params,
-      }
-    );
-  }
-
-  changePassword(data: IChangePassword): Observable<IResponse> {
-    return this.httpClient.post<IResponse>(
-      this.baseUrl + '/driver/changePassword',
-      {
-        ...data,
-      }
     );
   }
 }

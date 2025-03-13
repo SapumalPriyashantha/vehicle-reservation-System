@@ -20,7 +20,6 @@ import { CustomerService } from 'src/app/services/customer/customer.service';
 import { DriverService } from 'src/app/services/driver/driver.service';
 import { ReservationService } from 'src/app/services/reservation/reservation.service';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MapService } from 'src/app/services/map/map.service';
 import { SharedModule } from '../../shared/shared.module';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
