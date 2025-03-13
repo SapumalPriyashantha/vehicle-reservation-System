@@ -28,7 +28,14 @@ export class SignupComponent {
       nic: ['', [Validators.required]],
       telephone: ['', Validators.required],
       username: ['', Validators.required],
-      password: ['', Validators.required],
+      password: ['',
+        [
+          Validators.required,
+          Validators.minLength(8),
+          Validators.maxLength(20),
+          Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])(?=.{8,})')
+        ]
+      ],
     });
   }
 

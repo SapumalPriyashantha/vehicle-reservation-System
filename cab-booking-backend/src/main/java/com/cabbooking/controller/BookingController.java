@@ -31,6 +31,7 @@ public class BookingController {
 
     @GET
     @Path("/bookingsByDriver")
+    // driver take their booking by status
     public Response getBookingsByDriverAndStatus(@QueryParam("driverId") Long driverId, @QueryParam("status") String status) {
         try {
             if (driverId == null || status == null || status.isEmpty()) {
@@ -69,6 +70,7 @@ public class BookingController {
 
     @GET
     @Path("/bookingsByCustomer")
+// customer take their booking by status
     public Response getBookingsByCustomerAndStatus(@QueryParam("customerId") Long customerId, @QueryParam("status") String status) {
         try {
             if (customerId == null || status == null || status.isEmpty()) {
