@@ -164,4 +164,27 @@ public class BookingRepository {
         String sql = "SELECT COUNT(*) FROM bookings WHERE status = 'ONGOING'";
         return ((Number) em.createNativeQuery(sql).getSingleResult()).longValue();
     }
+
+    public List<Object[]> getLastCompletedTrips(Long customerId) {
+        String sql = """
+            SELECT 
+                b.booking_date, 
+                d.name AS driver_name, 
+                p.payment_date, 
+                p.kilometers, 
+                p.total_amount
+            FROM bookings b
+            JOIN users d ON b.driver_id = d.user_id
+            JOIN payments p ON b.booking_id = p.booking_id
+            WHERE b.customer_id = :customerId
+            AND b.status = 'COMPLETED'
+            AND p.payment_status = 'PAID'
+            ORDER BY b.booking_date DESC
+            LIMIT 5
+        """;
+
+        return em.createNativeQuery(sql)
+                .setParameter("customerId", customerId)
+                .getResultList();
+    }
 }

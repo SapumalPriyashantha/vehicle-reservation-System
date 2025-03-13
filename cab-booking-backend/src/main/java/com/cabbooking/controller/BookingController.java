@@ -112,4 +112,16 @@ public class BookingController {
         }
     }
 
+    @GET
+    @Path("/last-trips/{customerId}")
+    public Response getLastCompletedTrips(@PathParam("customerId") Long customerId) {
+        try {
+            ResponseDTO<Object> result = bookingService.getLastCompletedTrips(customerId);
+            return Response.status(result.getCode()).entity(result).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(new ResponseDTO<>(500, "ERROR", "Unexpected error occurred."))
+                    .build();
+        }
+    }
 }

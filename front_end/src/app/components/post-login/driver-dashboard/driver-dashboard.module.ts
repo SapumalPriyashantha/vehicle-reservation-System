@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { DriverDashboardRoutingModule } from './driver-dashboard-routing.module';
 import { StatusToggleComponent } from './status-toggle/status-toggle.component';
 import { CurrentTripComponent } from './current-trip/current-trip.component';
-import { TripHistoryComponent } from './trip-history/trip-history.component';
 import { SettingsComponent } from './settings/settings.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle'; // Add this line
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -24,7 +23,6 @@ import {MatSelectModule} from '@angular/material/select';
   declarations: [
     StatusToggleComponent,
     CurrentTripComponent,
-    TripHistoryComponent,
     SettingsComponent,
   ],
   imports: [

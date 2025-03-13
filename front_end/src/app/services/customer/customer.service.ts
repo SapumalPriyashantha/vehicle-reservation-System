@@ -48,8 +48,7 @@ export class CustomerService {
   searchUser(text: string): Observable<IResponse> {
     return this.httpClient.get<IResponse>(
       this.baseUrl + `/users/search/${text}`,
-      {
-      }
+      {}
     );
   }
 
@@ -66,8 +65,10 @@ export class CustomerService {
 
   deleteDriver(id: number): Observable<IResponse> {
     const params = { userID: id };
-    return this.httpClient.delete<IResponse>(this.baseUrl + `/drivers/${id}`, {
-    });
+    return this.httpClient.delete<IResponse>(
+      this.baseUrl + `/drivers/${id}`,
+      {}
+    );
   }
 
   driverRegister(data: IUserRegister): Observable<IResponse> {
@@ -82,6 +83,13 @@ export class CustomerService {
     });
   }
 
+  getLast5ReservationById(id: number): Observable<IResponse> {
+    const params = { userID: id };
+    return this.httpClient.get<IResponse>(
+      this.baseUrl + `/bookings/last-trips/${id}`,
+      {}
+    );
+  }
 
   // ---------------
 
@@ -89,12 +97,5 @@ export class CustomerService {
     return this.httpClient.get<IResponse>(
       this.baseUrl + '/admin/fullUserCount'
     );
-  }
-
-  getLast5ReservationById(id: number): Observable<IResponse> {
-    const params = { userID: id };
-    return this.httpClient.get<IResponse>(this.baseUrl + '/user/reservation', {
-      params,
-    });
   }
 }

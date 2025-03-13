@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ReservationStatus } from 'src/app/enums/ReservationStatus.enum';
 import { IBookingHistory } from 'src/app/interface/IBookingHistory';
+import { ILastTrip } from 'src/app/interface/ILastTrip';
 import { IResponse } from 'src/app/interface/IResponse';
 import { IUser } from 'src/app/interface/IUser';
 import { CustomerService } from 'src/app/services/customer/customer.service';
@@ -17,7 +18,7 @@ import { showError } from 'src/app/utility/helper';
 })
 export class DashboardComponent implements OnInit {
   protected user:IUser;
-  protected latestsBookings:IBookingHistory[]=[];
+  protected latestsBookings:ILastTrip[]=[];
 
   constructor(
     private service: ReservationService,
@@ -27,27 +28,24 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.user = this.storage.get('user-data') as unknown as IUser;
-    // this.customerService.getLast5ReservationById(this.user.id).pipe(untilDestroyed(this)).subscribe({
-    //   next: (res: IResponse) => {
-    //     this.latestsBookings = res.data;
-    //   },
-    //   error: () => {
-    //     showError({
-    //       title: 'System Error',
-    //       text: 'Something Went Wrong',
-    //     });
-    //   },
-    // })
+   
+    this.loadSummary();
   }
 
-  protected getDriverStars(rating: number): string[] {
-    const stars = [];
-    const roundedRating = Math.round(rating); // Round the rating to nearest integer
-
-    for (let i = 0; i < 5; i++) {
-      stars.push(i < roundedRating ? 'filled' : 'outline');
-    }
-
-    return stars;
+  protected loadSummary() {
+    this.customerService.getLast5ReservationById(this.user.userId).pipe(untilDestroyed(this)).subscribe({
+      next: (res: IResponse) => {
+        this.latestsBookings = res.data;
+      },
+      error: () => {
+        showError({
+          title: 'System Error',
+          text: 'Something Went Wrong',
+        });
+      },
+    })
   }
+
+  
+  
 }

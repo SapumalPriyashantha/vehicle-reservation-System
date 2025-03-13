@@ -262,4 +262,20 @@ public class BookingService {
 
         return new ResponseDTO<>(200, "SUCCESS", responseData);
     }
+
+    public ResponseDTO<Object> getLastCompletedTrips(Long customerId) {
+        List<Object[]> trips = bookingRepository.getLastCompletedTrips(customerId);
+
+        List<Map<String, Object>> tripList = trips.stream().map(trip -> {
+            Map<String, Object> tripData = new HashMap<>();
+            tripData.put("bookingDate",  ((java.sql.Timestamp) trip[0]).toLocalDateTime());
+            tripData.put("driverName", trip[1]);
+            tripData.put("paymentDate", ((java.sql.Timestamp) trip[2]).toLocalDateTime());
+            tripData.put("kilometers", trip[3]);
+            tripData.put("amount", "LKR " + trip[4]);
+            return tripData;
+        }).collect(Collectors.toList());
+
+        return new ResponseDTO<>(200, "SUCCESS", tripList);
+    }
 }

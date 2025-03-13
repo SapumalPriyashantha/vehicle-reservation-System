@@ -1,25 +1,17 @@
 <div class="customer-dashboard">
     <!-- Overview Section -->
     <div class="dashboard-overview">
-        <h2>Dashboard Overview</h2>
-        <p class="overview-description">Access your latest trip details and manage your bookings with ease.</p>
+        <h2>Welcome,{{user.name}}!</h2>
+        <p class="overview-description">Manage your trips effortlessly and access your latest bookings.</p>
 
         <div class="overview-summary">
             <div class="overview-card">
                 <mat-icon color="primary">history</mat-icon>
                 <h3>Recent Booking History</h3>
                 <ul>
-                    <li *ngFor="let booking of latestsBookings">
+                    <li *ngFor="let trip of latestsBookings">
                         <mat-icon>directions_car</mat-icon>
-                        <span>{{ booking.reveredTime | date:'short' }} - {{ booking.driverName }} <p *ngIf="booking.rating"><mat-icon
-                                    *ngFor="let star of getDriverStars(booking.rating.score)"
-                                    [ngClass]="star === 'filled' ? 'star-filled' : 'star-outline'">
-                                    {{ star === 'filled' ? 'star' : 'star_border' }}
-                                </mat-icon></p> </span>
-                    </li>
-                    <li *ngIf="!latestsBookings.length">
-                        <mat-icon>info</mat-icon>
-                        <span>No Result Found.</span>
+                        <span>{{ trip.bookingDate | date:'short' }} | Driver:{{trip.driverName}}</span>
                     </li>
                 </ul>
             </div>
@@ -28,14 +20,9 @@
                 <mat-icon color="primary">attach_money</mat-icon>
                 <h3>Latest Trip Rates</h3>
                 <ul>
-                    <li *ngFor="let rate of latestsBookings">
+                    <li *ngFor="let trip of latestsBookings">
                         <mat-icon>local_offer</mat-icon>
-                        <span>{{ rate.reveredTime | date:'short' }} - {{ rate.distance.toFixed(2) }} km - LKR {{
-                            rate.amount }}</span>
-                    </li>
-                    <li *ngIf="!latestsBookings.length">
-                        <mat-icon>info</mat-icon>
-                        <span>No Result Found.</span>
+                        <span>{{ trip.paymentDate | date:'short' }} - {{trip.kilometers}} - {{trip.amount}}</span>
                     </li>
                 </ul>
             </div>
@@ -46,13 +33,13 @@
     <div class="quick-actions">
         <h3>Quick Actions</h3>
         <div class="action-buttons">
-            <button routerLink="../reserve-taxi" mat-fab extended color="primary">
+            <button routerLink="../reserve-taxi" mat-fab extended>
                 <mat-icon>book_online</mat-icon> Reserve a Ride
             </button>
-            <button routerLink="../booking-history" mat-fab extended color="primary">
+            <button routerLink="../booking-history" mat-fab extended>
                 <mat-icon>history</mat-icon> View Booking History
             </button>
-            <button routerLink="../settings" mat-fab extended color="primary">
+            <button routerLink="../settings" mat-fab extended>
                 <mat-icon>settings</mat-icon> Manage Account Settings
             </button>
         </div>
