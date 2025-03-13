@@ -7,18 +7,13 @@ import com.cabbooking.dto.UserDTO;
 import com.cabbooking.model.Booking;
 import com.cabbooking.model.Car;
 import com.cabbooking.model.User;
-import com.cabbooking.repository.BookingRepository;
-import com.cabbooking.repository.CarRepository;
-import com.cabbooking.repository.CustomerRepository;
-import com.cabbooking.repository.DriverRepository;
+import com.cabbooking.repository.*;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Base64;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Stateless
@@ -35,6 +30,9 @@ public class BookingService {
 
     @Inject
     private DriverRepository driverRepository;
+
+    @Inject
+    private PaymentRepository paymentRepository;
 
     public ResponseDTO<Object> createBooking(BookingDTO bookingDTO) {
         // Validate Customer
@@ -236,5 +234,32 @@ public class BookingService {
         )).collect(Collectors.toList());
 
         return new ResponseDTO<>(200, "SUCCESS", bookingDTOList);
+    }
+
+    public ResponseDTO<Object> getAdminDashboardData() {
+        Long activePassengers = customerRepository.getActivePassengerCount();
+        Long activeDrivers = driverRepository.getActiveDriverCount();
+        Long ongoingTrips = bookingRepository.getOngoingTripCount();
+        BigDecimal totalRevenue = paymentRepository.getTotalRevenue();
+        List<Object[]> lastBookings = paymentRepository.getLastCompletedBookings();
+
+        List<Map<String, Object>> lastBookingList = lastBookings.stream().map(booking -> {
+            Map<String, Object> map = new HashMap<>();
+            map.put("bookingId", booking[0]);
+            map.put("customerName", booking[1]);
+            map.put("amount", booking[2]);
+            map.put("bookingDate",((java.sql.Timestamp) booking[3]).toLocalDateTime());
+            map.put("status", booking[4]);
+            return map;
+        }).collect(Collectors.toList());
+
+        Map<String, Object> responseData = new HashMap<>();
+        responseData.put("activePassengers", activePassengers);
+        responseData.put("activeDrivers", activeDrivers);
+        responseData.put("ongoingTrips", ongoingTrips);
+        responseData.put("totalRevenue", totalRevenue);
+        responseData.put("lastCompletedBookings", lastBookingList);
+
+        return new ResponseDTO<>(200, "SUCCESS", responseData);
     }
 }

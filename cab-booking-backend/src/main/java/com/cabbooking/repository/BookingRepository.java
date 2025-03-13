@@ -159,4 +159,9 @@ public class BookingRepository {
                 .setParameter(2, booking.getBookingId())
                 .executeUpdate();
     }
+
+    public Long getOngoingTripCount() {
+        String sql = "SELECT COUNT(*) FROM bookings WHERE status = 'ONGOING'";
+        return ((Number) em.createNativeQuery(sql).getSingleResult()).longValue();
+    }
 }

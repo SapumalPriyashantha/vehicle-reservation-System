@@ -130,4 +130,9 @@ public class DriverRepository {
 
         return result.isEmpty() ? Optional.empty() : Optional.of(result.get(0));
     }
+
+    public Long getActiveDriverCount() {
+        String sql = "SELECT COUNT(*) FROM users WHERE role = 'DRIVER' AND status = 'ACTIVE'";
+        return ((Number) em.createNativeQuery(sql).getSingleResult()).longValue();
+    }
 }

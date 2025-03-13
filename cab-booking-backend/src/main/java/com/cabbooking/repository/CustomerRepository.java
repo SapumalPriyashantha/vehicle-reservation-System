@@ -166,4 +166,9 @@ public class CustomerRepository {
 
         return query.getResultList();
     }
+
+    public Long getActivePassengerCount() {
+        String sql = "SELECT COUNT(*) FROM users WHERE role = 'CUSTOMER' AND status = 'ACTIVE'";
+        return ((Number) em.createNativeQuery(sql).getSingleResult()).longValue();
+    }
 }

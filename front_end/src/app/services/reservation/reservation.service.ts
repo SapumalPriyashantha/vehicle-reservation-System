@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IAddRate } from 'src/app/interface/IAddRate';
-import { IAdminReservation } from 'src/app/interface/IAdminReservation';
 import { IResponse } from 'src/app/interface/IResponse';
 import { IUserReservation } from 'src/app/interface/IUserReservation';
 import { NON_SECURE, getEndpoint } from 'src/app/utility/constants/end-point';
@@ -26,6 +25,10 @@ export class ReservationService {
     });
   }
 
+  getAdminDashboardData(): Observable<IResponse> {
+    return this.httpClient.get<IResponse>(this.baseUrl + '/bookings/AdminDashboard', {
+    });
+  }
 
 // ---------
 
@@ -37,11 +40,7 @@ export class ReservationService {
     return this.markers;
   }
 
-  makeAdminReservation(data: IAdminReservation): Observable<IResponse> {
-    return this.httpClient.post<IResponse>(this.baseUrl + '/admin/reserve', {
-      ...data,
-    });
-  }
+
 
   makePayment(reservationId: number): Observable<IResponse> {
     const params = { reservationId: reservationId.toString() };

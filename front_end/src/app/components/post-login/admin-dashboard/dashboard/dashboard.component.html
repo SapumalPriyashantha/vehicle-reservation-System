@@ -48,12 +48,12 @@
     </div>
 
     <!-- Reserve Taxi Button with Meaningful Description -->
-    <div class="reserve-taxi-section">
+    <!-- <div class="reserve-taxi-section">
         <button mat-fab extended matTooltip="Click to book a taxi for a customer"
             (click)="openReservationModal(reservationModal)">
             <mat-icon>book_online</mat-icon> Reserve Taxi for Customer
         </button>
-    </div>
+    </div> -->
 
     <!-- Recent Payments Section -->
     <div class="recent-payments-section">
@@ -61,31 +61,28 @@
         <table mat-table [dataSource]="recentPayments" class="mat-elevation-z8">
             <ng-container matColumnDef="clientName">
                 <th mat-header-cell *matHeaderCellDef> Client Name </th>
-                <td mat-cell *matCellDef="let payment"> {{ payment.userDto.name }} </td>
+                <td mat-cell *matCellDef="let payment"> {{ payment.customerName }} </td>
             </ng-container>
 
             <ng-container matColumnDef="tripId">
                 <th mat-header-cell *matHeaderCellDef> Trip ID </th>
-                <td mat-cell *matCellDef="let payment"> {{ payment.id }} </td>
+                <td mat-cell *matCellDef="let payment"> {{ payment.bookingId }} </td>
             </ng-container>
 
             <ng-container matColumnDef="amount">
                 <th mat-header-cell *matHeaderCellDef> Amount </th>
-                <td mat-cell *matCellDef="let payment"> LKR {{ payment.paymentAmount | money }} </td>
+                <td mat-cell *matCellDef="let payment"> LKR {{ payment.amount | money }} </td>
             </ng-container>
 
             <ng-container matColumnDef="date">
                 <th mat-header-cell *matHeaderCellDef> Date </th>
-                <td mat-cell *matCellDef="let payment"> {{ payment.reveredTime | date:'short' }} </td>
+                <td mat-cell *matCellDef="let payment"> {{ payment.bookingDate | date:'short' }} </td>
             </ng-container>
 
             <ng-container matColumnDef="status">
                 <th mat-header-cell *matHeaderCellDef> Status </th>
-                <td mat-cell *matCellDef="let payment"> <span [ngClass]="{
-                    'badge-start': payment.status === ReservationStatus.START,
-                    'badge-end': payment.status ===  ReservationStatus.END,
-                  }">
-                        {{ payment.status===ReservationStatus.START ? 'Pending' : 'Completed' }}
+                <td mat-cell *matCellDef="let payment"> <span class="badge-start">
+                        {{ payment.status}}
                     </span> </td>
             </ng-container>
 
@@ -94,83 +91,3 @@
         </table>
     </div>
 </div>
-
-<ng-template #reservationModal>
-    <div class="reservation-modal-content">
-        <h2 class="modal-title">Reserve a Taxi</h2>
-
-        <form [formGroup]="reservationForm" class="reservation-form">
-            <mat-form-field appearance="outline">
-                <mat-label>Customer Name</mat-label>
-                <input matInput formControlName="customerName" placeholder="Enter customer name">
-            </mat-form-field>
-
-            <mat-form-field appearance="outline">
-                <mat-label>Customer Email</mat-label>
-                <input matInput formControlName="customerEmail" placeholder="Enter customer email">
-            </mat-form-field>
-
-            <mat-form-field appearance="outline">
-                <mat-label>Customer Mobile</mat-label>
-                <input matInput formControlName="customerMobile" placeholder="Enter customer Mobile">
-            </mat-form-field>
-
-            <mat-form-field appearance="outline">
-                <mat-icon matPrefix>location_on</mat-icon>
-                <mat-label>Pick Up Location</mat-label>
-                <input matInput formControlName="pickupLocation" [matAutocomplete]="pickupAuto"
-                    placeholder="Enter Pickup Location">
-                <mat-autocomplete #pickupAuto="matAutocomplete" (optionSelected)="onPickupSelect($event)">
-                    <mat-option *ngFor="let result of filteredPickupResults" [id]="result.place_id"
-                        [value]="result.display_name">
-                        {{ result.display_name }}
-                    </mat-option>
-                </mat-autocomplete>
-            </mat-form-field>
-
-            <mat-form-field appearance="outline">
-                <mat-icon matPrefix>location_on</mat-icon>
-                <mat-label>Drop Off Location</mat-label>
-                <input matInput formControlName="dropoffLocation" [matAutocomplete]="dropoffAuto"
-                    placeholder="Enter Drop-off Location">
-                <mat-autocomplete #dropoffAuto="matAutocomplete" (optionSelected)="onDropoffSelect($event)">
-                    <mat-option *ngFor="let result of filteredDropoffResults" [id]="result.place_id"
-                        [value]="result.display_name">
-                        {{ result.display_name }}
-                    </mat-option>
-                </mat-autocomplete>
-            </mat-form-field>
-
-            <!-- Google Maps Embed -->
-            <div class="map-container">
-                <google-map [center]="center" [zoom]="zoom" height="400px" width="100%">
-                    <map-marker *ngFor="let marker of markers" [position]="marker.position"
-                        [label]="marker.label"></map-marker>
-                    <map-polyline *ngIf="routePath" [path]="routePath" strokeColor="#007bff"></map-polyline>
-                </google-map>
-            </div>
-
-            <button mat-raised-button color="primary" class="search-drivers-button" [disabled]="reservationForm.invalid"
-                (click)="searchDrivers(driverListModal)">Search
-                Drivers</button>
-        </form>
-    </div>
-</ng-template>
-
-<!-- Driver List Modal -->
-<ng-template #driverListModal>
-    <div class="driver-modal-content">
-        <h2 class="modal-title">Available Drivers</h2>
-
-        <div class="driver-list">
-            <div *ngFor="let driver of drivers" class="driver-item">
-                <img [src]="driver.profileImage" alt="{{ driver.name }}" class="driver-image">
-                <div class="driver-info">
-                    <span class="driver-name">{{ driver.name }}</span>
-                    <span class="driver-mobile">{{ driver.mobileNumber }}</span>
-                    <button mat-raised-button color="primary" (click)="reserveDriver(driver)">Reserve</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</ng-template>
