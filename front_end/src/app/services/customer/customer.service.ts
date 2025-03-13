@@ -67,7 +67,6 @@ export class CustomerService {
   deleteDriver(id: number): Observable<IResponse> {
     const params = { userID: id };
     return this.httpClient.delete<IResponse>(this.baseUrl + `/drivers/${id}`, {
-      params,
     });
   }
 

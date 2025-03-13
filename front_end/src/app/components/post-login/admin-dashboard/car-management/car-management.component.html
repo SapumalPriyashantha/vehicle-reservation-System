@@ -1,3 +1,128 @@
-<p>
-  car-management works!
-</p>
+<div class="driver-management-container">
+  <h2>Car Management</h2>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" class="driver-form">
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Car Model</mat-label>
+      <input formControlName="carModel" matInput placeholder="Enter Car Model" />
+    </mat-form-field>
+  
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>License Plate</mat-label>
+      <input formControlName="licensePlate" matInput placeholder="Enter License Plate" />
+    </mat-form-field>
+  
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Mileage</mat-label>
+      <input formControlName="mileage" matInput placeholder="Enter Mileage" />
+    </mat-form-field>
+  
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Passenger Capacity</mat-label>
+      <input formControlName="passengerCapacity" matInput placeholder="Enter Passenger Capacity" />
+    </mat-form-field>
+  
+    <!-- Remove mat-form-field wrapper around file input -->
+    <div class="form-field">
+      <label>Profile Image</label>
+      <input type="file" (change)="onFileSelected($event)" />
+    </div>
+  
+    <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+      {{ editingCar ? 'Update Car' : 'Add Car' }}
+    </button>
+  </form>
+  
+
+  <div class="search-container">
+    <mat-form-field appearance="outline" class="search-form-field">
+      <mat-label>Search Cars</mat-label>
+      <input matInput [(ngModel)]="searchTerm" placeholder="Search by name">
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="search()" class="search-button">Search</button>
+  </div>
+
+  <table mat-table [dataSource]="cars" class="mat-elevation-z8 driver-table">
+    <!-- Columns definitions -->
+    <ng-container matColumnDef="carId">
+      <th mat-header-cell *matHeaderCellDef> Car ID </th>
+      <td mat-cell *matCellDef="let car"> {{ car.carId }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="carModel">
+      <th mat-header-cell *matHeaderCellDef> Car Model </th>
+      <td mat-cell *matCellDef="let car"> {{ car.carModel }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="licensePlate">
+      <th mat-header-cell *matHeaderCellDef> License Plate </th>
+      <td mat-cell *matCellDef="let car"> {{ car.licensePlate }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="mileage">
+      <th mat-header-cell *matHeaderCellDef> Mileage </th>
+      <td mat-cell *matCellDef="let car"> {{ car.mileage }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="passengerCapacity">
+      <th mat-header-cell *matHeaderCellDef> Passenger Capacity </th>
+      <td mat-cell *matCellDef="let car"> {{ car.passengerCapacity }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef> status </th>
+      <td mat-cell *matCellDef="let car"> {{ car.status }} </td>
+    </ng-container>
+
+    <!-- <ng-container matColumnDef="profileImage">
+      <th mat-header-cell *matHeaderCellDef> Profile Image </th>
+      <td mat-cell *matCellDef="let driver">
+        <img *ngIf="driver.profileImage" [src]="driver.profileImage" alt="Driver Image" class="driver-image" />
+      </td>
+    </ng-container> -->
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef> Actions </th>
+      <td mat-cell *matCellDef="let car">
+        <button mat-icon-button color="primary" (click)="viewCar(car,viewDriverModal)">
+          <mat-icon>visibility</mat-icon>
+        </button>
+        <button mat-icon-button color="accent" (click)="editCar(car)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="deleteCar(car.carId)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <!-- Row definitions -->
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</div>
+
+
+
+<!-- Modal for Last 5 Trips (similar to the user management modal) -->
+<ng-template #viewDriverModal>
+  <div class="trip-details-modal-content">
+    <h2 class="modal-title">Last 5 Trips for {{ selectedCar?.carId }}</h2>
+    <div class="trip-list">
+      <!-- <div *ngFor="let trip of tripList" class="trip-item">
+        <div class="trip-info">
+          <p><strong>Pickup:</strong> </p>
+          <p><strong>Drop-off:</strong> </p>
+        </div>
+        <div class="driver-info">
+          <p><strong>User:</strong> {{ trip.userDto.name }}</p>
+          <p><strong>Date:</strong> {{ trip.reveredTime | date:'short' }}</p>
+        </div>
+        <div class="trip-review">
+          <p *ngIf="trip.rating"><strong>Review Score:</strong> {{ trip.rating.score }}/5</p>
+          <p><strong>Payment:</strong> LKR {{ trip.paymentAmount | money }}</p>
+        </div>
+      </div> -->
+    </div>
+  </div>
+</ng-template>

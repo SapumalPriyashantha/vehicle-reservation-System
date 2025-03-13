@@ -30,6 +30,7 @@ import { ReservationService } from 'src/app/services/reservation/reservation.ser
 import { MapService } from 'src/app/services/map/map.service';
 import { SharedModule } from '../../shared/shared.module';
 import { CarManagementComponent } from './car-management/car-management.component';
+import { CarService } from 'src/app/services/car/car.service';
 @NgModule({
   declarations: [
     UserManagementComponent,
@@ -62,7 +63,8 @@ import { CarManagementComponent } from './car-management/car-management.componen
     DriverService,
     CustomerService,
     ReservationService,
-    MapService
+    MapService,
+    CarService
   ]
 })
 export class AdminDashboardModule { }

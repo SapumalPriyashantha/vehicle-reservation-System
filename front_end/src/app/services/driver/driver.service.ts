@@ -5,7 +5,6 @@ import { DriverStatus } from 'src/app/enums/DriverStatus.enum';
 import { IAddRate } from 'src/app/interface/IAddRate';
 import { IChangePassword } from 'src/app/interface/IChangePassword';
 import { IDriver } from 'src/app/interface/IDriver';
-import { IDriverRegister } from 'src/app/interface/IDriverRegister';
 import { IResponse } from 'src/app/interface/IResponse';
 import { NON_SECURE, getEndpoint } from 'src/app/utility/constants/end-point';
 
