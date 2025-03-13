@@ -90,4 +90,15 @@ public class PaymentService {
 
         return new ResponseDTO<>(200, "SUCCESS", paymentList);
     }
+
+    public ResponseDTO<Object> getDriverEarnings(Long driverId) {
+        Object[] earnings = paymentRepository.getDriverEarnings(driverId);
+
+        Map<String, Object> earningsMap = new HashMap<>();
+        earningsMap.put("todayEarnings", "LKR " + earnings[0]);
+        earningsMap.put("weekEarnings", "LKR " + earnings[1]);
+        earningsMap.put("monthEarnings", "LKR " + earnings[2]);
+
+        return new ResponseDTO<>(200, "SUCCESS", earningsMap);
+    }
 }

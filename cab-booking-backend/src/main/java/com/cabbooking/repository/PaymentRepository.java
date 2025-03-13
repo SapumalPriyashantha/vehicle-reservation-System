@@ -68,4 +68,21 @@ public class PaymentRepository {
                 .getResultList();
     }
 
+    public Object[] getDriverEarnings(Long driverId) {
+        String sql = """
+            SELECT 
+                COALESCE(SUM(CASE WHEN DATE(p.payment_date) = CURDATE() THEN p.total_amount ELSE 0 END), 0) AS todayEarnings,
+                COALESCE(SUM(CASE WHEN YEARWEEK(p.payment_date, 1) = YEARWEEK(CURDATE(), 1) THEN p.total_amount ELSE 0 END), 0) AS weekEarnings,
+                COALESCE(SUM(CASE WHEN MONTH(p.payment_date) = MONTH(CURDATE()) AND YEAR(p.payment_date) = YEAR(CURDATE()) THEN p.total_amount ELSE 0 END), 0) AS monthEarnings
+            FROM payments p
+            JOIN bookings b ON p.booking_id = b.booking_id
+            WHERE b.driver_id = :driverId
+            AND p.payment_status = 'PAID'
+        """;
+
+        return (Object[]) em.createNativeQuery(sql)
+                .setParameter("driverId", driverId)
+                .getSingleResult();
+    }
+
 }

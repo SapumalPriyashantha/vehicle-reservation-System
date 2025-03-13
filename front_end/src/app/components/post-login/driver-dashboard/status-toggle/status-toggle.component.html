@@ -2,7 +2,8 @@
     <!-- Overview Section -->
     <div class="dashboard-overview">
         <h2>Dashboard Overview</h2>
-        <p class="overview-description">Quickly manage your status and view your earnings. This dashboard helps you stay on top of your schedule and make the most out of every ride.</p>
+        <p class="overview-description">Quickly manage your status and view your earnings. This dashboard helps you stay
+            on top of your schedule and make the most out of every ride.</p>
 
         <div class="overview-summary">
             <!-- <div class="overview-card">
@@ -17,9 +18,9 @@
                 <mat-icon color="primary">attach_money</mat-icon>
                 <h3>Earnings Summary</h3>
                 <ul>
-                    <p><strong>Today's Earnings:</strong> LKR {{ today | money}}</p>
-                    <p><strong>This Week's Earnings:</strong> LKR {{ week | money}}</p>
-                    <p><strong>This Month's Earnings:</strong> LKR {{ month | money}}</p>
+                    <p><strong>Today's Earnings:</strong> {{ today }}</p>
+                    <p><strong>This Week's Earnings:</strong> {{ week}}</p>
+                    <p><strong>This Month's Earnings:</strong> {{ month }}</p>
                 </ul>
             </div>
         </div>
@@ -29,14 +30,14 @@
     <div class="quick-actions">
         <h3>Quick Actions</h3>
         <div class="action-buttons">
-           
+
             <button routerLink="../current-trip" mat-fab extended>
                 <mat-icon>schedule</mat-icon> View Current Trip
             </button>
-            <button routerLink="../trip-history"  mat-fab extended>
+            <!-- <button routerLink="../trip-history" mat-fab extended>
                 <mat-icon>history</mat-icon> History
-            </button>
-            <button routerLink="../settings"  mat-fab extended>
+            </button> -->
+            <button routerLink="../settings" mat-fab extended>
                 <mat-icon>settings</mat-icon> Manage Account Settings
             </button>
         </div>

@@ -34,7 +34,8 @@ export class DriverService {
 
   startTrip(id: number): Observable<IResponse> {
     return this.httpClient.put<IResponse>(
-      this.baseUrl + `/bookings/start/${id}`,{}
+      this.baseUrl + `/bookings/start/${id}`,
+      {}
     );
   }
 
@@ -44,6 +45,13 @@ export class DriverService {
       kilometers: km,
       extraAmount: amount,
     });
+  }
+
+  driverSummaryDashboard(id: number): Observable<IResponse> {
+    return this.httpClient.get<IResponse>(
+      this.baseUrl + `/payment/earnings/${id}`,
+      {}
+    );
   }
 
   // ----------
@@ -88,16 +96,6 @@ export class DriverService {
   getDriverCount(): Observable<IResponse> {
     return this.httpClient.get<IResponse>(
       this.baseUrl + '/admin/fullDriverCount'
-    );
-  }
-
-  dailyIncome(id: number): Observable<IResponse> {
-    const params = { driverID: id };
-    return this.httpClient.get<IResponse>(
-      this.baseUrl + '/driver/dailyIncome',
-      {
-        params,
-      }
     );
   }
 

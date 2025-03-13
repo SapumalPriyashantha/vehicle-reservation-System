@@ -53,4 +53,17 @@ public class PaymentController {
                     .build();
         }
     }
+
+    @GET
+    @Path("/earnings/{driverId}")
+    public Response getDriverEarnings(@PathParam("driverId") Long driverId) {
+        try {
+            ResponseDTO<Object> result = paymentService.getDriverEarnings(driverId);
+            return Response.status(result.getCode()).entity(result).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(new ResponseDTO<>(500, "ERROR", "Unexpected error occurred."))
+                    .build();
+        }
+    }
 }
