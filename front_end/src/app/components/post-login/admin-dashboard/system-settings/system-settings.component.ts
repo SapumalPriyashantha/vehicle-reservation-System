@@ -31,8 +31,9 @@ export class SystemSettingsComponent implements OnInit {
   ) {
     this.settingsForm = this.fb.group({
       name: ['', Validators.required],
-      email: ['', Validators.required],
-      mobileNumber: ['', Validators.required],
+      telephone: ['', Validators.required],
+      address: ['', Validators.required],
+      nic: ['', Validators.required],
     });
 
     this.passwordForm = this.fb.group({
@@ -47,8 +48,9 @@ export class SystemSettingsComponent implements OnInit {
 
     this.settingsForm.patchValue({
       name: this.admin.name,
-      email: this.admin.email,
-      mobileNumber: this.admin.mobileNumber,
+      telephone: this.admin.telephone,
+      address: this.admin.address,
+      nic: this.admin.nic,
     });
   }
 
@@ -59,7 +61,7 @@ export class SystemSettingsComponent implements OnInit {
   protected onSaveClick() {
     if (this.settingsForm.valid) {
       this.service
-        .updateCustomer(this.admin.id, this.settingsForm.value)
+        .updateCustomer(this.admin.userId, this.settingsForm.value)
         .pipe(untilDestroyed(this))
         .subscribe({
           next: (res: IResponse) => {
@@ -93,7 +95,7 @@ export class SystemSettingsComponent implements OnInit {
     }
 
     const changePasswordRequest: IChangePassword = {
-      id: this.admin.id,
+      id: this.admin.userId,
       currentPassword: currentPassword,
       newPassword: newPassword,
     };

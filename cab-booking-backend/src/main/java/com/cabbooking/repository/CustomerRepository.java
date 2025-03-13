@@ -61,7 +61,7 @@ public class CustomerRepository {
     }
 
     public boolean isUserExists(Long userId) {
-        String sql = "SELECT COUNT(*) FROM users WHERE user_id = ? AND role = 'CUSTOMER' AND status = 'ACTIVE'";
+        String sql = "SELECT COUNT(*) FROM users WHERE user_id = ? AND role = 'CUSTOMER' OR role = 'ADMIN' AND status = 'ACTIVE'";
         Number count = (Number) em.createNativeQuery(sql)
                 .setParameter(1, userId)
                 .getSingleResult();
@@ -109,7 +109,7 @@ public class CustomerRepository {
     }
 
     public User findActiveCustomerById(Long userId) {
-        String sql = "SELECT * FROM users WHERE user_id = ? AND role = 'CUSTOMER' AND  status = 'ACTIVE'";
+        String sql = "SELECT * FROM users WHERE user_id = ? AND status = 'ACTIVE'";
         try {
             return (User) em.createNativeQuery(sql, User.class)
                     .setParameter(1, userId)

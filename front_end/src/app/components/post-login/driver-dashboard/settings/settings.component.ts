@@ -7,6 +7,7 @@ import { DriverStatus } from 'src/app/enums/DriverStatus.enum';
 import { IChangePassword } from 'src/app/interface/IChangePassword';
 import { IDriver } from 'src/app/interface/IDriver';
 import { IResponse } from 'src/app/interface/IResponse';
+import { IUser } from 'src/app/interface/IUser';
 import { CustomerService } from 'src/app/services/customer/customer.service';
 import { DriverService } from 'src/app/services/driver/driver.service';
 import { StorageService } from 'src/app/services/storage.service';
@@ -24,7 +25,7 @@ export class SettingsComponent implements OnInit {
   protected isEditing = false;
   protected isAvailable = true;
 
-  protected driver: IDriver;
+  protected driver: IUser;
 
   protected imageURL: string = 'assets/images/empty-user.jpg';
 
@@ -36,9 +37,9 @@ export class SettingsComponent implements OnInit {
   ) {
     this.settingsForm = this.fb.group({
       name: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      phone: ['', Validators.required],
-      licenseNumber: ['', Validators.required],
+      telephone: ['', Validators.required],
+      address: ['', Validators.required],
+      nic: ['', Validators.required],
     });
 
     this.passwordForm = this.fb.group({
@@ -49,20 +50,16 @@ export class SettingsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.driver = this.storage.get('driver-data') as unknown as IDriver;
-
-    this.driver.status === DriverStatus.AVAILABLE
-      ? (this.isAvailable = true)
-      : (this.isAvailable = false);
+    this.driver = this.storage.get('driver-data') as unknown as IUser;
 
     this.settingsForm.patchValue({
       name: this.driver.name,
-      email: this.driver.email,
-      phone: this.driver.mobileNumber,
-      licenseNumber: this.driver.licenseNumber,
+      telephone: this.driver.telephone,
+      address: this.driver.address,
+      nic: this.driver.nic,
     });
 
-    this.imageURL = this.driver.profileImage;
+    this.imageURL = `data:image/jpeg;base64,${this.driver.profileImageBase64!}`;
   }
 
   protected onEditClick() {
@@ -72,9 +69,9 @@ export class SettingsComponent implements OnInit {
   protected onSaveClick() {
     if (this.settingsForm.valid) {
       this.service
-        .driverUpdate(this.driver.id, {
+        .driverUpdate(this.driver.userId, {
           ...this.settingsForm.value,
-          profileImage: this.imageURL,
+          profileImage: this.imageURL.split(',')[1],
         })
         .pipe(untilDestroyed(this))
         .subscribe({
@@ -87,7 +84,7 @@ export class SettingsComponent implements OnInit {
             this.driver = {
               ...this.driver,
               ...this.settingsForm.value,
-              profileImage: this.imageURL,
+              profileImage: this.imageURL.split(',')[1],
             };
             this.storage.set('driver-data', this.driver);
           },
@@ -113,7 +110,7 @@ export class SettingsComponent implements OnInit {
     }
 
     const changePasswordRequest: IChangePassword = {
-      id: this.driver.id,
+      id: this.driver.userId,
       currentPassword: currentPassword,
       newPassword: newPassword,
     };
@@ -162,7 +159,7 @@ export class SettingsComponent implements OnInit {
       const reader = new FileReader();
 
       reader.onload = () => {
-        const base64String = reader.result as string;
+        const base64String = (reader.result as string);
         this.imageURL = base64String;
       };
 
@@ -174,40 +171,8 @@ export class SettingsComponent implements OnInit {
     }
   }
 
-  protected onStatusChange(event: any) {
-    this.isAvailable = event.checked;
-
-    // this.service
-    //   .changeStatus(
-    //     this.driver.id,
-    //     this.isAvailable ? DriverStatus.AVAILABLE : DriverStatus.BUSY
-    //   )
-    //   .pipe(untilDestroyed(this))
-    //   .subscribe({
-    //     next: (res: IResponse) => {
-    //       showSuccess({
-    //         title: 'Success',
-    //         text: 'Your status changed successfully',
-    //       });
-    //       this.driver = {
-    //         ...this.driver,
-    //         status: this.isAvailable
-    //           ? DriverStatus.AVAILABLE
-    //           : DriverStatus.BUSY,
-    //       };
-    //       this.storage.set('driver-data', this.driver);
-    //     },
-    //     error: () => {
-    //       showError({
-    //         title: 'System Error',
-    //         text: 'Something Went Wrong',
-    //       });
-    //     },
-    //   });
-  }
-
   onCancelClick() {
     this.isEditing = false;
-    this.imageURL = this.driver.profileImage;
+    this.imageURL = this.driver.profileImageBase64!;
   }
 }
