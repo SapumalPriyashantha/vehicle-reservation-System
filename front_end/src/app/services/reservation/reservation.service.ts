@@ -30,6 +30,19 @@ export class ReservationService {
     });
   }
 
+  getPaymentDetails(from: string, to: string): Observable<IResponse> {
+    const params = {
+      from: from,
+      to: to,
+    };
+    return this.httpClient.get<IResponse>(
+      this.baseUrl + '/payment/report',
+      {
+        params,
+      }
+    );
+  }
+
 // ---------
 
   setMarkers(markers: any[] | null) {
@@ -86,16 +99,5 @@ export class ReservationService {
     );
   }
 
-  getPaymentDetails(from: string, to: string): Observable<IResponse> {
-    const params = {
-      fromDate: from,
-      toDate: to,
-    };
-    return this.httpClient.get<IResponse>(
-      this.baseUrl + '/admin/paymentDetails',
-      {
-        params,
-      }
-    );
-  }
+ 
 }

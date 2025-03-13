@@ -12,7 +12,12 @@ import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Stateless
 public class PaymentService {
@@ -68,5 +73,21 @@ public class PaymentService {
         carRepository.updateCarStatus(car);
 
         return new ResponseDTO<>(200, "SUCCESS", "Payment processed successfully. Total: " + totalAmount);
+    }
+
+    public ResponseDTO<Object> getPaymentRecords(LocalDate fromDate, LocalDate toDate) {
+        List<Object[]> payments = paymentRepository.getAllPayments(fromDate, toDate);
+
+        List<Map<String, Object>> paymentList = payments.stream().map(payment -> {
+            Map<String, Object> map = new HashMap<>();
+            map.put("date", ((java.sql.Timestamp) payment[0]).toLocalDateTime() );
+            map.put("driverName", payment[1]);
+            map.put("paymentStatus", payment[2]);
+            map.put("paymentTime", ((java.sql.Timestamp) payment[3]).toLocalDateTime() );
+            map.put("amount", payment[4]);
+            return map;
+        }).collect(Collectors.toList());
+
+        return new ResponseDTO<>(200, "SUCCESS", paymentList);
     }
 }

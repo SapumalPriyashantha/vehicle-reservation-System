@@ -38,7 +38,7 @@
             <ng-container matColumnDef="paymentStatus">
                 <th mat-header-cell *matHeaderCellDef> Payment Status </th>
                 <td mat-cell *matCellDef="let data">
-                    <span class="status-badge" [ngClass]="{'pending': data.paymentStatus === 'Pending', 'completed': data.paymentStatus === 'Completed', 'failed': data.paymentStatus === 'Failed'}">
+                    <span class="status-badge" [ngClass]="{'pending': data.paymentStatus === 'PENDING', 'completed': data.paymentStatus === 'PAID', 'failed': data.paymentStatus === 'FAILED'}">
                         {{ data.paymentStatus }}
                     </span>
                 </td>

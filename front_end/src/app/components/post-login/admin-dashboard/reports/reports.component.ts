@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import jsPDF from 'jspdf';
@@ -13,6 +13,8 @@ import { IUser } from 'src/app/interface/IUser';
 import { IDriver } from 'src/app/interface/IDriver';
 import { CarService } from 'src/app/services/car/car.service';
 import { ICar } from 'src/app/interface/ICar';
+import * as moment from 'moment';
+import { ICompletePayment } from 'src/app/interface/ICompletePayment';
 
 @UntilDestroy()
 @Component({
@@ -20,23 +22,8 @@ import { ICar } from 'src/app/interface/ICar';
   templateUrl: './reports.component.html',
   styleUrls: ['./reports.component.scss'],
 })
-export class ReportsComponent {
-  protected paymentData = [
-    {
-      date: '9/25/24, 8:56 AM',
-      driverName: 'John Doe',
-      paymentStatus: 'Completed',
-      paymentTime: '9/25/24, 8:56 AM',
-      amount: 1200,
-    },
-    {
-      date: '9/25/24, 8:56 AM',
-      driverName: 'Jane Doe',
-      paymentStatus: 'Pending',
-      paymentTime: '9/25/24, 8:56 AM',
-      amount: 1000,
-    },
-  ];
+export class ReportsComponent implements OnInit{
+  protected paymentData: ICompletePayment[] = [];
 
   protected displayedColumns: string[] = [
     'date',
@@ -52,18 +39,25 @@ export class ReportsComponent {
     private fb: FormBuilder,
     private service: ReservationService,
     private customerService: CustomerService,
-    private carService:CarService
+    private carService: CarService
   ) {
     this.form = this.fb.group({
-      fromDate: ['', Validators.required],
-      toDate: ['', Validators.required],
+      fromDate: [moment(), Validators.required],
+      toDate: [moment(), Validators.required],
     });
+  }
+  ngOnInit(): void {
+    this.submit();
   }
 
   submit() {
     const { fromDate, toDate } = this.form.value;
+
+    const from = moment(fromDate).format('YYYY-MM-DD');
+    const to = moment(toDate).format('YYYY-MM-DD');
+
     this.service
-      .getPaymentDetails(fromDate, toDate)
+      .getPaymentDetails(from, to)
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: IResponse) => {
@@ -74,7 +68,7 @@ export class ReportsComponent {
             });
             return;
           }
-          // this.paymentData= res.data;
+          this.paymentData = res.data;
         },
         error: () => {
           showError({
@@ -212,7 +206,7 @@ export class ReportsComponent {
     // Add Header
     const pageWidth = doc.internal.pageSize.getWidth();
     doc.setFontSize(18);
-    doc.text('City Taxi', pageWidth / 2, 10, { align: 'center' });
+    doc.text('Mega City Cab', pageWidth / 2, 10, { align: 'center' });
 
     doc.setFontSize(12);
     doc.text('Payment Receipt', pageWidth / 2, 16, { align: 'center' });

@@ -8,6 +8,7 @@ import jakarta.transaction.Transactional;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.List;
 
 @ApplicationScoped
@@ -49,6 +50,22 @@ public class PaymentRepository {
         """;
 
         return em.createNativeQuery(sql).getResultList();
+    }
+
+    public List<Object[]> getAllPayments(LocalDate fromDate, LocalDate toDate) {
+        String sql = """
+            SELECT p.payment_date, d.name AS driver_name, p.payment_status, p.payment_date, p.total_amount
+            FROM payments p
+            JOIN bookings b ON p.booking_id = b.booking_id
+            JOIN users d ON b.driver_id = d.user_id
+            WHERE DATE(p.payment_date) BETWEEN :fromDate AND :toDate
+            ORDER BY p.payment_date DESC
+        """;
+
+        return em.createNativeQuery(sql)
+                .setParameter("fromDate", fromDate)
+                .setParameter("toDate", toDate)
+                .getResultList();
     }
 
 }
