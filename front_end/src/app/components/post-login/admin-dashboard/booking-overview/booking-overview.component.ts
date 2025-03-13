@@ -16,67 +16,37 @@ import { showError } from 'src/app/utility/helper';
 })
 export class BookingOverviewComponent implements OnInit {
   protected displayedColumns: string[] = [
+    'ID',
     'driverName',
     'driverMobile',
     'clientName',
     'pickupLocation',
     'dropoffLocation',
-    'payment',
+    'status',
   ];
 
-  protected pickUpLocations: { [tripId: string]: Observable<string> } = {};
-  protected dropOffLocations: { [tripId: string]: Observable<string> } = {};
+  protected trips: IBookingHistory[] = [];
 
-  protected ongoingTrips : ITrip[]=[];
-
-  constructor(private service: ReservationService,private mapService:MapService) {
-
-  }
+  constructor(private service: ReservationService) {}
 
   ngOnInit(): void {
-    this.loadOngoingTripData()
+    this.loadTripOverview();
   }
 
-  protected loadOngoingTripData() {
-    this.service.getCurrentOngoingTrip().pipe(untilDestroyed(this)).subscribe({
-      next: (res: IResponse) => {
-        this.ongoingTrips = res.data;
-      },
-      error: () => {
-        showError({
-          title: 'System Error',
-          text: 'Something Went Wrong',
-        });
-      },
-    })
+  protected loadTripOverview() {
+    this.service
+      .getBookingOverview()
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: (res: IResponse) => {
+          this.trips = res.data;
+        },
+        error: () => {
+          showError({
+            title: 'System Error',
+            text: 'Something Went Wrong',
+          });
+        },
+      });
   }
-  
-  protected getPickUpLocation(trip: IBookingHistory): Observable<string> {
-    if (!this.pickUpLocations[trip.id]) {
-      this.pickUpLocations[trip.id] = this.mapService
-        .getAddress(trip.pickupLatitude, trip.pickupLongitude)
-        .pipe(
-          take(1),
-          map((res) => res.display_name),
-          untilDestroyed(this)
-        );
-    }
-
-    return this.pickUpLocations[trip.id];
-  }
-
-  protected getDropOffLocation(trip: IBookingHistory): Observable<string> {
-    if (!this.dropOffLocations[trip.id]) {
-      this.dropOffLocations[trip.id] = this.mapService
-        .getAddress(trip.dropLatitude, trip.dropLongitude)
-        .pipe(
-          take(1),
-          map((res) => res.display_name),
-          untilDestroyed(this)
-        );
-    }
-
-    return this.dropOffLocations[trip.id];
-  }
-
 }

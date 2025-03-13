@@ -42,7 +42,7 @@ export class DriverManagementComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private dialog: MatDialog,
-    private service: CustomerService,
+    private service: CustomerService
   ) {
     this.form = this.fb.group({
       name: ['', Validators.required],
@@ -63,14 +63,14 @@ export class DriverManagementComponent implements OnInit {
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
       const reader = new FileReader();
-  
+
       reader.onload = () => {
-        const base64String = (reader.result as string).split(',')[1]; 
+        const base64String = (reader.result as string).split(',')[1];
         this.form.patchValue({
-          profileImage: base64String
+          profileImage: base64String,
         });
       };
-  
+
       reader.readAsDataURL(file);
     }
   }
@@ -103,7 +103,7 @@ export class DriverManagementComponent implements OnInit {
           next: (res: IResponse) => {
             showSuccess({
               title: 'Success',
-              text: 'New Driver Added Successfully',
+              text: res.data,
             });
             this.clearForm();
             this.loadDriverData();
@@ -140,7 +140,6 @@ export class DriverManagementComponent implements OnInit {
     }
   }
 
-  
   protected clearForm() {
     this.form.reset();
   }
@@ -159,9 +158,7 @@ export class DriverManagementComponent implements OnInit {
     });
   }
 
-  protected viewDriver(driver: IDriver, dialogRef: TemplateRef<any>) {
-    
-  }
+  protected viewDriver(driver: IDriver, dialogRef: TemplateRef<any>) {}
 
   protected deleteDriver(driverId: number) {
     showQuestion(

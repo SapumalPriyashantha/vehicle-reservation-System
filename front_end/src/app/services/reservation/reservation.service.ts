@@ -81,9 +81,9 @@ export class ReservationService {
     });
   }
 
-  getCurrentOngoingTrip(): Observable<IResponse> {
+  getBookingOverview(): Observable<IResponse> {
     return this.httpClient.get<IResponse>(
-      this.baseUrl + '/reserve/currentOngoingTrip'
+      this.baseUrl + '/bookings/all'
     );
   }
 

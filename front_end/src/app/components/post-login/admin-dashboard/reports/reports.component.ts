@@ -11,6 +11,8 @@ import { DriverService } from 'src/app/services/driver/driver.service';
 import { DriverStatus } from 'src/app/enums/DriverStatus.enum';
 import { IUser } from 'src/app/interface/IUser';
 import { IDriver } from 'src/app/interface/IDriver';
+import { CarService } from 'src/app/services/car/car.service';
+import { ICar } from 'src/app/interface/ICar';
 
 @UntilDestroy()
 @Component({
@@ -50,7 +52,7 @@ export class ReportsComponent {
     private fb: FormBuilder,
     private service: ReservationService,
     private customerService: CustomerService,
-    private driverService: DriverService
+    private carService:CarService
   ) {
     this.form = this.fb.group({
       fromDate: ['', Validators.required],
@@ -100,22 +102,20 @@ export class ReportsComponent {
           const columns = [
             'ID',
             'Name',
-            'Email',
+            'Address',
             'Mobile Number',
             'Username',
+            'NIC',
             'Role',
-            'Last Login',
-            'Last Logout',
           ];
           const rows = res.data.map((user: IUser) => [
-            user.id,
+            user.userId,
             user.name,
-            user.email,
-            user.mobileNumber,
-            user.userName,
+            user.address,
+            user.telephone,
+            user.username,
+            user.nic,
             user.role,
-            new Date(user.lastLogInDate).toLocaleString(),
-            new Date(user.lastLogOutDate).toLocaleString(),
           ]);
 
           // Generate the table
@@ -145,9 +145,9 @@ export class ReportsComponent {
       });
   }
 
-  downloadDriverReport() {
-    this.driverService
-      .getAllDrivers(DriverStatus.ALL)
+  downloadCarReport() {
+    this.carService
+      .getAllCars()
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: IResponse) => {
@@ -156,28 +156,26 @@ export class ReportsComponent {
           // Add Header
           const pageWidth = doc.internal.pageSize.getWidth();
           doc.setFontSize(18);
-          doc.text('All Driver Details', pageWidth / 2, 10, {
+          doc.text('All Car Details', pageWidth / 2, 10, {
             align: 'center',
           });
 
           // Prepare table columns and rows
           const columns = [
             'ID',
-            'Name',
-            'Email',
-            'Mobile Number',
-            'Status',
-            'Last Login',
-            'Last Logout',
+            'Car Model',
+            'License Plate',
+            'Mileage',
+            'passengerCapacity',
+            'status',
           ];
-          const rows = res.data.map((user: IDriver) => [
-            user.id,
-            user.name,
-            user.email,
-            user.mobileNumber,
-            user.status,
-            new Date(user.lastLogInDate).toLocaleString(),
-            new Date(user.lastLogOutDate).toLocaleString(),
+          const rows = res.data.map((car: ICar) => [
+            car.carId,
+            car.carModel,
+            car.licensePlate,
+            car.mileage,
+            car.passengerCapacity,
+            car.status,
           ]);
 
           // Generate the table
@@ -196,7 +194,7 @@ export class ReportsComponent {
           });
 
           // Save the PDF
-          doc.save('driver-details.pdf');
+          doc.save('car-details.pdf');
         },
         error: () => {
           showError({

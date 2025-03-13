@@ -9,6 +9,7 @@ export interface IBookingHistory {
   car: ICar;
   destination: string;
   driver: IUser;
+  customer: IUser;
   endTime: string;
   pickupLocation: string;
   startTime: string;
